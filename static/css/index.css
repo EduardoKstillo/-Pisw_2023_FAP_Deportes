@@ -1,0 +1,20 @@
+body {
+  /*background: url(fap.svg) no-repeat center center fixed;*/
+  background-color: #f0f0f0;
+  background-size: cover;
+}
+
+/*
+main {
+  background: url(fap.svg) no-repeat center center fixed;
+}
+*/
+
+#nav__perfil {
+  margin-left: 10px;
+  margin-right: 30px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
