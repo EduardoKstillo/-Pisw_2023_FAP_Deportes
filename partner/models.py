@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .validators import validate_str, validate_dni, validate_phone
+
 
 DEPARTMENT_PERU_CHOICES = [
     ("AM", "Amazonas"),
@@ -33,30 +35,33 @@ DEPARTMENT_PERU_CHOICES = [
 class Partner(models.Model):
 
     # user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    surnames = models.CharField(max_length=100)
-    num_carnet = models.PositiveIntegerField(
-        unique=True, blank=True, null=True)
-    date_created = models.DateField(auto_now=True)
-    birthdate = models.DateField(null=True, blank=True)
+    name = models.CharField(max_length=30, validators=[validate_str])
+    surnames = models.CharField(max_length=30, validators=[validate_str])
+    num_carnet = models.PositiveIntegerField(validators=[validate_dni])
+    date_created = models.DateTimeField(auto_now_add=True)
+    birthdate = models.DateField(blank=True, null=True)
     department = models.CharField(
-        max_length=2, choices=DEPARTMENT_PERU_CHOICES, default='Arequipa')
-    province = models.CharField(max_length=100, blank=True, null=True)
-    district = models.CharField(max_length=100, blank=True, null=True)
-    profession = models.CharField(max_length=100, blank=True, null=True)
-    activity = models.CharField(max_length=100, blank=True, null=True)
+        max_length=30, blank=True, validators=[validate_str])
+    province = models.CharField(
+        max_length=30, blank=True, validators=[validate_str])
+    profession = models.CharField(
+        max_length=30, blank=True, validators=[validate_str])
+    activity = models.CharField(
+        max_length=30, blank=True, validators=[validate_str])
     degree_instruction = models.CharField(
-        max_length=100, blank=True, null=True)
-    civil_status = models.CharField(max_length=100, blank=True, null=True)
+        max_length=30, blank=True, validators=[validate_str])
+    civil_status = models.CharField(
+        max_length=50, blank=True, validators=[validate_str])
     military_card = models.PositiveIntegerField(
-        unique=True, blank=True, null=True)
-    dni = models.PositiveIntegerField(unique=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
-    phone = models.PositiveIntegerField(blank=True, null=True)
-    num_promotion = models.PositiveIntegerField(blank=True, null=True)
-    promotion_delegate = models.CharField(
-        max_length=100, blank=True, null=True)
-    NSA_code = models.CharField(max_length=100, blank=True, null=True)
+        unique=True, null=True, validators=[validate_phone])
+    dni = models.PositiveIntegerField(unique=True, validators=[validate_dni])
+    address = models.CharField(max_length=50, blank=True)
+    district = models.CharField(max_length=30, blank=True)
+    phone = models.PositiveIntegerField(
+        blank=True, null=True, validators=[validate_phone])
+    num_promotion = models.PositiveIntegerField()
+    promotion_delegate = models.BooleanField(default=False)
+    NSA_code = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.name

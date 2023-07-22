@@ -1,253 +1,36 @@
 {% extends 'layout/main.html' %} {% block content %}
 
-<div class="container mt-2">
+<div class="container mt-5">
   <h1 class="text-center mt-3">Crear Socio</h1>
+  {{form.errors}}
   <a href="{% url 'partner' %}" class="btn btn-primary mb-3">Volver a Socios</a>
+  {% for msg in messages %}
+  <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+  {% endfor %}
   <form method="POST">
-    {%csrf_token%}
-    <table class="table">
-      <tbody>
-        <tr>
-          <td style="vertical-align: middle">Nombres:</td>
-          <td style="vertical-align: middle">
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="name"
-              id="id_name"
-            />
-          </td>
-          <td style="vertical-align: middle">Apellidos:</td>
-          <td style="vertical-align: middle">
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="surnames"
-              id="id_surnames"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">N° de carnet:</td>
-          <td>
-            <input
-              type="number"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="num_carnet"
-              id="id_num_carnet"
-            />
-          </td>
+    {%csrf_token%} {% for field in form %} {% if forloop.first %}
+    <div class="row">
+      {% endif %}
+      <div class="col-md-4 mb-3">
+        <div class="form-group">
+          <label class="form-label" for="{{ field.auto_id }}"
+            >{{ field.label }}</label
+          >
+          {{ field }}
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div class="row">{% endif %} {% if forloop.last %}</div>
+    {% endif %} {% endfor %}
 
-          <td style="vertical-align: middle">Fecha de nacimiento:</td>
-          <td>
-            <input
-              type="date"
-              class="form-control"
-              style="border-width: 2px"
-              name="birthdate"
-              id="id_birthdate"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">Departamento:</td>
-          <td>
-            <select
-              class="form-select"
-              style="border-width: 2px"
-              name="department"
-              id="id_department"
-            >
-              <option value="AM">Amazonas</option>
-              <option value="AN">Ancash</option>
-              <option value="AP">Apurimac</option>
-              <option value="AR">Arequipa</option>
-              <option value="AY">Ayacucho</option>
-            </select>
-          </td>
-          <td style="vertical-align: middle">Provincia:</td>
-          <td>
-            <select
-              class="form-select"
-              style="border-width: 2px"
-              name="province"
-              id="id_province"
-            >
-              <option value="Lima">Lima</option>
-              <option value="Callao">Callao</option>
-              <option value="Cusco">Cusco</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">Distrito:</td>
-          <td>
-            <select
-              class="form-select"
-              style="border-width: 2px"
-              name="district"
-              id="id_district"
-            >
-              <option value="Miraflores">Miraflores</option>
-              <option value="San Isidro">San Isidro</option>
-              <option value="Barranco">Barranco</option>
-            </select>
-          </td>
-          <td style="vertical-align: middle">Profesión:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="profession"
-              id="id_profession"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">Actividad:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="activity"
-              id="id_activity"
-            />
-          </td>
-          <td style="vertical-align: middle">Grado de instrucción:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="degree_instruction"
-              id="id_degree_instruction"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">Estado civil:</td>
-          <td>
-            <select
-              class="form-select"
-              style="border-width: 2px"
-              name="civil_status"
-              id="id_civil_status"
-            >
-              <option value="Casado">Casado</option>
-              <option value="Soltero">Soltero</option>
-              <option value="Divorciado">Divorciado</option>
-              <option value="Viudo">Viudo</option>
-            </select>
-          </td>
-          <td style="vertical-align: middle">N° de libreta militar:</td>
-          <td>
-            <input
-              type="number"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="military_card"
-              id="id_military_card"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">N° de DNI:</td>
-          <td>
-            <input
-              type="number"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="dni"
-              id="id_dni"
-            />
-          </td>
-          <td style="vertical-align: middle">Dirección:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="address"
-              id="id_address"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">N° de teléfono:</td>
-          <td>
-            <input
-              type="number"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="phone"
-              min="0"
-              id="id_phone"
-            />
-          </td>
-          <td style="vertical-align: middle">N° de promoción:</td>
-          <td>
-            <input
-              type="number"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="num_promotion"
-              min="0"
-              id="id_num_promotion"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: middle">Delegado de promoción:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="promotion_delegate"
-              id="id_promotion_delegate"
-            />
-          </td>
-          <td style="vertical-align: middle">Código NSA:</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              style="border-width: 2px"
-              maxlength="50"
-              name="NSA_code"
-              id="id_NSA_code"
-            />
-          </td>
-        </tr>
-
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="4" class="text-end">
-            <button type="submit" class="btn btn-success">Crear socio</button>
-            <button type="button" class="btn btn-secondary">Cancelar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <!-- Botón de envío -->
+      <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-primary">Crear Socio</button>
+      </div>
+    </div>
   </form>
 </div>
+
 {% endblock %}

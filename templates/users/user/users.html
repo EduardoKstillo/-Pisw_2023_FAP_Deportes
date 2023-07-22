@@ -3,6 +3,11 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 class="text-center mt-3">Usuarios</h1>
+    {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
     <a
       class="btn btn-primary mt-4 mb-2"
       role="button"

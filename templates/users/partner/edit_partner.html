@@ -1,20 +1,36 @@
 {% extends 'layout/main.html' %} {% block content %}
-<div class="mt-4 mb-4">
-  <div class="col-md-4 offset-md-4">
-    <form method="POST">
-      <h1 class="text-center mt-3">Editar Socio</h1>
-      {%csrf_token%} {% for field in form %}
-      <div class="mb-3 mt-3">
-        <label class="form-label" for="{{ field.auto_id }}"
-          >{{ field.label }}</label
-        >
-        {{ field }}
+
+<div class="container mt-5">
+  <h1 class="text-center mt-3">Editar Socio</h1>
+  {{form.errors}}
+  <a href="{% url 'partner' %}" class="btn btn-primary mb-3">Volver a Socios</a>
+  {% for msg in messages %}
+  <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+  {% endfor %}
+  <form method="POST">
+    {%csrf_token%} {% for field in form %} {% if forloop.first %}
+    <div class="row">
+      {% endif %}
+      <div class="col-md-4 mb-3">
+        <div class="form-group">
+          <label class="form-label" for="{{ field.auto_id }}"
+            >{{ field.label }}</label
+          >
+          {{ field }}
+        </div>
       </div>
-      {% endfor %}
-      <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary">Editar</button>
+      {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div class="row">{% endif %} {% if forloop.last %}</div>
+    {% endif %} {% endfor %}
+
+    <div class="row">
+      <!-- Botón de envío -->
+      <div class="col-md-12 text-center">
+        <button type="submit" class="btn btn-primary">Crear Socio</button>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
+
 {% endblock %}

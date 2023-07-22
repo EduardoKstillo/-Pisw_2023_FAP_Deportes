@@ -3,6 +3,7 @@ from .models import Partner
 from .forms import PartnerForm, UserForm
 
 from django.http import HttpResponse
+from django.contrib import messages
 
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, logout, authenticate
@@ -61,30 +62,36 @@ def create_user(request):
     if request.method == 'POST':
         print(request.POST)
 
-        if request.POST['password'] == request.POST['password2']:
+        if request.POST['password1'] == request.POST['password2']:
+
             try:
-                user = User.objects.create_user(
-                    username=request.POST['username'],
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
-                    email=request.POST['email'],
-                    password=request.POST['password'])
+                form = UserForm(request.POST)
+                if form.is_valid():
+                    user = User.objects.create_user(
+                        username=request.POST['username'],
+                        first_name=request.POST['first_name'],
+                        last_name=request.POST['last_name'],
+                        email=request.POST['email'],
+                        password=request.POST['password1'])
+                    group = Group.objects.get(id=request.POST['group'])
+                    user.save()
+                    user.groups.add(group)
 
-                group = Group.objects.get(id=request.POST['groups'])
-                user.save()
-                user.groups.add(group)
+                    messages.success(
+                        request, 'Usuario creado correctamente!')
+                    return redirect('users')
 
-                return redirect('users')
+                else:
+                    messages.success(
+                        request, 'Ingrese los datos correctamente')
+                    return render(request, 'users/user/create_user.html', {'form': form})
+
             except IntegrityError:
-                return render(request, 'users/user/create_user.html', {
-                    'form': UserForm,
-                    'message': 'User already exists'
-                })
+                messages.success(request, 'El usuario ya existe')
+                return render(request, 'users/user/create_user.html', {'form': UserForm})
 
-        return render(request, 'users/user/create_user.html', {
-            'form': UserForm,
-            'message': 'Incorrect Password'
-        })
+        messages.success(request, 'Contraseña incorrecta')
+        return render(request, 'users/user/create_user.html', {'form': UserForm, })
 
 
 @login_required
@@ -128,19 +135,21 @@ def partner(request):
 
 
 @login_required
-@allowed_users(allowed_roles=['admin'])
 def create_partner(request):
     if request.method == 'GET':
         form = PartnerForm
         context = {'form': form}
         return render(request, 'users/partner/create_partner.html', context)
     if request.method == 'POST':
-        print(request.POST)
         form = PartnerForm(request.POST)
-        print(form)
+
         if form.is_valid():
             form.save()
+            messages.success(request, 'Socio creado correctamente!')
             return redirect('partner')
+        else:
+            messages.success(request, 'Ingrese los datos correctamente')
+            return render(request, 'users/partner/create_partner.html', {'form': form})
         # return redirect('home')
 
 
@@ -158,7 +167,11 @@ def edit_partner(request, id):
         form = PartnerForm(request.POST, instance=partner)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Socio editado correctamente!')
             return redirect('partner')
+        else:
+            messages.success(request, 'Ingrese los datos correctamente')
+            return render(request, 'users/partner/create_partner.html', {'form': form})
 
 
 @login_required
