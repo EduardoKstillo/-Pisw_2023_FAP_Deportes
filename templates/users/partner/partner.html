@@ -44,7 +44,11 @@
               <td>{{ partner.dni }}</td>
               <td>{{ partner.num_promotion }}</td>
               <td>
-                <a href="" type="button" class="btn btn-success">
+                <a 
+                  href="{% url 'detail_partner' partner.id%}" 
+                  type="button" 
+                  class="btn btn-success"
+                  >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -92,11 +96,7 @@
                 </a>
               </td>
               <td>
-                <a
-                  href="{% url 'delete_partner' partner.id%}"
-                  type="button"
-                  class="btn btn-danger"
-                >
+                <a href="{% url 'delete_partner' partner.id %}" type="button" class="btn btn-danger" onclick="confirmDelete(event)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -124,5 +124,16 @@
     </div>
   </div>
 </div>
+
+<!-- Script para el alert de confirmación -->
+<script>
+  function confirmDelete(event) {
+    event.preventDefault();
+    if (confirm("¿Estás seguro de que deseas eliminar este socio?")) {
+      window.location.href = event.currentTarget.href;
+    }
+  }
+</script>
+
 
 {% endblock %}

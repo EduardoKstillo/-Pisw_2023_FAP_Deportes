@@ -80,7 +80,9 @@ class UserForm(forms.ModelForm):
 
 
 class PartnerForm(forms.ModelForm):
+    
     class Meta:
+        
         model = Partner
         fields = ['name', 'surnames', 'birthdate', 'num_carnet', 'dni', 'military_card', 'province', 'department', 'address', 'district',
                   'activity',
@@ -169,6 +171,131 @@ class PartnerForm(forms.ModelForm):
             'num_carnet': 'N° carnet:',
             'birthdate': 'Fecha de nacimiento:',
             'department': 'Departamento:',
+            'military_card': 'N° de libreta militar:',
+            'province': 'Provincia:',
+            'profession': 'Profesión:',
+            'activity': 'Actividad:',
+            'degree_instruction': 'Grado de instrucción:',
+            'civil_status': 'Estado civil:',
+            'dni': 'Numero de Dni:',
+            'address': 'Dirección:',
+            'phone': 'N° de teléfono:',
+            'num_promotion': 'N° de promoción:',
+            'promotion_delegate': 'Delegado de promoción:',
+            'NSA_code': 'Código NSA:',
+        }
+
+class PartnerDetailForm(forms.ModelForm):
+    
+    class Meta:
+        
+        model = Partner
+        fields = ['name', 'surnames', 'birthdate', 'num_carnet', 'dni', 'military_card', 'province', 'department', 'address', 'district',
+                  'activity',
+                  'degree_instruction', 'civil_status', 'dni', 'profession', 'phone', 'num_promotion', 'NSA_code', 'promotion_delegate']
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                }),
+            'surnames': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                }),
+            'birthdate': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'num_carnet': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'military_card': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'department': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'province': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'address': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'district': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'profession': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+
+            'activity': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'degree_instruction': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'civil_status': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'dni': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+
+            'phone': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'num_promotion': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+            'promotion_delegate': forms.CheckboxInput(
+                attrs={
+                    'type': "checkbox",
+                    'class': "form-check-input",
+                    'disabled': 'disabled',
+                }),
+            'NSA_code': forms.TextInput(
+                attrs={
+                    'class': "form-control",
+                    'disabled': 'disabled',
+                }),
+        }
+        labels = {
+            'name': 'Nombre:',
+            'surnames': 'Apellidos:',
+            'num_carnet': 'N° carnet:',
+            'birthdate': 'Fecha de nacimiento:',
+            'department': 'Departamento:',
+            'military_card': 'N° de libreta militar:',
             'province': 'Provincia:',
             'profession': 'Profesión:',
             'activity': 'Actividad:',

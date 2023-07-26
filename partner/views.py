@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Partner
-from .forms import PartnerForm, UserForm
+from .forms import PartnerForm, UserForm, PartnerDetailForm
 
 from django.http import HttpResponse
 from django.contrib import messages
@@ -152,6 +152,15 @@ def create_partner(request):
             return render(request, 'users/partner/create_partner.html', {'form': form})
         # return redirect('home')
 
+@login_required
+@allowed_users(allowed_roles=['admin'])
+def detail_partner(request, id):
+    partner = get_object_or_404(Partner, pk=id)
+
+    if request.method == 'GET':
+        form = PartnerDetailForm(instance=partner)
+        context = {'form': form, 'partner': partner}
+        return render(request, 'users/partner/detail_partner.html', context)
 
 @login_required
 @allowed_users(allowed_roles=['admin'])
@@ -160,7 +169,7 @@ def edit_partner(request, id):
 
     if request.method == 'GET':
         form = PartnerForm(instance=partner)
-        context = {'form': form}
+        context = {'form': form, 'partner': partner}
         return render(request, 'users/partner/edit_partner.html', context)
 
     if request.method == 'POST':
@@ -172,6 +181,7 @@ def edit_partner(request, id):
         else:
             messages.success(request, 'Ingrese los datos correctamente')
             return render(request, 'users/partner/create_partner.html', {'form': form})
+
 
 
 @login_required
