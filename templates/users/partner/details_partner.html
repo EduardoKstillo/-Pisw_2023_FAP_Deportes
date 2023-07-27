@@ -1,4 +1,4 @@
-{% extends 'layout/main.html' %}
+{% extends 'layout/main.html' %} 
 {% block sidebar %} 
 <nav id="sidebar" class=" col-0 col-sm-3 col-md-3 col-lg-2 shadow-sm">
   <div class="sidebar-header text-white d-flex justify-content-center mt-5">
@@ -68,35 +68,35 @@
   
 </nav>
 
-{% endblock sidebar %} 
+{% endblock sidebar %}
 {% block content %}
+<div class="container">
+  <h1 class="text-center mt-3">Socio Detalles</h1>
+  {{form.errors}}
+  <a href="{% url 'partner' %}" class="btn btn-primary mb-3">Volver a socios</a>
+  {% for msg in messages %}
+  <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+  {% endfor %}
+  <form method="GET" class="mb-4">
+    <div class="card p-4 border border-dark text-dark">
+      {%csrf_token%} {% for field in form %} {% if forloop.first %}
 
-<div class="mt-4 mb-4">
-  <div class="col-md-4 offset-md-4">
-    <h1 class="text-center mt-3">Crear Cuenta</h1>
-    {% for msg in messages %}
-    <div class="alert alert-danger fade show" id="msg" role="alert">
-      {{msg}}
-    </div>
-    {% endfor %}
-    <form method="POST">
-      {%csrf_token%} {% for field in form %}
-      <div class="mb-3 mt-3">
-        <label class="form-label" for="{{ field.auto_id }}"
-          >{{ field.label }}</label
-        >
-        {{ field }} {% if field.errors %}
-        <div class="form-error">
-          {% for error in field.errors %} {{ error }} {% endfor %}
-        </div>
+      <div class="row">
         {% endif %}
+        <div class="col-md-4 mb-3">
+          <div class="form-group">
+            <label class="form-label fw-bold" for="{{ field.auto_id }}"
+              >{{ field.label }}</label
+            >
+            <fieldset disabled>{{field}}</fieldset>
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 %}
       </div>
-      {% endfor %}
-
-      <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary">Registar</button>
-      </div>
-    </form>
-  </div>
+      <div class="row">{% endif %} {% if forloop.last %}</div>
+      {% endif %} {% endfor %}
+    </div>
+  </form>
 </div>
-{%endblock %}
+
+{% endblock %}

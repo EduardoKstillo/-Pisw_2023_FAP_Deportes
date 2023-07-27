@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Partner
 from .forms import PartnerForm, UserForm
+from .filters import PartnerFilter
 
 from django.http import HttpResponse
 from django.contrib import messages
@@ -32,9 +33,9 @@ def signin(request):
                 })
             else:
                 login(request, user)
-                return redirect('home')
+                return redirect('partner')
     else:
-        return redirect('home')
+        return redirect('partner')
 
 
 @login_required
@@ -129,7 +130,9 @@ def delete_user(request, id):
 @allowed_users(allowed_roles=['admin'])
 def partner(request):
     partners = Partner.objects.all()
-    context = {'partners': partners}
+    myfilter = PartnerFilter(request.GET, queryset=partners)
+    partners = myfilter.qs
+    context = {'partners': partners, 'filter': myfilter}
 
     return render(request, 'users/partner/partner.html', context)
 
@@ -180,3 +183,14 @@ def delete_partner(request, id):
     partner = get_object_or_404(Partner, pk=id)
     partner.delete()
     return redirect('partner')
+
+
+@login_required
+@allowed_users(allowed_roles=['admin'])
+def details_partner(request, id):
+    partner = get_object_or_404(Partner, pk=id)
+
+    if request.method == 'GET':
+        form = PartnerForm(instance=partner)
+        context = {'form': form}
+        return render(request, 'users/partner/details_partner.html', context)
