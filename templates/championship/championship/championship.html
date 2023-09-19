@@ -12,19 +12,14 @@
       </svg></i> Inicio</a>
     </li>
     <li>
-      <a href="{% url 'partner' %}" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+      <a href="{% url 'categorys' %}" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
-      </svg></i>Socios </a>
-    </li>
-    <li>
-      <a href="{% url 'users' %}"class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
-      </svg></i>Usuarios</a>
+      </svg></i>Categorias </a>
     </li>
     <li>
       <a href="{% url 'championships' %}"class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
         <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
-      </svg></i>Campeonato</a>
+      </svg></i>Campeonatos</a>
     </li>
     {% if not user.is_authenticated %}
       <li class="nav-item">
@@ -70,46 +65,78 @@
 
 {% endblock sidebar %}
 {% block content %}
-
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
-    <h1 class="text-center mt-3">Usuarios</h1>
-    {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert">
-      {{msg}}
-    </div>
-    {% endfor %}
+    <h1 class="text-center mt-3">Campeonatos</h1>
     <a
       class="btn btn-primary mt-4 mb-2"
       role="button"
-      href="{% url 'create_user' %}"
-      >+ Crear Usuario</a
+      href="{% url 'create_championship' %}"
+      >+ Crear Campeonato</a
     >
+
     <div class="ek-shadow mt-3 mb-3">
-      <table class="table rounded rounded-3 overflow-hidden text-center">
+      <table
+        class="table rounded rounded-3 overflow-hidden text-center"
+      >
         <thead>
           <tr>
-            <th>Usuario</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Rol</th>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Estado</th>
+            <th>Ver</th>
+            <th>Editar</th>
             <th>Eliminar</th>
           </tr>
         </thead>
         <tbody>
-          {% for user in users %}
+          {% for championship in championships %}
           <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.last_name }}</td>
-            <td>{{ user.groups.first }}</td>
+            <td>{{ championship.name }}</td>
+            <td>{{championship.categorys}}</td>
+            <td>{{ championship.state }}</td>
             <td>
               <a
-                href="{% url 'delete_user' user.id %}" 
                 type="button"
-                class="btn btn-danger"
-                onclick="confirmDelete(event)"
+                class="btn btn-success"
+                href="{% url 'view_championship' championship.id %}"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-binoculars-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3h4v-.5A1.5 1.5 0 0 0 5.5 1h-1zM7 4v1h2V4h4v.882a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V13H9v-1.5a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5V13H1V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882V4h4zM1 14v.5A1.5 1.5 0 0 0 2.5 16h3A1.5 1.5 0 0 0 7 14.5V14H1zm8 0v.5a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5V14H9zm4-11H9v-.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5V3z"
+                  />
+                </svg>
+              </a>
+            </td>
+            <td>
+              <a href="" type="button" class="btn btn-warning">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="white"
+                  class="bi bi-pencil-square"
+                  viewBox="0 0 15 15"
+                >
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                  />
+                </svg>
+              </a>
+            </td>
+            <td>
+              <a href="" type="button" class="btn btn-danger">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -136,14 +163,4 @@
     </div>
   </div>
 </div>
-
-<script>
-  function confirmDelete(event) {
-    event.preventDefault();
-    if (confirm("¿Estás seguro de que deseas eliminar este socio?")) {
-      window.location.href = event.currentTarget.href;
-    }
-  }
-</script>
-
 {% endblock %}
