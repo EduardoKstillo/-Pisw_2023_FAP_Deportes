@@ -67,6 +67,7 @@ class Person(models.Model):
     promotion_sub_delegate = models.BooleanField(default=False)
     partner = models.BooleanField(default=False)
     NSA_code = models.CharField(max_length=100, blank=True)
+    image = models.ImageField(upload_to='pics')
 
     def __str__(self):
         return self.name
