@@ -70,9 +70,22 @@ def create_team(request):
     return render(request, 'championship/Team/create_team.html', {'form': form})
 
 def view_team(request, team_id):
-    team = Team.objects.get(id=team_id)
-    teams = team.Persons.all()
-    return render(request, 'championship/team/view_team.html', {'team': team, 'players': teams})
+    team = get_object_or_404(Team, id=team_id)
+    players = team.Persons.all()
+    players_available = Person.objects.exclude(team=team)
+
+    if request.method == 'POST':
+        player_id = request.POST.get('player_id')
+        if player_id:
+            player = get_object_or_404(Person, pk=player_id)
+            team.Persons.add(player)
+            return redirect('view_team', team_id=team.id)
+
+    return render(request, 'championship/team/view_team.html', {
+        'team': team,
+        'players': players,
+        'players_available': players_available,
+    })
 
 def delete_team(request, id, id_champ):
     team = get_object_or_404(Team, pk=id)

@@ -46,24 +46,20 @@ class ChampionshipForm(forms.ModelForm):
 
 
 class TeamForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre del equipo', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        label='Nombre:'
+    )    
+
+    state = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'style': 'margin-left: 15px;'}),
+        label='Estado:'
+    )
+
     class Meta:
         model = Team
         fields = ['name', 'state']
-        widgets = {
-            'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                }),
-            'state': forms.CheckboxInput(
-                attrs={
-                    'class': "form-check-input",
-                    'type': "checkbox"
-                }),
-        }
-        labels = {
-            'name': 'Nombre',
-            'state': 'Estado',
-        }
 
 
 class PlayerForm(forms.ModelForm):
