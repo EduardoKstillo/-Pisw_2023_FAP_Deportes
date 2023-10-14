@@ -26,22 +26,23 @@ class ChampionshipForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
+                    'class': 'form-control','placeholder': 'Ingrese el nombre del campeonato', 'style': 'font-size: 20px; font-family: Montserrat;'
                 }),
             'categories': forms.Select(
                 attrs={
                     'class': 'form-select',
+                    'required': False,
                 }),
             'state': forms.CheckboxInput(
                 attrs={
                     'class': "form-check-input",
-                    'type': "checkbox"
+                    'type': "checkbox", 'style': 'margin-left: 15px;'
                 }),
         }
         labels = {
-            'name': 'Nombre',
-            'categorys': 'Categorias',
-            'state': 'Estado',
+            'name': 'Nombre:',
+            'categorys': 'Categorias:',
+            'state': 'Estado:',
         }
 
 

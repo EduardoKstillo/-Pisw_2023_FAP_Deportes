@@ -268,7 +268,7 @@ def add_team_championship(request, championship_id):
         team_id = Team.objects.get(pk=teams_id)
         championship.teams.add(team_id)
         #campeonato.save()
-        return redirect('teams')
+        return redirect('add_team_championship', championship_id=championship.id)
 
     #equipos_disponibles = Team.objects.all()
     return render(request, 'championship/championship/add_team_championship.html', {'championship': championship, 'teams': teams_availables})
@@ -277,6 +277,23 @@ def view_championship(request, id_champ):
     championship = Championship.objects.get(id=id_champ)
     context = {'championship': championship}
     return render(request, 'championship/championship/view_championship.html', context)
+
+def view1_championship(request, championship_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    
+    if request.method == 'POST':
+        team_id = request.POST.get('team_id')
+        if team_id:
+            team = get_object_or_404(Team, pk=team_id)
+            championship.teams.add(team)
+            return redirect('championships')
+
+    teams_availables = Team.objects.exclude(championship=championship)
+
+    return render(request, 'championship/championship/view1_championship.html', {
+        'championship': championship,
+        'teams_availables': teams_availables,
+    })
 
 
 

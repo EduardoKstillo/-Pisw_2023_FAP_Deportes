@@ -36,6 +36,6 @@ urlpatterns = [
     path('persons/', views.persons, name='persons'),
     path('view_person/<int:person_id>/', views.view_person, name='view_person'),
     path('add_team_championship/<int:championship_id>/', views.add_team_championship, name='add_team_championship'),
-    path('view1_championship/<int:championship_id>/', views.view_championship, name='view1_championship'),
+    path('view1_championship/<int:championship_id>/', views.view1_championship, name='view1_championship'),
     path("create_championship/", views.create_championship,name='create_championship'),
 ]
