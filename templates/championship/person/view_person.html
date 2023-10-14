@@ -1,81 +1,177 @@
-{% extends 'layout/main.html' %} 
-{% block sidebar %}
-<div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column"
-  id="sidebar">
-  <ul class="nav flex-column text-white w-100">
-    <a href="#" class="nav-link h2 text-white my-2 mt-4"> CAPSTONE </a>
-    <li class="mt-5">
-      <i class="bx bxs-dashboard"></i>
-      <a href="" class="text-white"></i> Inicio</a>
-    </li>
-    <li>
-      <a href="" class="text-white "><svg xmlns="http://www.w3.org/2000/svg"
-          width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-          <path
-            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-        </svg></i>info </a>
-    </li>
-    <li>
-      <a href="" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Personas</a>
-    </li>
-    <li>
-      <a href="{% url 'teams' %}" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Salir</a>
-    </li>
-  </ul>
-
-  <span href="#" class="nav-link h4 w-100 mb-5 ms-5">
-  
-  </span>
-</div>
-
-<!-- Main Wrapper -->
-<div class="p-1 my-container active-cont">
-  <!-- Top Nav -->
-  <nav class="navbar top-navbar navbar-light bg-light px-5">
-    <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
-  </nav>
-</div>
-
-{% endblock sidebar %}
-
-{% block content %}
-<li>
-    <a href="{% url 'persons' %}" class="btn col-md-12"></i>Volver</a>
-</li>
-<div class="mt-4 mb-4">
-  <div class="col-md-4 offset-md-4">
-    <h1>Detalle de la persona</h1>
-        <li><b>Nombre: </b>{{ person.name }}</li>
-        <li><b>Apellidos: </b>{{ person.surnames }}</li>
-        <li><b>Fecha de nacimiento: </b>{{ person.birthdate }}</li>
-        <li><b>DNI: </b>{{ person.dni }}</li>
-        <li><b>Documento Militar: </b>{{ person.military_card }}</li>
-        <li><b>Provincia: </b>{{ person.province }}</li>
-        <li><b>Departamento: </b>{{ person.department }}</li>
-        <li><b>Dirección: </b>{{ person.address }}</li>
-        <li><b>Distrito: </b>{{ person.district }}</li>
-        <li><b>Actividad: </b>{{ person.activity }}</li>
-        <li><b>Grado de instrucción: </b>{{ person.degree_instruction }}</li>
-        <li><b>Estado Civil: </b>{{ person.civil_status }}</li>
-        <li><b>Profesión: </b>{{ person.profession }}</li>
-        <li><b>Teléfono: </b>{{ person.phone }}</li>
-        <li><b>Número de promoción: </b>{{ person.num_promotion }}</li>
-        <li><b>Código NSA: </b>{{ person.NSA_code }}</li>
-        <li><b>¿Es delegado?: </b>{{ person.promotion_delegate }}</li>
-        <li><b>¿Es sub-delegado?: </b>{{ person.promotion_sub_delegate }}</li>
-        <li><b>¿Es socio?: </b>{{ person.partner }}</li>
-
-        
+{% extends 'layout/main.html' %} {% block content %}
+<section style="background-color: #eee">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+              alt="avatar"
+              class="rounded-circle img-fluid"
+              style="width: 150px"
+            />
+            <h5 class="my-3">{{ person.name }}</h5>
+            <p class="text-muted mb-1">{{ person.degree_instruction }}</p>
+            <p class="text-muted mb-4">{{ person.profession }}</p>
+          </div>
+        </div>
       </div>
-    </form>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Nombre Completo</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  {{ person.name }} {{ person.surnames }}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Dni</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.dni }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Fecha de cumpleaños</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.birthdate }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Documento militar</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.military_card }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Departamento</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.department }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Provincia</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.province }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Distrito</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.district }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Dirección</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.address }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Actividad</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.activity }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Estado civil</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.civil_status }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Telefono</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.phone }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Número de promoción</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.num_promotion }}</p>
+              </div>
+            </div>
+
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Código NSA</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.NSA_code }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">¿Es delegado?</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.promotion_delegate }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">¿Es sub-delegado?</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  {{ person.promotion_sub_delegate }}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">¿Es socio?</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.partner }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 {% endblock content %}

@@ -241,7 +241,7 @@ def create_person(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'persona creado correctamente!')
-            return redirect('teams')
+            return redirect('persons')
         else:
             messages.success(request, 'Ingrese los datos correctamente')
             return render(request, 'championship/person/create_person.html', {'form': form})

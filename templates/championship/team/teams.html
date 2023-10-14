@@ -1,129 +1,139 @@
-{% extends 'layout/main.html' %}
-{% block title %}
-Equipos
-{% endblock title %}
-{% block sidebar %}
-<div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column"
-  id="sidebar">
-  <ul class="nav flex-column text-white w-100">
-    <a href="#" class="nav-link h2 text-white my-2 mt-4"> CAPSTONE </a>
-    <li class="mt-5">
-      <i class="bx bxs-dashboard"></i>
-      <a href="{% url 'partner' %}" class="text-white"></i> Inicio</a>
-    </li>
-    <li>
-      <a href=" " class="text-white "><svg xmlns="http://www.w3.org/2000/svg"
-          width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
-          <path
-            d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-        </svg></i>info </a>
-    </li>
-    <li>
-      <a href=" " class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Equipos</a>
-    </li>
-    <li>
-      <a href="{% url 'persons' %}" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Personas</a>
-    </li>
-    <li>
-      <a href="" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Fitxure</a>
-    </li>
-    <li>
-      <a href="" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Resultados</a>
-    </li>
-    <li>
-      <a href="{% url 'championships' %}" class="text-white "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-          <path
-            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
-        </svg></i>Salir</a>
-    </li>
-  </ul>
-
-  <span href="#" class="nav-link h4 w-100 mb-5 ms-5">
-  
-  </span>
-</div>
-
-<!-- Main Wrapper -->
-<div class="p-1 my-container active-cont">
-  <!-- Top Nav -->
-  <nav class="navbar top-navbar navbar-light bg-light px-5">
-    <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
-  </nav>
-</div>
-
-
-{% endblock sidebar %}
+{% extends 'layout/main.html' %} {% block title %} Equipos {% endblock title %}
 {% block content %}
-
 
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
-    <h1 class="text-left mt-3" style="font-family: 'Montserrat';font-size: 50px;color:#2A4365; border-bottom: 1.5px solid #BABFC5;padding-bottom: 15px;">
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
       Equipos
     </h1>
-    <a class="btn mt-4 mb-2" role="button" href="{% url 'create_team' %}" 
-      style="background-color: #68D391; font-size: 20px; font-family: 'Montserrat'; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); transition: background-color 0.3s;" 
-      onmouseover="this.style.backgroundColor='#4B9A6A'" 
-      onmouseout="this.style.backgroundColor='#68D391'">
+    <a
+      class="btn mt-4 mb-2"
+      role="button"
+      href="{% url 'create_team' %}"
+      style="
+        background-color: #68d391;
+        font-size: 20px;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+      "
+      onmouseover="this.style.backgroundColor='#4B9A6A'"
+      onmouseout="this.style.backgroundColor='#68D391'"
+    >
       + Crear equipo
     </a>
-    <div class="ek-shadow mt-3 mb-3" 
-      style="background-color: white; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); color: black; 
-      overflow: auto; max-height: 65vh;">
+    <div
+      class="ek-shadow mt-3 mb-3"
+      style="
+        background-color: white;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: black;
+        overflow: auto;
+        max-height: 65vh;
+      "
+    >
       <table class="table rounded rounded-3 overflow-hidden text-center">
-        <thead style="height: 65px; vertical-align: middle;">
-          <tr style="font-size: 20px; font-family: 'Montserrat';">
-            <th style="background-color: #F4F4F4; border-right: 1px solid rgba(0, 0, 0, 0.15); font-weight: normal;">Nombre</th>
-            <th style="background-color: #F4F4F4; border-right: 1px solid rgba(0, 0, 0, 0.15); font-weight: normal;">Detalles</th>
-            <th style="background-color: #F4F4F4; border-right: 1px solid rgba(0, 0, 0, 0.15); font-weight: normal;">Editar</th>
-            <th style="background-color: #F4F4F4; font-weight: normal;">Eliminar</th>
+        <thead style="height: 65px; vertical-align: middle">
+          <tr style="font-size: 20px; font-family: 'Montserrat'">
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              Nombre
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              Detalles
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              Editar
+            </th>
+            <th style="background-color: #f4f4f4; font-weight: normal">
+              Eliminar
+            </th>
           </tr>
         </thead>
         <tbody>
           {% for team in teams %}
-          <tr style="font-size: 18px; font-family: 'Montserrat'; color: black;font-weight:1;">
+          <tr
+            style="
+              font-size: 18px;
+              font-family: 'Montserrat';
+              color: black;
+              font-weight: 1;
+            "
+          >
             <td>{{ team.name }}</td>
             <td>
               <a href="{% url 'view_team' team.id %}" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="green" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="green"
+                  class="bi bi-eye-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                  <path
+                    d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
+                  />
                 </svg>
               </a>
             </td>
             <td>
               <a href="" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#FF8C00" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                  <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="#FF8C00"
+                  class="bi bi-pencil-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
+                  />
                 </svg>
               </a>
             </td>
             <td>
-              <a
-                  href=""
-                  type="button"
-                  onclick="confirmDelete(event)"
-              >
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#D95050" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-              </svg>
+              <a href="" type="button" onclick="confirmDelete(event)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="#D95050"
+                  class="bi bi-trash-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                  />
+                </svg>
               </a>
             </td>
           </tr>
