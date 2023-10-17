@@ -1,0 +1,19 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="mt-4 mb-4">
+  <div class="col-md-4 offset-md-4">
+    <h1>
+      detalle de los equipos que perteneces al Campeonato {{ championship.name
+      }}
+    </h1>
+
+    <h2>Equipos en este Campeonato:</h2>
+    <ul>
+      {% for teams in championship.teams.all %}
+      <li>{{ teams.name }}</li>
+      {% empty %}
+      <li>No hay equipos en este campeonato.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock content %}

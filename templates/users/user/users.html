@@ -1,0 +1,78 @@
+{% extends 'layout/main.html' %} {% block content %}
+
+<div class="mt-4 mb-4">
+  <div class="col-md-8 offset-md-2">
+    <h1 class="text-center mt-3">Usuarios</h1>
+    {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
+    <a
+      class="btn btn-primary mt-4 mb-2"
+      role="button"
+      href="{% url 'create_user' %}"
+      >+ Crear Usuario</a
+    >
+    <div class="ek-shadow mt-3 mb-3">
+      <table class="table rounded rounded-3 overflow-hidden text-center">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Rol</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.groups.first }}</td>
+            <td>
+              <a
+                href="{% url 'delete_user' user.id %}"
+                type="button"
+                class="btn btn-danger"
+                onclick="confirmDelete(event)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-trash"
+                  viewBox="0 0 15 15"
+                >
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                  />
+                </svg>
+              </a>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDelete(event) {
+    event.preventDefault();
+    if (confirm("¿Estás seguro de que deseas eliminar este socio?")) {
+      window.location.href = event.currentTarget.href;
+    }
+  }
+</script>
+
+{% endblock %}
