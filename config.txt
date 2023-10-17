@@ -9,7 +9,7 @@ pip install -r requirements.txt
 
 Comandos django:
 ---------------
-
+python manage.py makemigrations
 python manage.py migrate
 
 crear super usuario (ingresas los datos que te pide):
