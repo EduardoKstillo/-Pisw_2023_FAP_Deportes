@@ -5,7 +5,7 @@ from .filters import TeamFilter
 from .fixture import generate_fixture, print_fixture
 from django.http import HttpResponse
 from django.contrib import messages
-
+from itertools import zip_longest
 
 
 def categorys(request):
@@ -38,10 +38,15 @@ def create_championship(request):
         if form.is_valid():
             form.save()
             print("Formulario válido, redirigiendo...")
-            return redirect('championships')  # Cambia 'lista_campeonatos' por el nombre de tu vista de lista de campeonatos
+            return redirect('championships')
     else:
         form = ChampionshipForm()
-    return render(request, 'championship/championship/create_championship.html', {'form': form})
+
+    # Agrupa los campos en pares
+    fields = form.visible_fields()
+    grouped_fields = [fields[i:i+2] for i in range(0, len(fields), 2)]
+
+    return render(request, 'championship/championship/create_championship.html', {'form': form, 'grouped_fields': grouped_fields})
 
 
 

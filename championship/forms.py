@@ -19,8 +19,23 @@ class CategoryForm(forms.ModelForm):
             'name': 'Nombre',
         }
 
+DISCIPLINA_CHOICES = [
+            ('Fútbol', 'Fútbol'),
+            ('Voley', 'Voley'),
+            ('Basquet', 'Basquet'),
+        ]
+
 
 class ChampionshipForm(forms.ModelForm):
+    discipline = forms.ChoiceField(
+        choices=DISCIPLINA_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'style': 'font-size: 20px; font-family: Montserrat;',
+        }),
+        label='Disciplina:'
+    )
+
     class Meta:
         model = Championship
         fields = ['name', 'year', 'discipline', 'categorys', 'state', 'rule']
@@ -35,35 +50,31 @@ class ChampionshipForm(forms.ModelForm):
                 'placeholder': 'Ingrese el año del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
-            'discipline': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese la disciplina del campeonato',
-                'style': 'font-size: 20px; font-family: Montserrat;',
-            }),
             'categorys': forms.Select(attrs={
                 'class': 'form-select',
                 'required': False,
             }),
             'state': forms.CheckboxInput(attrs={
-                'class': "form-check-input",
-                'type': "checkbox",
+                'class': 'form-check-input',
+                'type': 'checkbox',
                 'style': 'margin-left: 15px;',
             }),
             'rule': forms.Textarea(attrs={
-            'class': 'form-control',
-            'placeholder': 'Ingrese la regla del campeonato',
-            'style': 'font-size: 20px; font-family: Montserrat;',
-            'rows': 4,  # Establece la cantidad de filas del textarea según tus preferencias
+                'class': 'form-control',
+                'placeholder': 'Ingrese la regla del campeonato',
+                'style': 'font-size: 20px; font-family: Montserrat;',
+                'rows': 4,
             }),
         }
         labels = {
             'name': 'Nombre:',
             'year': 'Año:',
-            'discipline': 'Disciplina:',
             'categorys': 'Categorias:',
             'state': 'Estado:',
-            'rule': 'Reglas',
+            'rule': 'Reglas:',
         }
+
+
 
 MONTH_CHOICES = [
             ('Enero', 'Enero'),
