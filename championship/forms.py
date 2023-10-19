@@ -20,7 +20,7 @@ class CategoryForm(forms.ModelForm):
         }
 
 DISCIPLINA_CHOICES = [
-            ('Fútbol', 'Fútbol'),
+            ('Futbol', 'Futbol'),
             ('Voley', 'Voley'),
             ('Basquet', 'Basquet'),
         ]
