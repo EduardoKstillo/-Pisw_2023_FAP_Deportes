@@ -340,7 +340,9 @@ def edit_team(request, team_id):
     else:
         form = TeamForm(instance=team)  # Pasa la instancia del equipo a editar
 
-    return render(request, 'championship/team/edit_team.html', {'form': form})
+    context = {'form': form,'teams': team}
+
+    return render(request, 'championship/team/edit_team.html', context)
 
 #------------------------------
 def persons(request):
