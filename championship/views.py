@@ -9,7 +9,7 @@ from itertools import zip_longest
 
 
 def categorys(request):
-    categorys = Category.objects.all()
+    categorys = Category.objects.all().order_by('name')
     context = {"categorys": categorys}
     return render(request, "championship/category/categorys.html", context)
 
@@ -111,6 +111,7 @@ def view_team(request, team_id):
             # Verifica si se han agregado 7 personas que cumplen la condición
             if no_cumplen_condicion <= 2:
                 team.Persons.add(player)
+                #messages.success(request, "Jugador agregado exitosamente.")
                 return redirect('view_team', team_id=team.id)
             else:
                 messages.error(request, "No se pueden agregar más jugadores que no cumplen las condiciónes ")

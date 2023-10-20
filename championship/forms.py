@@ -7,6 +7,7 @@ import datetime
 remainder = datetime.date.today().year % 10
 current_year = datetime.date.today().year-remainder
 CATEGORY_YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -10)]
+
 class CategoryForm(forms.ModelForm):
     name = forms.ChoiceField(
         choices=CATEGORY_YEAR_CHOICES,
@@ -17,14 +18,11 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ['name']
 
-
-
 DISCIPLINA_CHOICES = [
             ('Futbol', 'Futbol'),
             ('Voley', 'Voley'),
             ('Basquet', 'Basquet'),
         ]
-
 
 class ChampionshipForm(forms.ModelForm):
     discipline = forms.ChoiceField(

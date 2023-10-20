@@ -2,6 +2,9 @@
 <div class="mt-4 mb-4">
   <div class="col-md-6 offset-md-3">
     <form method="POST">
+      <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+        Editar equipo
+      </h1>
       <h1
         class="text-left mt-3"
         style="
@@ -12,7 +15,7 @@
           padding-bottom: 15px;
         "
       >
-        Editar equipo
+        {{ team.month }}.{{team.year}}.{{team.group}}
       </h1>
       <a
         class="btn mt-4 mb-2"
@@ -43,7 +46,8 @@
         </svg>
         Volver a equipos
       </a>
-      {%csrf_token%} {% for field in form %}
+      {%csrf_token%} 
+      {% for field in form %}
       <div class="mb-3 mt-3">
         <label
           class="form-label"
