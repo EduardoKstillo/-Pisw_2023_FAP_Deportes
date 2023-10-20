@@ -14,7 +14,7 @@
         padding-bottom: 15px;
       "
     >
-      {{ team.month }} {{team.year}}
+      {{ team.month }}.{{team.year}}.{{team.group}}
     </h1>
     <a
       class="btn mt-4 mb-2"
@@ -55,19 +55,20 @@
               font-family: 'Montserrat';
               font-size: 20px;
               color: #2a4365;
-              margin-top: 15px;
+              margin-top: 5px;
             "
-            >Jugador:</label
-          >
+            >Jugador - Promoción:</label>
+          {% for msg in messages %}
+            <p class="fade show" id="msg" role="alert" style="color: red;">*{{msg}}</p>
+          {% endfor %}
           <select
             name="player_id"
             id="player_id"
-            class="form-control"
+            class="form-select form-select-lg"
             style="font-size: 18px; font-family: 'Montserrat'"
           >
-            <option value="" selected>Selecciona un jugador</option>
             {% for player in players_available %}
-            <option value="{{ player.id }}">{{ player.name }} {{player.month_promotion}} {{player.year_promotion}}</option>
+            <option value="{{ player.id }}">{{ player.name }} {{ player.surnames }} - {{player.month_promotion}} {{player.year_promotion}}</option>
             {% endfor %}
           </select>
         </div>
@@ -129,6 +130,15 @@
                 font-weight: normal;
               "
             >
+              Promoción
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
               Detalles
             </th>
             <th
@@ -157,6 +167,7 @@
           >
             <td>{{ player.name }}</td>
             <td>{{ player.surnames }}</td>
+            <td>{{player.month_promotion}}.{{player.year_promotion}}</td>
             <td>
               <a href="" type="button">
                 <svg
