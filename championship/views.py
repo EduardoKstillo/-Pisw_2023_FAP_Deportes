@@ -64,12 +64,17 @@ def teams(request):
     return render(request,'championship/team/teams.html',{'teams':teams})
 
 def create_team(request):
-
     if request.method == 'POST':
         form = TeamForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('teams')  # Cambia 'lista_campeonatos' por el nombre de tu vista de lista de campeonatos
+            team_month = form.cleaned_data['month']
+            team_year = form.cleaned_data['year']
+            team_group = form.cleaned_data['group']
+            if Team.objects.filter(month=team_month, year=team_year, group=team_group).exists():
+                form.add_error('group', 'ya existe un equipo con dicho grupo')
+            else:
+                form.save()
+                return redirect('teams')
     else:
         form = TeamForm()
     return render(request, 'championship/Team/create_team.html', {'form': form})
@@ -126,10 +131,62 @@ def remove_player_from_team(request, team_id, player_id):
 
     return redirect('view_team', team_id=team.id)
 
-def delete_team(request, id, id_champ):
-    team = get_object_or_404(Team, pk=id)
+def remove_team_from_championship(request, championship_id, team_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    team = get_object_or_404(Team, pk=team_id)
+
+    if request.method == 'POST':
+        # Elimina al equipo del campeonato
+        championship.teams.remove(team)
+
+    return redirect('add_team_championship', championship_id=championship.id)
+
+def delete_team(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
     team.delete()
-    return redirect(request, 'teams', id_champ)
+    return redirect('teams')
+
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    category.delete()
+    return redirect('categorys')
+
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categorys')  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+    else:
+        form = CategoryForm(instance=category)
+    
+    return render(request, 'championship/category/edit_category.html', {'form': form, 'category': category})
+
+def edit_championship(request, championship_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+
+    if request.method == 'POST':
+        form = ChampionshipForm(request.POST, instance=championship)
+        if form.is_valid():
+            form.save()
+            print("Formulario válido, redirigiendo...")
+            return redirect('championships')
+    else:
+        form = ChampionshipForm(instance=championship)
+
+    # Agrupa los campos en pares
+    fields = form.visible_fields()
+    grouped_fields = [fields[i:i+2] for i in range(0, len(fields), 2)]
+
+    context = {
+        'form': form,
+        'grouped_fields': grouped_fields,
+        'championship': championship  # Add the championship instance to the context
+    }
+
+    return render(request, 'championship/championship/edit_championship.html', context)
 
 def add__player_team(request, player_id):
     team = Team.objects.get(pk=player_id)
@@ -245,7 +302,7 @@ def edit_player(request, id, id_team, id_champ):
         else:
             messages.success(request, 'Ingrese los datos correctamente')
             return render(request, 'championship/player/create_player.html', {'form': form})
-
+"""
 def edit_team(request, id, id_champ):
     team = get_object_or_404(Team, pk=id)
 
@@ -263,6 +320,26 @@ def edit_team(request, id, id_champ):
         else:
             messages.success(request, 'Ingrese los datos correctamente')
             return render(request, 'championship/team/create_team.html', {'form': form})
+"""
+def edit_team(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
+    form = TeamForm(instance=team)
+
+    if request.method == 'POST':
+        form = TeamForm(request.POST, instance=team)  # Pasa la instancia del equipo a editar
+        if form.is_valid():
+            team_month = form.cleaned_data['month']
+            team_year = form.cleaned_data['year']
+            team_group = form.cleaned_data['group']
+            if Team.objects.filter(month=team_month, year=team_year, group=team_group).exclude(pk=team_id).exists():
+                form.add_error('group', 'Ya existe un equipo con dicho grupo')
+            else:
+                form.save()
+                return redirect('teams')
+    else:
+        form = TeamForm(instance=team)  # Pasa la instancia del equipo a editar
+
+    return render(request, 'championship/team/edit_team.html', {'form': form})
 
 #------------------------------
 def persons(request):
@@ -301,7 +378,7 @@ def add_team_championship(request, championship_id):
     championship = Championship.objects.get(pk=championship_id)
     año_inicial = int(championship.categorys.name)  # Reemplaza con el año inicial deseado
     año_final = año_inicial+9   # Reemplaza con el año final deseado
-    teams_availables = Team.objects.filter(year__gte=año_inicial, year__lte=año_final)
+    teams_availables = Team.objects.filter(year__gte=año_inicial, year__lte=año_final).exclude(championship=championship)
 
     if request.method == 'POST':
         # Si el formulario se envió, procesa los datos aquí.

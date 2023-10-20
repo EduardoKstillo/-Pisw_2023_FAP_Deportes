@@ -83,7 +83,7 @@ class Team(models.Model):
     Persons = models.ManyToManyField(Person)
     
     def __str__(self):
-        return self.name
+        return self.month
 
 
 class Category(models.Model):

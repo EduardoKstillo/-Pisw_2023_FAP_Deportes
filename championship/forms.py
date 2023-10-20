@@ -4,20 +4,20 @@ from .validators import validate_str
 from django.core import validators
 import datetime
 
-
+remainder = datetime.date.today().year % 10
+current_year = datetime.date.today().year-remainder
+CATEGORY_YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -10)]
 class CategoryForm(forms.ModelForm):
+    name = forms.ChoiceField(
+        choices=CATEGORY_YEAR_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        label='Año:'
+    )
     class Meta:
         model = Category
         fields = ['name']
-        widgets = {
-            'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                }),
-        }
-        labels = {
-            'name': 'Nombre',
-        }
+
+
 
 DISCIPLINA_CHOICES = [
             ('Futbol', 'Futbol'),
@@ -42,12 +42,12 @@ class ChampionshipForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese el nombre del campeonato',
+                #'placeholder': 'Ingrese el nombre del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
             'year': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese el año del campeonato',
+                #'placeholder': 'Ingrese el año del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
             'categorys': forms.Select(attrs={
@@ -61,7 +61,7 @@ class ChampionshipForm(forms.ModelForm):
             }),
             'rule': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese la regla del campeonato',
+                #'placeholder': 'Ingrese la regla del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
                 'rows': 4,
             }),
