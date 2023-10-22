@@ -31,10 +31,43 @@
     >
       + Crear equipo
     </a>
-    <div class="ek-shadow mt-3 mb-3" style="background-color: white; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); color: black; overflow: auto; max-height: 65vh;">
+
+    <style type="text/css">
+        .table-container {
+            height: 10em;
+        }
+        table {
+            display: flex;
+            flex-flow: column;
+            height: 65vh;
+            width: 100%;
+        }
+        table thead {
+            flex: 0 0 auto;
+            width: calc(100% - 0.9em);
+        }
+        table tbody {
+            flex: 1 1 auto;
+            display: block;
+            overflow-y: scroll;
+        }
+        table tbody tr {
+            width: 100%;
+        }
+        table thead, table tbody tr {
+            display: table;
+            table-layout: fixed;
+        }
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 150px;
+        }
+    </style>
+
+    <div class="ek-shadow mt-3 mb-3" style="background-color: white; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); color: black;">
       <table class="table rounded rounded-3 overflow-hidden text-center">
         <thead style="height: 65px; vertical-align: middle">
-          <tr style="font-size: 20px; font-family: 'Montserrat'">
+          <tr style="font-size: 17px; font-family: 'Montserrat'">
             <th
               style="
                 background-color: #f4f4f4;
@@ -51,7 +84,7 @@
                 font-weight: normal;
               "
             >
-              Detalles
+              Jugadores
             </th>
             <th
               style="
@@ -71,7 +104,7 @@
           {% for team in teams %}
           <tr
             style="
-              font-size: 18px;
+              font-size: 16px;
               font-family: 'Montserrat';
               color: black;
               font-weight: 1;
@@ -80,18 +113,14 @@
             <td>{{ team.month }}.{{ team.year }}.{{ team.group }}</td>
             <td>
               <a href="{% url 'view_team' team.id %}" type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="green"
-                  class="bi bi-eye-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                  <path
-                    d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                  />
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="30" 
+                  height="30" 
+                  fill="#3040d0" 
+                  class="bi bi-people-fill" 
+                  viewBox="0 0 16 16">
+                  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
                 </svg>
               </a>
             </td>
@@ -135,6 +164,7 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </div>
 <script>

@@ -111,15 +111,19 @@ def view_team(request, team_id):
             # Verifica si se han agregado 7 personas que cumplen la condición
             if no_cumplen_condicion <= 2:
                 team.Persons.add(player)
-                #messages.success(request, "Jugador agregado exitosamente.")
+                # Agrega un mensaje con la etiqueta "jugador_agregado"
+                messages.success(request, "Jugador agregado exitosamente.", extra_tags='jugador_agregado')
                 return redirect('view_team', team_id=team.id)
             else:
-                messages.error(request, "No se pueden agregar más jugadores que no cumplen las condiciónes ")
+                messages.error(request, "No se pueden agregar más jugadores que no cumplen las condiciones", extra_tags='no_cumple_condiciones')
+
+    no_cumple_condiciones_messages = [msg.message for msg in messages.get_messages(request) if msg.extra_tags == 'no_cumple_condiciones']
 
     return render(request, 'championship/team/view_team.html', {
         'team': team,
         'players': players,
         'players_available': players_available,
+        'no_cumple_condiciones_messages': no_cumple_condiciones_messages,
     })
 
 def remove_player_from_team(request, team_id, player_id):

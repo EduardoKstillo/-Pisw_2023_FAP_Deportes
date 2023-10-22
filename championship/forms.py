@@ -68,7 +68,7 @@ class ChampionshipForm(forms.ModelForm):
             'name': 'Nombre:',
             'year': 'Año:',
             'categorys': 'Categorias:',
-            'state': 'Estado:',
+            'state': 'Habilitado:',
             'rule': 'Reglas:',
         }
 
@@ -119,7 +119,7 @@ class TeamForm(forms.ModelForm):
     state = forms.BooleanField(
         initial=True,  # Establece el valor predeterminado en True
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'style': 'margin-left: 15px;'}),
-        label='Estado:'
+        label='Habilitado:'
     )
 
     class Meta:
