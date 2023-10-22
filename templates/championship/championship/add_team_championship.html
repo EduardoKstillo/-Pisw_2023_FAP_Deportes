@@ -1,6 +1,6 @@
 {% extends 'layout/main.html' %} {% block content %}
 <div class="mt-4 mb-4">
-  <div class="col-md-4 offset-md-4">
+  <div class="col-md-6 offset-md-3">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
       Agregar equipos
     </h1>
@@ -60,6 +60,39 @@
       </svg>
       Volver a campeonatos
     </a>
+
+    <style type="text/css">
+        .table-container {
+            height: 10em;
+        }
+        table {
+            display: flex;
+            flex-flow: column;
+            height: 38vh;
+            width: 100%;
+        }
+        table thead {
+            flex: 0 0 auto;
+            width: calc(100% - 0.9em);
+        }
+        table tbody {
+            flex: 1 1 auto;
+            display: block;
+            overflow-y: scroll;
+        }
+        table tbody tr {
+            width: 100%;
+        }
+        table thead, table tbody tr {
+            display: table;
+            table-layout: fixed;
+        }
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 150px;
+        }
+    </style>
+
     <form method="POST">
       {% csrf_token %}
 
@@ -105,7 +138,8 @@
           </button>
         </div>
       </div>
-      <div
+      
+    <div
       class="ek-shadow mt-3 mb-3"
       style="
         background-color: white;
@@ -117,7 +151,7 @@
     >
       <table class="table rounded rounded-3 overflow-hidden text-center">
         <thead style="height: 65px; vertical-align: middle">
-          <tr style="font-size: 20px; font-family: 'Montserrat'">
+          <tr style="font-size: 17px; font-family: 'Montserrat'">
             <th
               style="
                 background-color: #f4f4f4;
@@ -154,7 +188,7 @@
           {% for teams in championship.teams.all %}
           <tr
             style="
-              font-size: 18px;
+              font-size: 16px;
               font-family: 'Montserrat';
               color: black;
               font-weight: 1;
