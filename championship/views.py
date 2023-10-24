@@ -223,8 +223,7 @@ def create_person(request):
         context = {'form': form}
         return render(request, 'championship/person/create_person.html', context)
     if request.method == 'POST':
-        form = PersonForm(request.POST)
-
+        form = PersonForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'persona creado correctamente!')

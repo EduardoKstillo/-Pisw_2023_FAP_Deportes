@@ -72,8 +72,13 @@
         <li><b>¿Es delegado?: </b>{{ person.promotion_delegate }}</li>
         <li><b>¿Es sub-delegado?: </b>{{ person.promotion_sub_delegate }}</li>
         <li><b>¿Es socio?: </b>{{ person.partner }}</li>
-
-        
+        <div style="margin-bottom: 20px;">
+          {% if person.image %}  <!-- Verifica si hay una imagen disponible. -->
+              <img src="{{ person.image.url }}" alt="Imagen de la persona" style="max-width: 100%; height: auto;">
+          {% else %}
+              <p>No hay imagen disponible.</p>
+          {% endif %}
+        </div>
       </div>
     </form>
   </div>

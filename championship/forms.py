@@ -94,7 +94,7 @@ class PersonForm(forms.ModelForm):
         model = Person
         fields = ['name', 'surnames', 'birthdate', 'dni', 'military_card', 'province', 'department', 'address', 'district','activity',
                   'degree_instruction', 'civil_status', 'profession', 'phone', 'num_promotion', 'NSA_code', 'promotion_delegate',
-                  'promotion_sub_delegate', 'partner']
+                  'promotion_sub_delegate', 'partner', 'image']
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -178,6 +178,7 @@ class PersonForm(forms.ModelForm):
                 attrs={
                     'class': "form-control",
                 }),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'name': 'Nombre:',
@@ -199,4 +200,5 @@ class PersonForm(forms.ModelForm):
             'promotion_sub_delegate': 'Sub-delegado de promoción:',
             'promotion_delegate': 'Socio:',
             'NSA_code': 'Código NSA:',
+            'image': 'Imagen:',
         }
