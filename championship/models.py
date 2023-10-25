@@ -69,7 +69,7 @@ class Person(models.Model):
     NSA_code = models.CharField(max_length=100, blank=True)
     month_promotion = models.CharField(max_length=15, blank=True, validators=[validate_month])
     year_promotion = models.PositiveIntegerField(validators=[validate_year])
-    
+    is_jale = models.BooleanField(default=False)
     
 
     def __str__(self):
@@ -88,10 +88,10 @@ class Team(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Championship(models.Model):
