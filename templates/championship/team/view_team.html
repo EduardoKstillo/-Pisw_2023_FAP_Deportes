@@ -69,6 +69,7 @@
             class="form-select form-select-lg"
             style="font-size: 18px; font-family: 'Montserrat'"
           >
+          <option value="" selected>Seleccione un jugador</option>
             {% for player in players_available %}
             <option value="{{ player.id }}">{{ player.name }} {{ player.surnames }} - {{player.month_promotion}} {{player.year_promotion}}</option>
             {% endfor %}
