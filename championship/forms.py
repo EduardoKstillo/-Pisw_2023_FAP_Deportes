@@ -96,7 +96,18 @@ GROUP_CHOICES = [
             ('D', 'D'),
             ('E', 'E'),
         ]
-
+CIVIL_STATUS_CHOICES = [
+            ('Soltero', 'Soltero'),
+            ('Casado', 'Casado'),
+            ('Viudo', 'Viudo'),
+            ('Divorciado', 'Divorciado'),
+            ('Otro', 'Otro'),
+        ]
+BOOLEAN_CHOICES=[
+    ('False', 'No'),
+    ('True', 'Si'),
+    
+]
 current_year = datetime.date.today().year
 YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -1)]
 
@@ -149,7 +160,48 @@ class PlayerForm(forms.ModelForm):
 
 #---------------------------
 class PersonForm(forms.ModelForm):
-    
+    civil_status = forms.ChoiceField(
+        choices=CIVIL_STATUS_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Estado Civil:'
+    )
+    month_promotion = forms.ChoiceField(
+        choices=MONTH_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Mes de promoción:'
+    )
+    year_promotion = forms.ChoiceField(
+        choices=YEAR_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Año de promoción:'
+    )
+    promotion_delegate = forms.ChoiceField(
+        choices=BOOLEAN_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Delegado de promocion:'
+    )
+    promotion_sub_delegate = forms.ChoiceField(
+        choices=BOOLEAN_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Subdelegado de promocion:'
+    )
+    partner = forms.ChoiceField(
+        choices=BOOLEAN_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Socio:'
+    )
     class Meta:
         
         model = Person
@@ -221,31 +273,7 @@ class PersonForm(forms.ModelForm):
                 attrs={
                     'class': "form-control",
                 }),
-            'promotion_delegate': forms.CheckboxInput(
-                attrs={
-                    'type': "checkbox",
-                    'class': "form-check-input bg-secondary ",             
-                }),
-            'promotion_sub_delegate': forms.CheckboxInput(
-                attrs={
-                    'type': "checkbox",
-                    'class': "form-check-input bg-secondary",
-                }),
-            'partner': forms.CheckboxInput(
-                attrs={
-                    'type': "checkbox",
-                    'class': "form-check-input bg-secondary",
-                }),
             'NSA_code': forms.TextInput(
-                attrs={
-                    'class': "form-control",
-                }),
-            'month_promotion': forms.TextInput(
-                attrs={
-                    'class': "form-control",
-                }
-                ),
-            'year_promotion': forms.TextInput(
                 attrs={
                     'class': "form-control",
                 }),
@@ -271,12 +299,8 @@ class PersonForm(forms.ModelForm):
             'district': 'Distrito:',
             'phone': 'N° de teléfono:',
             'num_promotion': 'N° de promoción:',
-            'promotion_delegate': 'Delegado de promoción:',
-            'promotion_sub_delegate': 'Sub-delegado de promoción:',
-            'partner': 'Socio:',
+
             'NSA_code': 'Código NSA:',
-            'month_promotion': 'Mes de promocion:',
-            'year_promotion' : 'Año de promocion:',
             'image' : 'Imagen: ',
         }
         
