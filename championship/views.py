@@ -247,13 +247,11 @@ def create_championship(request):
             if Championship.objects.filter(categorys = championship_category, state = True).exists():
                 form.add_error('categorys', 'ya existe un campeonato con dicha categoria deshabilite dicho campeonato')
             else:
-
                 form.save()
                 print("Formulario válido, redirigiendo...")
                 return redirect('championships')
     else:
         form = ChampionshipForm()
-
     # Agrupa los campos en pares
     fields = form.visible_fields()
     grouped_fields = [fields[i:i+2] for i in range(0, len(fields), 2)]

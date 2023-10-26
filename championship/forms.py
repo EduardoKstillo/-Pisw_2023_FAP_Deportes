@@ -40,12 +40,12 @@ class ChampionshipForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                #'placeholder': 'Ingrese el nombre del campeonato',
+                'placeholder': 'Ingrese el nombre del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
             'year': forms.TextInput(attrs={
                 'class': 'form-control',
-                #'placeholder': 'Ingrese el año del campeonato',
+                'placeholder': 'Ingrese el año del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
             'categorys': forms.Select(attrs={
@@ -59,7 +59,7 @@ class ChampionshipForm(forms.ModelForm):
             }),
             'rule': forms.Textarea(attrs={
                 'class': 'form-control',
-                #'placeholder': 'Ingrese la regla del campeonato',
+                'placeholder': 'Ingrese las regla del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
                 'rows': 4,
             }),
@@ -71,8 +71,6 @@ class ChampionshipForm(forms.ModelForm):
             'state': 'Habilitado:',
             'rule': 'Reglas:',
         }
-
-
 
 MONTH_CHOICES = [
             ('Enero', 'Enero'),
