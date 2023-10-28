@@ -1,0 +1,48 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="container mt-5">
+  <h1 class="text-center mt-3">Fixture</h1>
+  <div class="d-flex justify-content-center">
+    <div class="bg-white p-3 shadow-sm">
+      {% for msg in messages %}
+      <div class="alert alert-danger fade show" id="msg" role="alert">
+        {{msg}}
+      </div>
+      {% endfor %}
+      <a
+        class="btn btn-primary mt-4 mb-2"
+        role="button"
+        href="{% url 'create_fixture' id_champ %}"
+        >+ Crear Campeonato</a
+      >
+      <div class="row">
+        {% for round_number, fixtures in grouped_fixtures.items %}
+        <div class="col-sm-4">
+          <respo class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="3" class="text-center">
+                    Fecha {{ round_number }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for fixture in fixtures %}
+                <tr>
+                  <td class="text-center">{{ fixture.team1.name }}</td>
+                  <td class="text-center">vs</td>
+                  <td class="text-center">{{ fixture.team2.name }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </respo>
+        </div>
+        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+      </div>
+      <div class="row">{% endif %} {% endfor %}</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
