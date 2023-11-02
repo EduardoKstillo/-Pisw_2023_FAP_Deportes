@@ -246,7 +246,7 @@ def view_team(request, team_id):
         if player_id.isdigit():
             player = Person.objects.get(pk=player_id)
             # Verifica si se ha alcanzado el límite de 10 personas en el equipo
-            if len(players) >= 4:
+            if len(players) >= 10:
                 messages.error(
                     request,
                     "El equipo ya tiene el máximo número de jugadores permitidos (10).",
