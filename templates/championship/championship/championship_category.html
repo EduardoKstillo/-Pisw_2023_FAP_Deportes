@@ -11,12 +11,12 @@
         padding-bottom: 15px;
       "
     >
-      Campeonatos
+      Campeonato {{ championship.name }}
     </h1>
     <a
       class="btn mt-4 mb-2"
       role="button"
-      href="{% url 'create_championship' %}"
+      href="{}"
       style="
         background-color: #68d391;
         font-size: 20px;
@@ -27,7 +27,7 @@
       onmouseover="this.style.backgroundColor='#4B9A6A'"
       onmouseout="this.style.backgroundColor='#68D391'"
     >
-      + Crear campeonato
+      + Crear categoria
     </a>
 
     <style type="text/css">
@@ -127,7 +127,8 @@
           </tr>
         </thead>
         <tbody>
-          {% for championship in championships %}
+            {% for categorys in categorys %}  
+          
           <tr
             style="
               font-size: 16px;
@@ -137,11 +138,11 @@
             "
           >
             <td>{{ championship.name }}</td>
-            <td>{{championship.categorys}}</td>
+            <td>{{categorys.name}}</td>
             <td>{% if championship.state %} SI {% else %} NO {% endif %}</td>
             <td>
               <a
-                href="{% url 'view_championship' championship.id %}"
+                href="{% url 'add_team_championship' championship.id categorys.id%}"
                 type="button"
               >
                 <svg
@@ -163,7 +164,7 @@
             </td>
             <td>
               <a
-                href="{% url 'edit_championship' championship.id %}"
+                href="{}"
                 type="button"
               >
                 <svg
@@ -182,7 +183,7 @@
             </td>
             <td>
               <a
-                href="{% url 'delete_championship' championship.id%}"
+                href="{}"
                 type="button"
                 onclick="confirmDelete(event)"
               >
@@ -201,7 +202,7 @@
               </a>
             </td>
             <td>
-              <a href="{% url 'fixture' championship.id %}" type="button">
+              <a href="{}" type="button">
                 <svg
                   width="30"
                   height="30"
@@ -234,6 +235,7 @@
               </a>
             </td>
           </tr>
+          
           {% endfor %}
         </tbody>
       </table>

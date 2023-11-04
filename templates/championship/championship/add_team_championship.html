@@ -2,7 +2,7 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      Detalles Campeonato
+      Campeaonato 
     </h1>
     <h1
       class="text-left mt-3"
@@ -14,12 +14,27 @@
         padding-bottom: 15px;
       "
     >
-      {{ championship.name }}.{{championship.year}}
+      {{ championship.name }}
+    </h1>
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+      Categoria 
+    </h1>
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      {{category.name}}
     </h1>
     <a
       class="btn mt-4 mb-2"
       role="button"
-      href="{% url 'championships' %}"
+      href="{% url 'view_championship' championship.id %}"
       style="
         background-color: #abafd0;
         font-size: 20px;
@@ -43,7 +58,7 @@
           d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
         />
       </svg>
-      Volver a campeaonato
+      Volver a categorias
     </a>
     <form method="post">
       {% csrf_token %}
@@ -215,7 +230,7 @@
               </a>
             </td>
             <td>
-              <form method="post" action="{% url 'remove_team_from_championship' championship.id teams.id %}">
+              <form method="post" action="{% url 'remove_team_from_championship' championship.id category.id teams.id %}">
                   {% csrf_token %}
                   <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')" style="background-color: white;border: white;">
                       <svg

@@ -99,7 +99,7 @@ class Championship(models.Model):
     year = models.PositiveIntegerField(validators=[validate_year])
     discipline = models.CharField(max_length=30, validators=[validate_str])
     rule = models.TextField(blank=True, null=True)
-    categorys = models.ForeignKey(Category, on_delete=models.CASCADE)
+    categorys = models.ManyToManyField(Category)
     state = models.BooleanField(default=True)
     # date_created = models.DateTimeField(auto_now_add=True)
     # date_finished = models.DateTimeField(null=True, blank=True)
@@ -108,6 +108,13 @@ class Championship(models.Model):
     def __str__(self):
         return self.name
 
+class ChampionshipTeam(models.Model):
+    championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.championship.name} - {self.category.name} - {self.team.month}"
 
 class Game(models.Model):
     round_number = models.PositiveIntegerField(default=0)

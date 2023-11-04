@@ -30,11 +30,7 @@ urlpatterns = [
     path(
         "delete_person/<int:person_id>/", views.delete_person, name="delete_person"
     ),  # Person
-    path(
-        "add_team_championship/<int:championship_id>/",
-        views.add_team_championship,
-        name="add_team_championship",
-    ),
+    #path("add_team_championship/<int:championship_id>/",views.add_team_championship,name="add_team_championship",),
     # path('view1_championship/<int:championship_id>/', views.view1_championship, name='view1_championship'),
     path("create_championship/", views.create_championship, name="create_championship"),
     path(
@@ -44,7 +40,7 @@ urlpatterns = [
     ),
     path("delete_team/<int:team_id>/", views.delete_team, name="delete_team"),
     path(
-        "remove_team_from_championship/<int:championship_id>/<int:team_id>/",
+        "remove_team_from_championship/<int:championship_id>/<int:category_id>/<int:team_id>/",
         views.remove_team_from_championship,
         name="remove_team_from_championship",
     ),
@@ -60,4 +56,6 @@ urlpatterns = [
         name="edit_championship",
     ),
     path("edit_team/<int:team_id>", views.edit_team, name="edit_team"),
+    path("view_championship/<int:championship_id>", views.view_championship, name="view_championship"),
+    path("add_team_championship/<int:championship_id>/<int:categorys_id>/",views.add_team_championship,name="add_team_championship"),
 ]

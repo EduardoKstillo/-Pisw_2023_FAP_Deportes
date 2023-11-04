@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Championship, Team, Player, Game, Person
+from .models import Category, Championship, Team, Player, Game, Person, ChampionshipTeam
 from .forms import CategoryForm, ChampionshipForm, TeamForm, PlayerForm, PersonForm
 from .filters import TeamFilter
 from .fixture import generate_fixture, print_fixture
@@ -311,23 +311,12 @@ def create_championship(request):
     if request.method == "POST":
         form = ChampionshipForm(request.POST)
         if form.is_valid():
-            championship_category = form.cleaned_data["categorys"]
-            print(championship_category)
-            # Verifica si existe un campeaonato ya creado con la misma categoria y su su estado es true
-            if Championship.objects.filter(
-                categorys=championship_category, state=True
-            ).exists():
-                form.add_error(
-                    "categorys",
-                    "ya existe un campeonato con dicha categoria deshabilite dicho campeonato",
-                )
-            else:
-                form.save()
-                print("Formulario válido, redirigiendo...")
-                return redirect("championships")
+            form.save()
+            print("Formulario válido, redirigiendo...")
+            return redirect("championships")
     else:
         form = ChampionshipForm()
-    # Agrupa los campos en pares
+    
     fields = form.visible_fields()
     grouped_fields = [fields[i : i + 2] for i in range(0, len(fields), 2)]
 
@@ -381,18 +370,25 @@ def delete_championship(request, id):
 
 
 # --Funcion remueve los equipos de un campeonato en especifico---------------------------
-def remove_team_from_championship(request, championship_id, team_id):
+def remove_team_from_championship(request, championship_id, category_id, team_id):
     championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=category_id)
     team = get_object_or_404(Team, pk=team_id)
 
     if request.method == "POST":
         # Elimina al equipo del campeonato
-        championship.teams.remove(team)
+        print("amifo")
+        championship_team = ChampionshipTeam.objects.get(
+            championship=championship,
+            category=category,
+            team=team
+        )
+        championship_team.delete()
 
-    return redirect("add_team_championship", championship_id=championship.id)
+    return redirect("add_team_championship", championship_id=championship.id, categorys_id=category.id )
 
 
-# ..Listar campeonatos----------------------------------------------------------------------
+# --Listar campeonatos----------------------------------------------------------------------
 def championships(request):
     championships = Championship.objects.all()
     context = {"championships": championships}
@@ -401,18 +397,23 @@ def championships(request):
 
 # --Funcion que muestra los equipo que pertenecen a un equipo--------------------------------------
 # --Funcion que agrega equipos a un campeonato
-def add_team_championship(request, championship_id):
+def add_team_championship(request, championship_id, categorys_id):
     championship = Championship.objects.get(pk=championship_id)
-    teams = championship.teams.all()
+    category = Category.objects.get(pk=categorys_id)
+    #teams=Team.objects.all()
+    championship_teams = ChampionshipTeam.objects.filter(championship_id=championship_id, category_id=categorys_id)
+    team_ids = championship_teams.values_list('team_id')
+    teams = Team.objects.filter(id__in=team_ids)
+    #teams = Team.objects.filter(championship=championship, category=category)
     state_champioship = championship.state
     print(state_champioship)
-    año_inicial = championship.categorys.name  # Reemplaza con el año inicial deseado
+    año_inicial = category.name  # Reemplaza con el año inicial deseado
     año_final = año_inicial + 9  # Reemplaza con el año final deseado
 
     if championship.state:
         teams_availables = Team.objects.filter(
             year__gte=año_inicial, year__lte=año_final
-        ).exclude(championship=championship)
+        ).exclude(id__in=team_ids)
     else:
         teams_availables = None
 
@@ -422,9 +423,15 @@ def add_team_championship(request, championship_id):
 
         if teams_id.isdigit():
             team = Team.objects.get(pk=teams_id)
-            championship.teams.add(team)
+            championship_category_team = ChampionshipTeam(
+                championship=championship,
+                category=category,
+                team=team
+            )
+            championship_category_team.save()
+            
             # campeonato.save()
-            return redirect("add_team_championship", championship_id=championship.id)
+            return redirect("add_team_championship", championship_id=championship.id, categorys_id = category.id)
         else:
             messages.warning(
                 request, "ID de equipo no válido.", extra_tags="equipo_invalido"
@@ -437,10 +444,20 @@ def add_team_championship(request, championship_id):
             "championship": championship,
             "teams_available": teams_availables,
             "teams": teams,
+            "category": category,
         },
     )
 
+# --Ver campeonato y sus categorias pertenecientes----------------------------------------------------------------------
+def view_championship(request, championship_id):
+    championship = Championship.objects.get(pk=championship_id)
+    categorys = championship.categorys.all()
 
+    return render(
+        request,
+        "championship/championship/championship_category.html",
+        {"championship": championship, "categorys": categorys}
+    )
 ################################--Fin Campeonato--------------------------------
 
 
