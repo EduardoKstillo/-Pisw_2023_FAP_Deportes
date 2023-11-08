@@ -181,7 +181,7 @@ def remove_player_from_team(request, team_id, player_id):
             team.Persons.remove(player)
 
     return redirect("view_team", team_id=team.id)
-
+#--Funcion para actualizar una persona si es delegado de equipo
 def actualizar_jugador(request, player_id):
     print("dsadsadsadsa")
     if request.method == 'POST':
@@ -196,6 +196,7 @@ def actualizar_jugador(request, player_id):
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+#--Funcion para actualizar una persona en caso ya no sea delegado de equipo
 def actualizar_jugador1(request, player_id):
     print("amigo")
     if request.method == 'POST':
