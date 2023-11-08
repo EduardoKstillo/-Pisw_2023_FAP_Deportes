@@ -315,14 +315,27 @@ def create_championship(request):
         form = ChampionshipForm()
     
     fields = form.visible_fields()
-    grouped_fields = [fields[i : i + 2] for i in range(0, len(fields), 2)]
+    grouped_fields = [fields[i : i + 3] for i in range(0, len(fields), 3)]  # Cambio en el paso
 
-    return render(
-        request,
-        "championship/championship/create_championship.html",
-        {"form": form, "grouped_fields": grouped_fields},
-    )
+    return render(request, "championship/championship/create_championship.html", {"form": form, "grouped_fields": grouped_fields})
 
+def create_team(request):
+    if request.method == "POST":
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            team_month = form.cleaned_data["month"]
+            team_year = form.cleaned_data["year"]
+            team_group = form.cleaned_data["group"]
+            if Team.objects.filter(
+                month=team_month, year=team_year, group=team_group
+            ).exists():
+                form.add_error("group", "ya existe un equipo con dicho grupo")
+            else:
+                form.save()
+                return redirect("teams")
+    else:
+        form = TeamForm()
+    return render(request, "championship/Team/create_team.html", {"form": form})
 
 # --Editar campeonato-------------------------------------------------------------------
 def edit_championship(request, championship_id):
@@ -337,7 +350,7 @@ def edit_championship(request, championship_id):
         form = ChampionshipForm(instance=championship)
 
     fields = form.visible_fields()
-    grouped_fields = [fields[i : i + 2] for i in range(0, len(fields), 2)]
+    grouped_fields = [fields[i : i + 3] for i in range(0, len(fields), 3)]
 
     return render(
         request,
@@ -535,10 +548,12 @@ def edit_discipline(request, discipline_id):
     else:
         form = DiciplineForm(instance=discipline)
 
+    context = {"form": form, "disciplines": discipline}
+
     return render(
         request,
         "championship/discipline/edit_discipline.html",
-        {"form": form, "disciplines": discipline},
+        context
     )
 
 ####################################--Fin Disciplina--------------------------------
@@ -583,10 +598,12 @@ def edit_season(request, season_id):
     else:
         form = SeasonForm(instance=season)
 
+    context = {"form": form, "seasons": season}
+
     return render(
         request,
         "championship/season/edit_season.html",
-        {"form": form, "seasons": season},
+        context
     )
 
 ####################################--Fin Disciplina--------------------------------

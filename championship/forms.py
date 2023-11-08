@@ -8,6 +8,16 @@ remainder = datetime.date.today().year % 10
 current_year = datetime.date.today().year-remainder
 CATEGORY_YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -10)]
 
+BOOLEAN_CHOICES=[
+    ('False', 'No'),
+    ('True', 'Si'),
+]
+
+BOOLEAN_CHOICES_STATES=[
+    ('True', 'Si'),
+    ('False', 'No'),    
+]
+
 class CategoryForm(forms.ModelForm):
     name = forms.ChoiceField(
         choices=CATEGORY_YEAR_CHOICES,
@@ -97,6 +107,15 @@ class ChampionshipForm(forms.ModelForm):
     )
     """
 
+    state = forms.ChoiceField(
+        choices=BOOLEAN_CHOICES_STATES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'style': 'font-size: 20px; font-family: Montserrat;',
+        }),
+        label='Habilitado:'
+    )
+
     class Meta:
         model = Championship
         fields = ['name', 'year', 'disciplines', 'seasons', 'categorys', 'state', 'rule']
@@ -114,22 +133,18 @@ class ChampionshipForm(forms.ModelForm):
             'disciplines': forms.Select(attrs={
                 'class': 'form-select',
                 'required': False,
+                'style': 'font-size: 20px; font-family: Montserrat;',
             }),
             'seasons': forms.Select(attrs={
                 'class': 'form-select',
                 'required': False,
+                'style': 'font-size: 20px; font-family: Montserrat;',
             }),
-            'categorys': forms.CheckboxSelectMultiple,
-                
+            'categorys': forms.CheckboxSelectMultiple,           
             
-            'state': forms.CheckboxInput(attrs={
-                'class': 'form-check-input',
-                'type': 'checkbox',
-                'style': 'margin-left: 15px;',
-            }),
             'rule': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese las regla del campeonato',
+                'placeholder': 'Ingrese comentarios del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
                 'rows': 4,
             }),
@@ -138,10 +153,10 @@ class ChampionshipForm(forms.ModelForm):
             'name': 'Nombre:',
             'year': 'Año:',
             'disciplines': 'Disciplina',
-            'seasons': 'Tempoada',
-            'category': 'categorias',
+            'seasons': 'Temporada:',
+            'categorys': 'Categorias',
             'state': 'Habilitado:',
-            'rule': 'Reglas:',
+            'rule': 'Comentarios:',
         }
 
 
@@ -174,10 +189,7 @@ CIVIL_STATUS_CHOICES = [
             ('Divorciado', 'Divorciado'),
             ('Otro', 'Otro'),
         ]
-BOOLEAN_CHOICES=[
-    ('False', 'No'),
-    ('True', 'Si'),
-]
+
 
 current_year = datetime.date.today().year
 YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -1)]
@@ -198,9 +210,9 @@ class TeamForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Grupo:'
     )    
-    state = forms.BooleanField(
-        initial=True,  # Establece el valor predeterminado en True
-        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox', 'style': 'margin-left: 15px;'}),
+    state = forms.ChoiceField(
+        choices=BOOLEAN_CHOICES_STATES,
+        widget=forms.Select(attrs={'class': 'form-select', 'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Habilitado:'
     )
 
@@ -273,8 +285,7 @@ class PersonForm(forms.ModelForm):
         }),
         label='Socio:'
     )
-    class Meta:
-        
+    class Meta:        
         model = Person
         fields = ['name', 'surnames', 'birthdate', 'dni', 'military_card', 'province', 'department', 'address', 'district','activity',
                   'degree_instruction', 'civil_status', 'profession', 'phone', 'num_promotion', 'NSA_code', 'promotion_delegate',
