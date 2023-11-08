@@ -58,4 +58,17 @@ urlpatterns = [
     path("edit_team/<int:team_id>", views.edit_team, name="edit_team"),
     path("view_championship/<int:championship_id>", views.view_championship, name="view_championship"),
     path("add_team_championship/<int:championship_id>/<int:categorys_id>/",views.add_team_championship,name="add_team_championship"),
+    #--Creacion de los nuevos modelos disciplina
+    path("disciplines/", views.disciplines, name="disciplines"),
+    path("create_discipline/", views.create_discipline, name="create_discipline"),
+    path("delete_discipline/<int:discipline_id>/",views.delete_discipline,name="delete_discipline",),
+    path("edit_discipline/<int:discipline_id>/", views.edit_discipline, name="edit_discipline"),
+    #--Creacopm del modelo temporada
+    path("seasons/", views.seasons, name="seasons"),
+    path("create_season/", views.create_season, name="create_season"),
+    path("delete_season/<int:season_id>/",views.delete_season,name="delete_season",),
+    path("edit_season/<int:season_id>/", views.edit_season, name="edit_season"),
+    #--Actualizacion de la persona marcada como delegado del equipo
+    path('actualizar_jugador/<int:player_id>/', views.actualizar_jugador, name='actualizar_jugador'),
+    path('actualizar_jugador1/<int:player_id>/', views.actualizar_jugador1, name='actualizar_jugador1'),
 ]

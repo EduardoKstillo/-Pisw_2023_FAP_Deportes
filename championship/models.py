@@ -92,12 +92,28 @@ class Category(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+#--Creacion del modelo diciplina 
+class Discipline(models.Model):
+    name = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+    
+#--Creacion del modelo temporada    
+class Season(models.Model):
+    name = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.name
+    
 class Championship(models.Model):
     name = models.CharField(max_length=20, validators=[validate_str])
     year = models.PositiveIntegerField(validators=[validate_year])
-    discipline = models.CharField(max_length=30, validators=[validate_str])
+    #--Agregamos los nuevos modelos creados como campos para la creacion de un campeonato
+    disciplines = models.ForeignKey(Discipline, on_delete=models.CASCADE)
+    seasons = models.ForeignKey(Season, on_delete=models.CASCADE)
+    #----------------------------------------------------------------
     rule = models.TextField(blank=True, null=True)
     categorys = models.ManyToManyField(Category)
     state = models.BooleanField(default=True)

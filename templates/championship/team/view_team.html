@@ -172,6 +172,15 @@
                 font-weight: normal;
               "
             >
+              Delegado
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
               Detalles
             </th>
             <th
@@ -201,6 +210,10 @@
             <td>{{ player.name }}</td>
             <td>{{ player.surnames }}</td>
             <td>{{player.month_promotion}}.{{player.year_promotion}}</td>
+            <td>
+              <input type="checkbox" class="player-checkbox" name="selected_players" value="{{ player.id }}" {% if player.promotion_delegate %} checked {% endif %}>
+        
+            </td>
             <td>
               <a href="" type="button">
                 <svg
@@ -261,4 +274,105 @@
     </div>
   </div>
 </div>
+
+<script>
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    var checkboxes = document.querySelectorAll('.player-checkbox');
+    var checked = null;
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                if (checked && checked !== this) {
+                    this.checked = false; // Cancela la selección si ya hay una seleccionada
+                } else {
+                    checked = this;
+                    var playerId = this.value;  // Obtén el ID del jugador del checkbox
+
+                    // Realizar una petición para enviar el ID del jugador al backend (views.py)
+                    fetch('/championship/actualizar_jugador/' + playerId + '/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Hacer algo si la petición fue exitosa
+                        } else {
+                            // Manejar errores si la petición falla
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+            } else if (checked === this) {
+                checked = null;  // Quita la selección si se desmarca
+                var playerId = this.value;
+                fetch('/championship/actualizar_jugador1/' + playerId + '/', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRFToken': getCookie('csrftoken')
+                  }
+              })
+              .then(response => {
+                  if (response.ok) {
+                      // Hacer algo si la petición fue exitosa
+                  } else {
+                      // Manejar errores si la petición falla
+                  }
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
+            }
+
+            if (checked == null) {
+                // Quita la selección si se desmarca
+              var playerId = this.value;
+              fetch('/championship/actualizar_jugador1/' + playerId + '/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Hacer algo si la petición fue exitosa
+                } else {
+                    // Manejar errores si la petición falla
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+          }
+        });
+    });
+});
+
+// Función para obtener la cookie CSRF
+function getCookie(name) {
+    // Código para obtener la cookie CSRF
+    var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Busca la cookie llamada 'csrftoken'
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+}
+
+  </script>
 {% endblock content %}

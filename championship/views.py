@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Championship, Team, Player, Game, Person, ChampionshipTeam
-from .forms import CategoryForm, ChampionshipForm, TeamForm, PlayerForm, PersonForm
+from .models import Category, Championship, Team, Player, Game, Person, ChampionshipTeam, Discipline, Season
+from .forms import CategoryForm, ChampionshipForm, TeamForm, PlayerForm, PersonForm, DiciplineForm, SeasonForm
 from .filters import TeamFilter
 from .fixture import generate_fixture, print_fixture
 from django.http import HttpResponse
 from django.contrib import messages
+from django.http import JsonResponse
 from itertools import zip_longest
 from django.db.models import Q
 
@@ -38,58 +39,28 @@ def edit_person(request, person_id):
         form = PersonForm(request.POST, request.FILES, instance=person)
 
         if form.is_valid():
-            new_year_promotion = form.cleaned_data["year_promotion"]
+            new_year_promotion = int(form.cleaned_data["year_promotion"])
             new_month_promotion = form.cleaned_data["month_promotion"]
 
-            # Realiza la validación para verificar si la persona debe ser eliminada de algún equipo
             if person.team_set.exists():
                 teams = person.team_set.all()
                 for team in teams:
-                    acceptable_range_start = team.year - (
-                        team.year % 10
-                    )  # Calcula el inicio del rango aceptable
-                    acceptable_range_end = (
-                        acceptable_range_start + 9
-                    )  # Calcula el final del rango aceptable
-                    # Procedemos con las validaciones
-                    if (
-                        person.is_jale == True
-                        and acceptable_range_start
-                        <= new_year_promotion
-                        <= acceptable_range_end
-                        and (
-                            team.month == new_month_promotion
-                            or team.month != new_month_promotion
-                        )
-                    ):
-                        person.is_jale = True
+                    acceptable_range_start = team.year - (team.year % 10)  # Calcula el inicio del rango aceptable
+                    acceptable_range_end = acceptable_range_start + 9  # Calcula el final del rango aceptable
+                    if acceptable_range_start <= new_year_promotion <= acceptable_range_end:
                         person.save()
-                    if (
-                        person.is_jale == True
-                        and not acceptable_range_start
-                        <= new_year_promotion
-                        <= acceptable_range_end
-                    ):
-                        person.is_jale = False
+                    else:
                         person.save()
                         team.Persons.remove(person)
-                    if person.is_jale == False and team.year != new_year_promotion:
-                        person.is_jale = False
-                        person.save()
-                        team.Persons.remove(person)
-                    if person.is_jale == False and team.month != new_month_promotion:
-                        person.is_jale = False
-                        person.save()
-                        team.Persons.remove(person)
+
             form.save()
-            messages.success(request, "Persona editada correctamente!")
+            messages.success(request, "¡Persona editada correctamente!")
             return redirect("persons")
     else:
         form = PersonForm(instance=person)
 
     context = {"form": form}
     return render(request, "championship/person/edit_person.html", context)
-
 
 # --Eliminar persona----------------------------------------------------------------------
 def delete_person(request, person_id):
@@ -109,8 +80,6 @@ def view_person(request, person_id):
 def persons(request):
     persons = Person.objects.all()
     return render(request, "championship/person/persons.html", {"persons": persons})
-
-
 ################################--Fin persona-----------------------------------------------------
 
 
@@ -213,6 +182,33 @@ def remove_player_from_team(request, team_id, player_id):
 
     return redirect("view_team", team_id=team.id)
 
+def actualizar_jugador(request, player_id):
+    print("dsadsadsadsa")
+    if request.method == 'POST':
+        try:
+            jugador = Person.objects.get(pk=player_id)
+            # Realizar la lógica para actualizar el campo promotion_delegate a True
+            jugador.promotion_delegate = True
+            jugador.save()
+            return JsonResponse({'message': 'Jugador actualizado correctamente'})
+        except Person.DoesNotExist:
+            return JsonResponse({'error': 'Jugador no encontrado'}, status=404)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def actualizar_jugador1(request, player_id):
+    print("amigo")
+    if request.method == 'POST':
+        try:
+            jugador = Person.objects.get(pk=player_id)
+            # Realizar la lógica para actualizar el campo promotion_delegate a True
+            jugador.promotion_delegate = False
+            jugador.save()
+            return JsonResponse({'message': 'Jugador actualizado correctamente'})
+        except Person.DoesNotExist:
+            return JsonResponse({'error': 'Jugador no encontrado'}, status=404)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 # --Esta funcion da detalles de un equipo-------------------------------------------------------
 # --Esta funcion agrega las personas a un equipo
@@ -246,7 +242,7 @@ def view_team(request, team_id):
         if player_id.isdigit():
             player = Person.objects.get(pk=player_id)
             # Verifica si se ha alcanzado el límite de 10 personas en el equipo
-            if len(players) >= 4:
+            if len(players) >= 25:
                 messages.error(
                     request,
                     "El equipo ya tiene el máximo número de jugadores permitidos (10).",
@@ -264,7 +260,7 @@ def view_team(request, team_id):
                     player.save()
 
                 # Verifica si se han agregado 7 personas que cumplen la condición
-                if no_cumplen_condicion <= 2:
+                if no_cumplen_condicion <= 15:
                     team.Persons.add(player)
                     # Agrega un mensaje con la etiqueta "jugador_agregado"
                     messages.success(
@@ -330,37 +326,23 @@ def create_championship(request):
 # --Editar campeonato-------------------------------------------------------------------
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
-    cat = championship.categorys.name
+
     if request.method == "POST":
         form = ChampionshipForm(request.POST, instance=championship)
         if form.is_valid():
-            cat1 = form.cleaned_data["categorys"]
-            print(cat)
-            print(cat1)
-            if cat != cat1.name:
-                print("amigo")
-                championship.teams.clear()
-                form.save()
-            else:
-                print("ssss")
-                form.save()
-            print("Formulario válido, redirigiendo...")
-            return redirect("championships")
+            form.save()
+            return redirect("championships")  # Puedes redirigir a donde corresponda después de editar
     else:
         form = ChampionshipForm(instance=championship)
 
-    # Agrupa los campos en pares
     fields = form.visible_fields()
     grouped_fields = [fields[i : i + 2] for i in range(0, len(fields), 2)]
 
-    context = {
-        "form": form,
-        "grouped_fields": grouped_fields,
-        "championship": championship,  # Add the championship instance to the context
-    }
-
-    return render(request, "championship/championship/edit_championship.html", context)
-
+    return render(
+        request,
+        "championship/championship/edit_championship.html",
+        {"form": form, "grouped_fields": grouped_fields},
+    )
 
 # --Eliminar campeonato--------------------------------------------------------------------
 def delete_championship(request, id):
@@ -511,6 +493,107 @@ def edit_category(request, category_id):
 
 
 ####################################--Fin Categoria--------------------------------
+####################################--Inicio Disciplinas--------------------------------
+#----Listar disciplinas
+def disciplines(request):
+    disciplines = Discipline.objects.all().order_by("name")
+    context = {"disciplines": disciplines}
+    return render(request, "championship/discipline/disciplines.html", context)
+
+# --Crear disciplinas---------------------------------------------------------------
+def create_discipline(request):
+    if request.method == "GET":
+        context = {"form": DiciplineForm}
+        return render(request, "championship/discipline/create_discipline.html", context)
+
+    if request.method == "POST":
+        form = DiciplineForm(request.POST)
+        if form.is_valid():
+            print("dsda")
+            form.save()
+            return redirect("disciplines")
+        
+# --Elimnar disciplinas---------------------------------------------------------------
+def delete_discipline(request, discipline_id):
+    discipline = get_object_or_404(Discipline, pk=discipline_id)
+    discipline.delete()
+    return redirect("disciplines")
+
+
+# --Editar disciplinas----------------------------------------------------------------
+def edit_discipline(request, discipline_id):
+    discipline = get_object_or_404(Discipline, id=discipline_id)
+
+    if request.method == "POST":
+        form = DiciplineForm(request.POST, instance=discipline)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "disciplines"
+            )  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+    else:
+        form = DiciplineForm(instance=discipline)
+
+    return render(
+        request,
+        "championship/discipline/edit_discipline.html",
+        {"form": form, "disciplines": discipline},
+    )
+
+####################################--Fin Disciplina--------------------------------
+####################################--Inicio Temporada--------------------------------
+#----Listar disciplinas
+def seasons(request):
+    seasons = Season.objects.all().order_by("name")
+    context = {"seasons": seasons}
+    return render(request, "championship/season/seasons.html", context)
+
+# --Crear disciplinas---------------------------------------------------------------
+def create_season(request):
+    if request.method == "GET":
+        context = {"form": SeasonForm}
+        return render(request, "championship/season/create_season.html", context)
+
+    if request.method == "POST":
+        form = SeasonForm(request.POST)
+        if form.is_valid():
+            print("dsda")
+            form.save()
+            return redirect("seasons")
+        
+# --Elimnar disciplinas---------------------------------------------------------------
+def delete_season(request, season_id):
+    season = get_object_or_404(Season, pk=season_id)
+    season.delete()
+    return redirect("seasons")
+
+
+# --Editar disciplinas----------------------------------------------------------------
+def edit_season(request, season_id):
+    season = get_object_or_404(Season, id=season_id)
+
+    if request.method == "POST":
+        form = SeasonForm(request.POST, instance=season)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "seasons"
+            )  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+    else:
+        form = SeasonForm(instance=season)
+
+    return render(
+        request,
+        "championship/season/edit_season.html",
+        {"form": form, "seasons": season},
+    )
+
+####################################--Fin Disciplina--------------------------------
+
+
+
+
+
 # --Modulo Fixture----------------------------------------------------------------
 
 

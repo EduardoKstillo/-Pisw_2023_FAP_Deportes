@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Championship, Team, Player, Person
+from .models import Category, Championship, Team, Player, Person, Discipline, Season
 from .validators import validate_str
 from django.core import validators
 import datetime
@@ -18,6 +18,40 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ['name']
 
+class DiciplineForm(forms.ModelForm):
+    class Meta:
+        model = Discipline
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese el nombre de la disciplina',
+                    'style': 'font-size: 20px; font-family: Montserrat;',
+                }),
+        }
+        labels = {
+            'name': 'Nombre',
+        }
+
+class SeasonForm(forms.ModelForm):
+    class Meta:
+        model = Season
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese el nombre de la disciplina',
+                    'style': 'font-size: 20px; font-family: Montserrat;',
+                }),
+        }
+        labels = {
+            'name': 'Nombre',
+        }
+
+
+
 DISCIPLINA_CHOICES = [
             ('Futbol', 'Futbol'),
             ('Voley', 'Voley'),
@@ -25,6 +59,7 @@ DISCIPLINA_CHOICES = [
         ]
 
 class ChampionshipForm(forms.ModelForm):
+    """
     discipline = forms.ChoiceField(
         choices=DISCIPLINA_CHOICES,
         widget=forms.Select(attrs={
@@ -32,6 +67,16 @@ class ChampionshipForm(forms.ModelForm):
             'style': 'font-size: 20px; font-family: Montserrat;'
         }),
         label='Disciplina:'
+    )
+    
+    discipline = forms.ModelChoiceField(
+        queryset=Discipline.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'style': 'font-size: 20px; font-family: Montserrat;'
+        }),  # Puedes usar otro widget si prefieres
+        required=True,  # Ajusta a True si la selección de al menos una categoría es necesaria
+        label='Disciplina:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
     )
 
     categorys = forms.ModelMultipleChoiceField(
@@ -41,9 +86,20 @@ class ChampionshipForm(forms.ModelForm):
         label='Categorías:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
     )
 
+    season = forms.ModelChoiceField(
+        queryset=Season.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'style': 'font-size: 20px; font-family: Montserrat;'
+        }),  # Puedes usar otro widget si prefieres
+        required=True,  # Ajusta a True si la selección de al menos una categoría es necesaria
+        label='Temporada:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
+    )
+    """
+
     class Meta:
         model = Championship
-        fields = ['name', 'year', 'discipline', 'categorys', 'state', 'rule']
+        fields = ['name', 'year', 'disciplines', 'seasons', 'categorys', 'state', 'rule']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -55,6 +111,17 @@ class ChampionshipForm(forms.ModelForm):
                 'placeholder': 'Ingrese el año del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
+            'disciplines': forms.Select(attrs={
+                'class': 'form-select',
+                'required': False,
+            }),
+            'seasons': forms.Select(attrs={
+                'class': 'form-select',
+                'required': False,
+            }),
+            'categorys': forms.CheckboxSelectMultiple,
+                
+            
             'state': forms.CheckboxInput(attrs={
                 'class': 'form-check-input',
                 'type': 'checkbox',
@@ -70,6 +137,9 @@ class ChampionshipForm(forms.ModelForm):
         labels = {
             'name': 'Nombre:',
             'year': 'Año:',
+            'disciplines': 'Disciplina',
+            'seasons': 'Tempoada',
+            'category': 'categorias',
             'state': 'Habilitado:',
             'rule': 'Reglas:',
         }
