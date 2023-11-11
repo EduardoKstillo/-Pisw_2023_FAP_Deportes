@@ -6,27 +6,22 @@ import datetime
 
 remainder = datetime.date.today().year % 10
 current_year = datetime.date.today().year-remainder
-CATEGORY_YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -10)]
+CATEGORY_YEAR_CHOICES = [(str(year), str(year))
+                         for year in range(current_year, 1949, -10)]
 
-BOOLEAN_CHOICES=[
-    ('False', 'No'),
-    ('True', 'Si'),
-]
-
-BOOLEAN_CHOICES_STATES=[
-    ('True', 'Si'),
-    ('False', 'No'),    
-]
 
 class CategoryForm(forms.ModelForm):
     name = forms.ChoiceField(
         choices=CATEGORY_YEAR_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3',
+                            'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Año:'
     )
+
     class Meta:
         model = Category
         fields = ['name']
+
 
 class DiciplineForm(forms.ModelForm):
     class Meta:
@@ -43,6 +38,7 @@ class DiciplineForm(forms.ModelForm):
         labels = {
             'name': 'Nombre',
         }
+
 
 class SeasonForm(forms.ModelForm):
     class Meta:
@@ -61,12 +57,12 @@ class SeasonForm(forms.ModelForm):
         }
 
 
-
 DISCIPLINA_CHOICES = [
-            ('Futbol', 'Futbol'),
-            ('Voley', 'Voley'),
-            ('Basquet', 'Basquet'),
-        ]
+    ('Futbol', 'Futbol'),
+    ('Voley', 'Voley'),
+    ('Basquet', 'Basquet'),
+]
+
 
 class ChampionshipForm(forms.ModelForm):
     """
@@ -78,7 +74,7 @@ class ChampionshipForm(forms.ModelForm):
         }),
         label='Disciplina:'
     )
-    
+
     discipline = forms.ModelChoiceField(
         queryset=Discipline.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
         widget=forms.Select(attrs={
@@ -107,18 +103,10 @@ class ChampionshipForm(forms.ModelForm):
     )
     """
 
-    state = forms.ChoiceField(
-        choices=BOOLEAN_CHOICES_STATES,
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-            'style': 'font-size: 20px; font-family: Montserrat;',
-        }),
-        label='Habilitado:'
-    )
-
     class Meta:
         model = Championship
-        fields = ['name', 'year', 'disciplines', 'seasons', 'categorys', 'state', 'rule']
+        fields = ['name', 'year', 'disciplines',
+                  'seasons', 'categorys', 'state', 'rule']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -140,8 +128,11 @@ class ChampionshipForm(forms.ModelForm):
                 'required': False,
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
-            'categorys': forms.CheckboxSelectMultiple,           
-            
+            'categorys': forms.CheckboxSelectMultiple,
+            'state': forms.Select(attrs={
+                'class': 'form-select',
+                'style': 'font-size: 20px; font-family: Montserrat;',
+            }),
             'rule': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ingrese comentarios del campeonato',
@@ -161,64 +152,73 @@ class ChampionshipForm(forms.ModelForm):
 
 
 MONTH_CHOICES = [
-            ('Enero', 'Enero'),
-            ('Febrero', 'Febrero'),
-            ('Marzo', 'Marzo'),
-            ('Abril', 'Abril'),
-            ('Mayo', 'Mayo'),
-            ('Junio', 'Junio'),
-            ('Julio', 'Julio'),
-            ('Agosto', 'Agosto'),
-            ('Septiembre', 'Septiembre'),
-            ('Octubre', 'Octubre'),
-            ('Noviembre', 'Noviembre'),
-            ('Diciembre', 'Diciembre'),
-        ]
+    ('Enero', 'Enero'),
+    ('Febrero', 'Febrero'),
+    ('Marzo', 'Marzo'),
+    ('Abril', 'Abril'),
+    ('Mayo', 'Mayo'),
+    ('Junio', 'Junio'),
+    ('Julio', 'Julio'),
+    ('Agosto', 'Agosto'),
+    ('Septiembre', 'Septiembre'),
+    ('Octubre', 'Octubre'),
+    ('Noviembre', 'Noviembre'),
+    ('Diciembre', 'Diciembre'),
+]
 
 GROUP_CHOICES = [
-            ('A', 'A'),
-            ('B', 'B'),
-            ('C', 'C'),
-            ('D', 'D'),
-            ('E', 'E'),
-        ]
+    ('A', 'A'),
+    ('B', 'B'),
+    ('C', 'C'),
+    ('D', 'D'),
+    ('E', 'E'),
+]
 CIVIL_STATUS_CHOICES = [
-            ('Soltero', 'Soltero'),
-            ('Casado', 'Casado'),
-            ('Viudo', 'Viudo'),
-            ('Divorciado', 'Divorciado'),
-            ('Otro', 'Otro'),
-        ]
+    ('Soltero', 'Soltero'),
+    ('Casado', 'Casado'),
+    ('Viudo', 'Viudo'),
+    ('Divorciado', 'Divorciado'),
+    ('Otro', 'Otro'),
+]
 
 
 current_year = datetime.date.today().year
-YEAR_CHOICES = [(str(year), str(year)) for year in range(current_year, 1949, -1)]
+YEAR_CHOICES = [(str(year), str(year))
+                for year in range(current_year, 1949, -1)]
+
 
 class TeamForm(forms.ModelForm):
     month = forms.ChoiceField(
         choices=MONTH_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3',
+                            'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Mes:'
     )
     year = forms.ChoiceField(
         choices=YEAR_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3',
+                            'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Año:'
     )
     group = forms.ChoiceField(
         choices=GROUP_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        widget=forms.Select(attrs={'class': 'form-select form-select-lg mb-3',
+                            'style': 'font-size: 20px; font-family: Montserrat;'}),
         label='Grupo:'
-    )    
-    state = forms.ChoiceField(
-        choices=BOOLEAN_CHOICES_STATES,
-        widget=forms.Select(attrs={'class': 'form-select', 'style': 'font-size: 20px; font-family: Montserrat;'}),
-        label='Habilitado:'
     )
 
     class Meta:
         model = Team
         fields = ['month', 'year', 'group', 'state']
+        widgets = {
+            'state': forms.Select(attrs={
+                'class': 'form-select',
+                'style': 'font-size: 20px; font-family: Montserrat;',
+            }),
+        }
+        labels = {
+            'state': 'Habilitado:',
+        }
 
 
 class PlayerForm(forms.ModelForm):
@@ -241,7 +241,67 @@ class PlayerForm(forms.ModelForm):
             'surnames': 'Apellidos',
         }
 
-#---------------------------
+# ---------------------------
+
+
+class PersonBasicForm(forms.ModelForm):
+
+    month_promotion = forms.ChoiceField(
+        choices=MONTH_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Mes de promoción:'
+    )
+    year_promotion = forms.ChoiceField(
+        choices=YEAR_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        label='Año de promoción:'
+    )
+
+    class Meta:
+        model = Person
+        fields = ['name', 'surnames', 'dni', 'promotion_delegate',
+                  'promotion_sub_delegate', 'partner', 'month_promotion', 'year_promotion']
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'class': 'form-control fa fa-home',
+
+                }),
+            'surnames': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }),
+            'dni': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                }),
+            'promotion_delegate': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }),
+            'partner': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }),
+            'promotion_sub_delegate': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                })
+        }
+        labels = {
+            'name': 'Nombre:',
+            'surnames': 'Apellidos:',
+            'dni': 'Número de DNI:',
+            'promotion_sub_delegate': 'Sub Delegado de promocion:',
+            'promotion_delegate': 'Delegado de promocion:',
+            'partner': 'Socio:'
+        }
+
+
 class PersonForm(forms.ModelForm):
     civil_status = forms.ChoiceField(
         choices=CIVIL_STATUS_CHOICES,
@@ -264,37 +324,17 @@ class PersonForm(forms.ModelForm):
         }),
         label='Año de promoción:'
     )
-    promotion_delegate = forms.ChoiceField(
-        choices=BOOLEAN_CHOICES,
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-        }),
-        label='Delegado de promocion:'
-    )
-    promotion_sub_delegate = forms.ChoiceField(
-        choices=BOOLEAN_CHOICES,
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-        }),
-        label='Subdelegado de promocion:'
-    )
-    partner = forms.ChoiceField(
-        choices=BOOLEAN_CHOICES,
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-        }),
-        label='Socio:'
-    )
-    class Meta:        
+
+    class Meta:
         model = Person
-        fields = ['name', 'surnames', 'birthdate', 'dni', 'military_card', 'province', 'department', 'address', 'district','activity',
+        fields = ['name', 'surnames', 'birthdate', 'dni', 'military_card', 'province', 'department', 'address', 'district', 'activity',
                   'degree_instruction', 'civil_status', 'profession', 'phone', 'num_promotion', 'NSA_code', 'promotion_delegate',
                   'promotion_sub_delegate', 'partner', 'month_promotion', 'year_promotion', 'image']
         widgets = {
             'name': forms.TextInput(
                 attrs={
-                    'class': 'form-control fa fa-home' , 
-        
+                    'class': 'form-control fa fa-home',
+
                 }),
             'surnames': forms.TextInput(
                 attrs={
@@ -362,8 +402,20 @@ class PersonForm(forms.ModelForm):
             'image': forms.ClearableFileInput(
                 attrs={
                     'class': 'form-control form-control-sm',
-                    'type':'file',
+                    'type': 'file',
                 }),
+            'promotion_delegate': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }),
+            'partner': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }),
+            'promotion_sub_delegate': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                })
         }
         labels = {
             'name': 'Nombre:',
@@ -381,8 +433,9 @@ class PersonForm(forms.ModelForm):
             'district': 'Distrito:',
             'phone': 'N° de teléfono:',
             'num_promotion': 'N° de promoción:',
-
             'NSA_code': 'Código NSA:',
-            'image' : 'Imagen: ',
+            'image': 'Imagen: ',
+            'promotion_sub_delegate': 'Sub Delegado de promocion:',
+            'promotion_delegate': 'Delegado de promocion:',
+            'partner': 'Socio:'
         }
-        

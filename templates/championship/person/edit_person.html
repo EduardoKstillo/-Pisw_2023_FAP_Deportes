@@ -1,5 +1,41 @@
 {% extends 'layout/main.html' %} {% block content %}
 
+<!-- Agrega el siguiente código al final del cuerpo de tu template -->
+<div class="modal" tabindex="-1" role="dialog" id="confirmacionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Está seguro?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="mensajeModal"></p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          ,
+          id="cancelarEdicionBtn"
+        >
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmarEdicionBtn">
+          Confirmar Edición
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container mt-5">
   <h1
     class="text-left mt-3"
@@ -14,6 +50,7 @@
     Editar Persona
   </h1>
 
+  <div id="datos-desde-backend" data-nombre="{{ team }}"></div>
   <a
     class="btn mt-4 mb-2"
     role="button"
@@ -47,31 +84,30 @@
   {% endfor %}
   <div class="card">
     <div class="card-body">
-  <form method="POST" enctype="multipart/form-data">
-    {%csrf_token%} {% for field in form %} {% if forloop.first %}
-    <div class="row">
-      {% endif %}
-      <div class="col-md-3 mb-3">
-        <div class="form-group">
-          <label for="{{ field.auto_id }}"
-            >{{ field.label }}</label
-          >
-          {{ field }} {% if field.errors %}
-          <div class="form-error">
-            {% for error in field.errors %} {{ error }} {% endfor %}
-          </div>
+      <form id="editPersonForm" method="POST" enctype="multipart/form-data">
+        {%csrf_token%} {% for field in form %} {% if forloop.first %}
+        <div class="row">
           {% endif %}
+          <div class="col-md-3 mb-3">
+            <div class="form-group">
+              <label for="{{ field.auto_id }}">{{ field.label }}</label>
+              {{ field }} {% if field.errors %}
+              <div class="form-error">
+                {% for error in field.errors %} {{ error }} {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% if forloop.counter|divisibleby:4 %}
         </div>
-      </div>
-      {% if forloop.counter|divisibleby:4 %}
-    </div>
-    <div class="row">{% endif %} {% if forloop.last %}</div>
-    {% endif %} {% endfor %}
+        <div class="row">{% endif %} {% if forloop.last %}</div>
+        {% endif %} {% endfor %}
 
         <div class="row">
           <!-- Botón de envío -->
           <div class="col-md-12 text-center">
             <button
+              type="submit"
               class="btn mt-4 mb-2 w-10"
               style="
                 background-color: #68d391;
@@ -91,7 +127,67 @@
     </div>
   </div>
 </div>
-</div>
-</div>
 
-{% endblock %}
+{% block script %}
+<script>
+  function check_promotion_rank(data) {
+    const acceptable_range_start = data.team_year - (data.team_year % 10);
+    console.log(acceptable_range_start);
+    const acceptable_range_end = acceptable_range_start + 9;
+    console.log(data.new_year_promotion);
+
+    let mensaje = `Seguro que desea actualizar los datos de este usuario?`;
+
+    // Si la persona forma parte de un equipo
+    if (data.team_year !== "") {
+      // veriica si el año actual que se puso en el form esta dentro del rango permitido del año
+      // del equipo actual
+      if (
+        !(
+          acceptable_range_start <= data.new_year_promotion &&
+          data.new_year_promotion <= acceptable_range_end
+        )
+      ) {
+        mensaje = `El jugador esta actualmente integrando un equipo, y el año de promocion que ingreso esta fuera del rango permitido :(. Si decide continuar se eliminara al jugador del equipo ${data.name_team}.${data.team_year}.${data.team_group}`;
+      }
+    }
+
+    $("#mensajeModal").text(mensaje);
+
+    // Mostrar el modal
+    $("#confirmacionModal").modal("show");
+
+    // Agregar el siguiente código para controlar el botón de confirmación en el modal
+    $("#confirmarEdicionBtn").on("click", function () {
+      // Hace Post con los datos del form
+      $("#editPersonForm").off("submit").submit();
+    });
+
+    // Controlar el botón de cancelar en el modal
+    $("#cancelarEdicionBtn").on("click", function () {
+      // Cierra el modal sin realizar ninguna acción
+      $("#confirmacionModal").modal("hide");
+    });
+  }
+
+  // Evento cuando se da click a boton submit
+  $("#editPersonForm").on("submit", function (event) {
+    // Prevenir el envío del formulario normal
+    event.preventDefault();
+    // Obtener los datos del formulario y llamar a la función de activar edición
+    const formData = $(this).serializeArray();
+
+    const data = {
+      new_year_promotion: formData.find(
+        (item) => item.name === "year_promotion"
+      ).value,
+      name_team: "{{team.month}}",
+      team_year: "{{team.year}}",
+      team_group: "{{team.group}}",
+    };
+
+    console.log(data);
+    check_promotion_rank(data);
+  });
+</script>
+{% endblock script %} {% endblock %}

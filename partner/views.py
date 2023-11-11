@@ -1,9 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Partner
-from .forms import PartnerForm, UserForm
-from .filters import PartnerFilter
-
-from django.http import HttpResponse
+from .forms import UserForm
 from django.contrib import messages
 
 from django.contrib.auth.models import User, Group
@@ -18,14 +14,24 @@ def home(request):
     return render(request, 'index.html')
 
 
-def signin(request):
+def signin(request):  # login
+    # retorna el valor del parametro next, si no 'None
+    next_url = request.GET['next'] if request.GET.get(
+        'next', None) != None else 'home'
+
+    # si el usuario no esta autenticado
     if not request.user.is_authenticated:
+        # manda a logearse
         if request.method == 'GET':
             return render(request, 'login.html', {'navoff': True})
 
+        # recibe datos
         if request.method == 'POST':
+            # valida usuario
             user = authenticate(
                 request, username=request.POST['username'], password=request.POST['password'])
+
+            # no existe el usuario
             if user is None:
                 return render(request, 'login.html', {
                     'message': 'user or password incorrect',
@@ -33,9 +39,9 @@ def signin(request):
                 })
             else:
                 login(request, user)
-                return redirect('persons')
+                return redirect(next_url)
     else:
-        return redirect('persons')
+        return redirect(next_url)
 
 
 @login_required
@@ -124,84 +130,3 @@ def delete_user(request, id):
     user = get_object_or_404(User, pk=id)
     user.delete()
     return redirect('users')
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
-def partner(request):
-    partners = Partner.objects.all()
-    myfilter = PartnerFilter(request.GET, queryset=partners)
-    partners = myfilter.qs
-    context = {'partners': partners, 'filter': myfilter}
-
-    return render(request, 'users/partner/partner.html', context)
-
-
-@login_required
-def create_partner(request):
-    if request.method == 'GET':
-        form = PartnerForm
-        context = {'form': form}
-        return render(request, 'users/partner/create_partner.html', context)
-    if request.method == 'POST':
-        form = PartnerForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Socio creado correctamente!')
-            return redirect('partner')
-        else:
-            messages.success(request, 'Ingrese los datos correctamente')
-            return render(request, 'users/partner/create_partner.html', {'form': form})
-        # return redirect('home')
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
-def detail_partner(request, id):
-    partner = get_object_or_404(Partner, pk=id)
-
-    if request.method == 'GET':
-        form = PartnerForm(instance=partner)
-        context = {'form': form, 'partner': partner}
-        return render(request, 'users/partner/detail_partner.html', context)
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
-def edit_partner(request, id):
-    partner = get_object_or_404(Partner, pk=id)
-
-    if request.method == 'GET':
-        form = PartnerForm(instance=partner)
-        context = {'form': form, 'partner': partner}
-        return render(request, 'users/partner/edit_partner.html', context)
-
-    if request.method == 'POST':
-        form = PartnerForm(request.POST, instance=partner)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Socio editado correctamente!')
-            return redirect('partner')
-        else:
-            messages.success(request, 'Ingrese los datos correctamente')
-            return render(request, 'users/partner/create_partner.html', {'form': form})
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
-def delete_partner(request, id):
-    partner = get_object_or_404(Partner, pk=id)
-    partner.delete()
-    return redirect('partner')
-
-
-@login_required
-@allowed_users(allowed_roles=['admin'])
-def details_partner(request, id):
-    partner = get_object_or_404(Partner, pk=id)
-
-    if request.method == 'GET':
-        form = PartnerForm(instance=partner)
-        context = {'form': form}
-        return render(request, 'users/partner/details_partner.html', context)

@@ -29,6 +29,7 @@ person_department = [
     (25, 'Ucayali'),
 ]
 
+
 class Player(models.Model):
     name = models.CharField(max_length=100)
     surnames = models.CharField(max_length=100)
@@ -36,7 +37,15 @@ class Player(models.Model):
     def __str__(self):
         return self.name
 
-#--------------------------
+# --------------------------
+
+
+BOOLEAN_CHOICES = [
+    (False, 'No'),
+    (True, 'Si'),
+]
+
+
 class Person(models.Model):
     name = models.CharField(max_length=30, validators=[validate_str])
     surnames = models.CharField(max_length=30, validators=[validate_str])
@@ -60,29 +69,34 @@ class Person(models.Model):
         max_length=50, blank=True, validators=[validate_str])
     military_card = models.PositiveIntegerField(
         unique=True, blank=True, null=True, validators=[validate_phone])
-    phone = models.PositiveIntegerField(blank=True, null=True, validators=[validate_phone])
+    phone = models.PositiveIntegerField(
+        blank=True, null=True, validators=[validate_phone])
     num_promotion = models.PositiveIntegerField(blank=True, null=True)
-    promotion_delegate = models.BooleanField(default=False)
-    promotion_sub_delegate = models.BooleanField(default=False)
-    partner = models.BooleanField(default=False)
+    promotion_delegate = models.BooleanField(
+        choices=BOOLEAN_CHOICES, default=False)
+    promotion_sub_delegate = models.BooleanField(
+        choices=BOOLEAN_CHOICES, default=False)
+    partner = models.BooleanField(
+        choices=BOOLEAN_CHOICES, default=False)
     image = models.ImageField(upload_to='pics', blank=True, null=True)
     NSA_code = models.CharField(max_length=100, blank=True, null=True)
-    month_promotion = models.CharField(max_length=15, validators=[validate_month])
+    month_promotion = models.CharField(
+        max_length=15, validators=[validate_month])
     year_promotion = models.PositiveIntegerField(validators=[validate_year])
     is_jale = models.BooleanField(default=False)
-    
 
     def __str__(self):
         return self.name
-#-----------------------------
+# -----------------------------
+
 
 class Team(models.Model):
     month = models.CharField(max_length=100, validators=[validate_month])
     year = models.PositiveIntegerField(validators=[validate_year])
     group = models.CharField(max_length=5)
-    state = models.BooleanField(default=True)
+    state = models.BooleanField(choices=BOOLEAN_CHOICES, default=True)
     Persons = models.ManyToManyField(Person)
-    
+
     def __str__(self):
         return self.month
 
@@ -92,37 +106,43 @@ class Category(models.Model):
 
     def __str__(self):
         return str(self.name)
-    
-#--Creacion del modelo diciplina 
+
+# --Creacion del modelo diciplina
+
+
 class Discipline(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
-    
-#--Creacion del modelo temporada    
+
+# --Creacion del modelo temporada
+
+
 class Season(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
-    
+
+
 class Championship(models.Model):
     name = models.CharField(max_length=20, validators=[validate_str])
     year = models.PositiveIntegerField(validators=[validate_year])
-    #--Agregamos los nuevos modelos creados como campos para la creacion de un campeonato
+    # --Agregamos los nuevos modelos creados como campos para la creacion de un campeonato
     disciplines = models.ForeignKey(Discipline, on_delete=models.CASCADE)
     seasons = models.ForeignKey(Season, on_delete=models.CASCADE)
-    #----------------------------------------------------------------
+    # ----------------------------------------------------------------
     rule = models.TextField(blank=True, null=True)
     categorys = models.ManyToManyField(Category)
-    state = models.BooleanField(default=True)
+    state = models.BooleanField(choices=BOOLEAN_CHOICES, default=True)
     # date_created = models.DateTimeField(auto_now_add=True)
     # date_finished = models.DateTimeField(null=True, blank=True)
     teams = models.ManyToManyField(Team)
 
     def __str__(self):
         return self.name
+
 
 class ChampionshipTeam(models.Model):
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
@@ -131,6 +151,7 @@ class ChampionshipTeam(models.Model):
 
     def __str__(self):
         return f"{self.championship.name} - {self.category.name} - {self.team.month}"
+
 
 class Game(models.Model):
     round_number = models.PositiveIntegerField(default=0)
@@ -149,7 +170,7 @@ class Game(models.Model):
     def __str__(self):
         return self.championship.name + " " + self.team1.name + " " + str(self.team1_goals) + "-" + str(self.team2_goals) + " " + self.team2.name
 
-#-----------------------------------
+# -----------------------------------
 
 
 """

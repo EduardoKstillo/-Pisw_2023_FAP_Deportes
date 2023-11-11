@@ -57,11 +57,14 @@
               color: #2a4365;
               margin-top: 5px;
             "
-            >Jugador - Promoción:</label>
-            
-            {% for msg in no_cumple_condiciones_messages %}
-                <p class="fade show" id="msg" role="alert" style="color: red;">*{{ msg }}</p>
-            {% endfor %}
+            >Jugador - Promoción:</label
+          >
+
+          {% for msg in no_cumple_condiciones_messages %}
+          <p class="fade show" id="msg" role="alert" style="color: red">
+            *{{ msg }}
+          </p>
+          {% endfor %}
 
           <select
             name="player_id"
@@ -69,9 +72,12 @@
             class="form-select form-select-lg"
             style="font-size: 18px; font-family: 'Montserrat'"
           >
-          <option value="" selected>Seleccione un jugador</option>
+            <option value="" selected>Seleccione un jugador</option>
             {% for player in players_available %}
-            <option value="{{ player.id }}">{{ player.name }} {{ player.surnames }} - {{player.month_promotion}} {{player.year_promotion}}</option>
+            <option value="{{ player.id }}">
+              {{ player.name }} {{ player.surnames }} -
+              {{player.month_promotion}} {{player.year_promotion}}
+            </option>
             {% endfor %}
           </select>
         </div>
@@ -96,37 +102,39 @@
     </form>
 
     <style type="text/css">
-        .table-container {
-            height: 10em;
-        }
-        table {
-            display: flex;
-            flex-flow: column;
-            height: 50vh;
-            width: 100%;
-        }
-        table thead {
-            flex: 0 0 auto;
-            width: calc(100% - 0.9em);
-        }
-        table tbody {
-            flex: 1 1 auto;
-            display: block;
-            overflow-y: scroll;
-        }
-        table tbody tr {
-            width: 100%;
-        }
-        table thead, table tbody tr {
-            display: table;
-            table-layout: fixed;
-        }
-        .table th, .table td {
-            word-wrap: break-word;
-            max-width: 150px;
-        }
+      .table-container {
+        height: 10em;
+      }
+      table {
+        display: flex;
+        flex-flow: column;
+        height: 50vh;
+        width: 100%;
+      }
+      table thead {
+        flex: 0 0 auto;
+        width: calc(100% - 0.9em);
+      }
+      table tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: scroll;
+      }
+      table tbody tr {
+        width: 100%;
+      }
+      table thead,
+      table tbody tr {
+        display: table;
+        table-layout: fixed;
+      }
+      .table th,
+      .table td {
+        word-wrap: break-word;
+        max-width: 150px;
+      }
     </style>
-    
+
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -211,8 +219,20 @@
             <td>{{ player.surnames }}</td>
             <td>{{player.month_promotion}}.{{player.year_promotion}}</td>
             <td>
-              <input type="checkbox" class="player-checkbox" name="selected_players" value="{{ player.id }}" {% if player.promotion_delegate %} checked {% endif %}>
-        
+              <input
+                type="checkbox"
+                class="player-checkbox"
+                name="selected_players"
+                value="{{ player.id }}"
+                {%
+                if
+                player.promotion_delegate
+                %}
+                checked
+                {%
+                endif
+                %}
+              />
             </td>
             <td>
               <a href="" type="button">
@@ -231,7 +251,7 @@
                 </svg>
               </a>
             </td>
-            <td>  
+            <td>
               <a href="" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -248,24 +268,32 @@
               </a>
             </td>
             <td>
-              <form method="post" action="{% url 'remove_player_from_team' team.id player.id %}">
-                  {% csrf_token %}
-                  <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')" style="background-color: white;border: white;">
-                      <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          fill="#D95050"
-                          class="bi bi-trash-fill"
-                          viewBox="0 0 16 16"
-                      >
-                          <path
-                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-                          />
-                      </svg>
-                  </button>
+              <form
+                method="post"
+                action="{% url 'remove_player_from_team' team.id player.id %}"
+              >
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}" />
+                <button
+                  type="submit"
+                  onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')"
+                  style="background-color: white; border: white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    fill="#D95050"
+                    class="bi bi-trash-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                    />
+                  </svg>
+                </button>
               </form>
-          </td>
+            </td>
           </tr>
 
           {% endfor %}
@@ -276,103 +304,101 @@
 </div>
 
 <script>
-  
   document.addEventListener("DOMContentLoaded", function () {
-    var checkboxes = document.querySelectorAll('.player-checkbox');
+    var checkboxes = document.querySelectorAll(".player-checkbox");
     var checked = null;
 
     checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                if (checked && checked !== this) {
-                    this.checked = false; // Cancela la selección si ya hay una seleccionada
-                } else {
-                    checked = this;
-                    var playerId = this.value;  // Obtén el ID del jugador del checkbox
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          if (checked && checked !== this) {
+            this.checked = false; // Cancela la selección si ya hay una seleccionada
+          } else {
+            checked = this;
+            var playerId = this.value; // Obtén el ID del jugador del checkbox
 
-                    // Realizar una petición para enviar el ID del jugador al backend (views.py)
-                    fetch('/championship/actualizar_jugador/' + playerId + '/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            // Hacer algo si la petición fue exitosa
-                        } else {
-                            // Manejar errores si la petición falla
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                }
-            } else if (checked === this) {
-                checked = null;  // Quita la selección si se desmarca
-                var playerId = this.value;
-                fetch('/championship/actualizar_jugador1/' + playerId + '/', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'X-CSRFToken': getCookie('csrftoken')
-                  }
-              })
-              .then(response => {
-                  if (response.ok) {
-                      // Hacer algo si la petición fue exitosa
-                  } else {
-                      // Manejar errores si la petición falla
-                  }
-              })
-              .catch(error => {
-                  console.error('Error:', error);
-              });
-            }
-
-            if (checked == null) {
-                // Quita la selección si se desmarca
-              var playerId = this.value;
-              fetch('/championship/actualizar_jugador1/' + playerId + '/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
+            // Realizar una petición para enviar el ID del jugador al backend (views.py)
+            fetch("/championship/actualizar_jugador/" + playerId + "/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+              },
             })
-            .then(response => {
+              .then((response) => {
                 if (response.ok) {
-                    // Hacer algo si la petición fue exitosa
+                  // Hacer algo si la petición fue exitosa
                 } else {
-                    // Manejar errores si la petición falla
+                  // Manejar errores si la petición falla
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
           }
-        });
-    });
-});
+        } else if (checked === this) {
+          checked = null; // Quita la selección si se desmarca
+          var playerId = this.value;
+          fetch("/championship/actualizar_jugador1/" + playerId + "/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                // Hacer algo si la petición fue exitosa
+              } else {
+                // Manejar errores si la petición falla
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
 
-// Función para obtener la cookie CSRF
-function getCookie(name) {
+        if (checked == null) {
+          // Quita la selección si se desmarca
+          var playerId = this.value;
+          fetch("/championship/actualizar_jugador1/" + playerId + "/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                // Hacer algo si la petición fue exitosa
+              } else {
+                // Manejar errores si la petición falla
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      });
+    });
+  });
+
+  // Función para obtener la cookie CSRF
+  function getCookie(name) {
     // Código para obtener la cookie CSRF
     var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    // Busca la cookie llamada 'csrftoken'
-                    if (cookie.substring(0, name.length + 1) === name + '=') {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-}
-
-  </script>
+    if (document.cookie && document.cookie !== "") {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Busca la cookie llamada 'csrftoken'
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
 {% endblock content %}
