@@ -142,14 +142,12 @@ def edit_team(request, team_id):
             team_year = int(form.cleaned_data["year"])
             team_group = form.cleaned_data["group"]
 
-            if (
-                Team.objects.filter(
-                    month=team_month, year=team_year, group=team_group)
-                .exclude(pk=team_id)
-                .exists()
-            ):
+            if (Team.objects.filter(month=team_month, year=team_year, group=team_group).exclude(pk=team_id).exists()):
                 form.add_error("group", "Ya existe un equipo con dicho grupo")
             else:
+                print('no existe')
+                # 🚨 No reconoce que un equipo este en un campeonato
+                print(team.championship_set.exists())
                 if team.championship_set.exists():
                     championships = team.championship_set.all()
                     for championship in championships:
@@ -162,13 +160,18 @@ def edit_team(request, team_id):
                         )  # Calcula el final del rango aceptable
                         if acceptable_range_start <= team_year <= acceptable_range_end:
                             continue
+                        print('no esta dentro del rango de categoria')
                         championship.teams.remove(team)
                         team.Persons.clear()
                 else:
-                    team.Persons.clear()
-        form.save()
+                    # 🚨 ver esta linea, cuando mando datos correctos se elimina los jugadores de este team
+                    # 🚨 osea cuando el equipo no tenga campeonato se eliminan los jugadores xd.
+                    # team.Persons.clear()
+                    print('no hace nada -> solo cambia los datos y ya')
 
-        return redirect("teams")
+            form.save()
+
+            return redirect("teams")
     else:
         form = TeamForm(instance=team)  # Pasa la instancia del equipo a editar
 
@@ -212,7 +215,7 @@ def remove_player_from_team(request, team_id, player_id):
 
 
 def actualizar_jugador(request, player_id):
-    print("dsadsadsadsa")
+
     if request.method == 'POST':
         try:
             jugador = Person.objects.get(pk=player_id)
