@@ -30,16 +30,6 @@ person_department = [
 ]
 
 
-class Player(models.Model):
-    name = models.CharField(max_length=100)
-    surnames = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-# --------------------------
-
-
 BOOLEAN_CHOICES = [
     (False, 'No'),
     (True, 'Si'),
@@ -138,7 +128,7 @@ class Championship(models.Model):
     state = models.BooleanField(choices=BOOLEAN_CHOICES, default=True)
     # date_created = models.DateTimeField(auto_now_add=True)
     # date_finished = models.DateTimeField(null=True, blank=True)
-    teams = models.ManyToManyField(Team)
+    teams = models.ManyToManyField(Team, through='ChampionshipTeam')
 
     def __str__(self):
         return self.name

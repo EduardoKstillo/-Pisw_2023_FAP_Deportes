@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Championship, Team, Player, Person, Discipline, Season
+from .models import Category, Championship, Team, Person, Discipline, Season
 from .validators import validate_str
 from django.core import validators
 import datetime
@@ -219,29 +219,6 @@ class TeamForm(forms.ModelForm):
         labels = {
             'state': 'Habilitado:',
         }
-
-
-class PlayerForm(forms.ModelForm):
-    class Meta:
-        model = Player
-        fields = ['name', 'surnames']
-        widgets = {
-            'name': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                }),
-            'surnames': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                }),
-
-        }
-        labels = {
-            'name': 'Nombre',
-            'surnames': 'Apellidos',
-        }
-
-# ---------------------------
 
 
 class PersonBasicForm(forms.ModelForm):

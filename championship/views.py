@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Category, Championship, Team, Game, Person, ChampionshipTeam, Discipline, Season
-from .forms import CategoryForm, ChampionshipForm, TeamForm, PersonBasicForm, PersonForm, DiciplineForm, SeasonForm
+from .models import (Category, Championship, Team, Game,
+                     Person, ChampionshipTeam, Discipline, Season,)
+from .forms import (CategoryForm, ChampionshipForm, TeamForm,
+                    PersonBasicForm, PersonForm, DiciplineForm, SeasonForm,)
 from django.contrib.auth.decorators import login_required
 from .filters import PersonFilter, TeamFilter
 from .fixture import generate_fixture, print_fixture
@@ -34,13 +36,13 @@ def create_person(request):
 
 @login_required
 def edit_person(request, person_id):
+
     person = get_object_or_404(Person, pk=person_id)
 
     if request.method == "POST":
         form = PersonForm(request.POST, request.FILES, instance=person)
 
         if form.is_valid():
-
             # Acceder a los datos limpios y validados
             new_year_promotion = int(form.cleaned_data["year_promotion"])
             # new_month_promotion = form.cleaned_data["month_promotion"]
@@ -50,8 +52,8 @@ def edit_person(request, person_id):
                 for team in teams:
                     # Calcula el inicio del rango aceptable
                     acceptable_range_start = team.year - (team.year % 10)
-                    acceptable_range_end = acceptable_range_start + \
-                        9  # Calcula el final del rango aceptable
+                    # Calcula el final del rango aceptable
+                    acceptable_range_end = (acceptable_range_start + 9)
 
                     # si la año de la persona no esta dentro del rango permitido
                     if not (acceptable_range_start <= new_year_promotion <= acceptable_range_end):
@@ -74,7 +76,7 @@ def edit_person(request, person_id):
     # si la persona tiene equipo
     if person.team_set.exists():
         team = person.team_set.first()
-        context = {"form": form, 'team': team}
+        context = {"form": form, "team": team}
 
     return render(request, "championship/person/edit_person.html", context)
 
@@ -98,11 +100,10 @@ def persons(request):
     persons = Person.objects.all()
     myfilter = PersonFilter(request.GET, queryset=persons)
     persons = myfilter.qs
-    context = {
-        'persons': persons,
-        'filter': myfilter
-    }
+    context = {"persons": persons, "filter": myfilter}
     return render(request, "championship/person/persons.html", context)
+
+
 # --Fin persona-----------------------------------------------------
 
 
@@ -115,15 +116,15 @@ def create_team(request):
             team_month = form.cleaned_data["month"]
             team_year = form.cleaned_data["year"]
             team_group = form.cleaned_data["group"]
-            if Team.objects.filter(
-                month=team_month, year=team_year, group=team_group
-            ).exists():
+
+            if Team.objects.filter(month=team_month, year=team_year, group=team_group).exists():
                 form.add_error("group", "ya existe un equipo con dicho grupo")
             else:
                 form.save()
                 return redirect("teams")
     else:
         form = TeamForm()
+
     return render(request, "championship/team/create_team.html", {"form": form})
 
 
@@ -142,32 +143,34 @@ def edit_team(request, team_id):
             team_year = int(form.cleaned_data["year"])
             team_group = form.cleaned_data["group"]
 
-            if (Team.objects.filter(month=team_month, year=team_year, group=team_group).exclude(pk=team_id).exists()):
+            if (Team.objects.filter(month=team_month, year=team_year, group=team_group)
+                .exclude(pk=team_id)
+                    .exists()):
+
                 form.add_error("group", "Ya existe un equipo con dicho grupo")
             else:
-                print('no existe')
+                print("no existe")
                 # 🚨 No reconoce que un equipo este en un campeonato
                 print(team.championship_set.exists())
                 if team.championship_set.exists():
                     championships = team.championship_set.all()
                     for championship in championships:
                         cat = championship.categorys.name
-                        acceptable_range_start = cat - (
-                            cat % 10
-                        )  # Calcula el inicio del rango aceptable
-                        acceptable_range_end = (
-                            acceptable_range_start + 9
-                        )  # Calcula el final del rango aceptable
+                        # Calcula el inicio del rango aceptable
+                        acceptable_range_start = cat - (cat % 10)
+                        # Calcula el final del rango aceptable
+                        acceptable_range_end = (acceptable_range_start + 9)
+
                         if acceptable_range_start <= team_year <= acceptable_range_end:
                             continue
-                        print('no esta dentro del rango de categoria')
+                        print("no esta dentro del rango de categoria")
                         championship.teams.remove(team)
                         team.Persons.clear()
                 else:
                     # 🚨 ver esta linea, cuando mando datos correctos se elimina los jugadores de este team
                     # 🚨 osea cuando el equipo no tenga campeonato se eliminan los jugadores xd.
                     # team.Persons.clear()
-                    print('no hace nada -> solo cambia los datos y ya')
+                    print("no hace nada -> solo cambia los datos y ya")
 
             form.save()
 
@@ -187,7 +190,7 @@ def delete_team(request, team_id):
     return redirect("teams")
 
 
-# --Lista equipos----------------------------------------------------------------------
+# --Lista equipos------------------------------------------------------------------------
 def teams(request):
     teams = Team.objects.all()
     return render(request, "championship/team/teams.html", {"teams": teams})
@@ -198,8 +201,7 @@ def remove_player_from_team(request, team_id, player_id):
     team = get_object_or_404(Team, pk=team_id)
     player = get_object_or_404(Person, pk=player_id)
 
-    next = request.POST.get('next', '/')
-    print(next)
+    next = request.POST.get("next", "/")
 
     if request.method == "POST":
         # Elimina al jugador del equipo
@@ -211,39 +213,42 @@ def remove_player_from_team(request, team_id, player_id):
             team.Persons.remove(player)
 
     return redirect(next)
+
+
 # --Funcion para actualizar una persona si es delegado de equipo
 
 
 def actualizar_jugador(request, player_id):
-
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
             # Realizar la lógica para actualizar el campo promotion_delegate a True
             jugador.promotion_delegate = True
             jugador.save()
-            return JsonResponse({'message': 'Jugador actualizado correctamente'})
+            return JsonResponse({"message": "Jugador actualizado correctamente"})
         except Person.DoesNotExist:
-            return JsonResponse({'error': 'Jugador no encontrado'}, status=404)
+            return JsonResponse({"error": "Jugador no encontrado"}, status=404)
 
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
 
 # --Funcion para actualizar una persona en caso ya no sea delegado de equipo
 
 
 def actualizar_jugador1(request, player_id):
     print("amigo")
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
             # Realizar la lógica para actualizar el campo promotion_delegate a True
             jugador.promotion_delegate = False
             jugador.save()
-            return JsonResponse({'message': 'Jugador actualizado correctamente'})
+            return JsonResponse({"message": "Jugador actualizado correctamente"})
         except Person.DoesNotExist:
-            return JsonResponse({'error': 'Jugador no encontrado'}, status=404)
+            return JsonResponse({"error": "Jugador no encontrado"}, status=404)
 
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
 
 # --Esta funcion da detalles de un equipo-------------------------------------------------------
 # --Esta funcion agrega las personas a un equipo
@@ -351,10 +356,15 @@ def create_championship(request):
         form = ChampionshipForm()
 
     fields = form.visible_fields()
-    grouped_fields = [fields[i: i + 3]
-                      for i in range(0, len(fields), 3)]  # Cambio en el paso
+    grouped_fields = [
+        fields[i: i + 3] for i in range(0, len(fields), 3)
+    ]  # Cambio en el paso
 
-    return render(request, "championship/championship/create_championship.html", {"form": form, "grouped_fields": grouped_fields})
+    return render(
+        request,
+        "championship/championship/create_championship.html",
+        {"form": form, "grouped_fields": grouped_fields},
+    )
 
 
 # --Editar campeonato-------------------------------------------------------------------
@@ -378,8 +388,9 @@ def edit_championship(request, championship_id):
     return render(
         request,
         "championship/championship/edit_championship.html",
-        {"form": form, "grouped_fields": grouped_fields},
+        {"championship": championship, "grouped_fields": grouped_fields},
     )
+
 
 # --Eliminar campeonato--------------------------------------------------------------------
 
@@ -400,13 +411,15 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
         # Elimina al equipo del campeonato
         print("amifo")
         championship_team = ChampionshipTeam.objects.get(
-            championship=championship,
-            category=category,
-            team=team
+            championship=championship, category=category, team=team
         )
         championship_team.delete()
 
-    return redirect("add_team_championship", championship_id=championship.id, categorys_id=category.id)
+    return redirect(
+        "add_team_championship",
+        championship_id=championship.id,
+        categorys_id=category.id,
+    )
 
 
 # --Listar campeonatos----------------------------------------------------------------------
@@ -423,8 +436,9 @@ def add_team_championship(request, championship_id, categorys_id):
     category = Category.objects.get(pk=categorys_id)
     # teams=Team.objects.all()
     championship_teams = ChampionshipTeam.objects.filter(
-        championship_id=championship_id, category_id=categorys_id)
-    team_ids = championship_teams.values_list('team_id')
+        championship_id=championship_id, category_id=categorys_id
+    )
+    team_ids = championship_teams.values_list("team_id")
     teams = Team.objects.filter(id__in=team_ids)
     # teams = Team.objects.filter(championship=championship, category=category)
     state_champioship = championship.state
@@ -446,14 +460,16 @@ def add_team_championship(request, championship_id, categorys_id):
         if teams_id.isdigit():
             team = Team.objects.get(pk=teams_id)
             championship_category_team = ChampionshipTeam(
-                championship=championship,
-                category=category,
-                team=team
+                championship=championship, category=category, team=team
             )
             championship_category_team.save()
 
             # campeonato.save()
-            return redirect("add_team_championship", championship_id=championship.id, categorys_id=category.id)
+            return redirect(
+                "add_team_championship",
+                championship_id=championship.id,
+                categorys_id=category.id,
+            )
         else:
             messages.warning(
                 request, "ID de equipo no válido.", extra_tags="equipo_invalido"
@@ -470,6 +486,7 @@ def add_team_championship(request, championship_id, categorys_id):
         },
     )
 
+
 # --Ver campeonato y sus categorias pertenecientes----------------------------------------------------------------------
 
 
@@ -480,8 +497,10 @@ def view_championship(request, championship_id):
     return render(
         request,
         "championship/championship/championship_category.html",
-        {"championship": championship, "categorys": categorys}
+        {"championship": championship, "categorys": categorys},
     )
+
+
 # --Fin Campeonato--------------------------------
 
 
@@ -495,6 +514,7 @@ def create_category(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
+            print(form)
             form.save()
             return redirect("categorys")
 
@@ -542,13 +562,16 @@ def disciplines(request):
     context = {"disciplines": disciplines}
     return render(request, "championship/discipline/disciplines.html", context)
 
+
 # --Crear disciplinas---------------------------------------------------------------
 
 
 def create_discipline(request):
     if request.method == "GET":
         context = {"form": DiciplineForm}
-        return render(request, "championship/discipline/create_discipline.html", context)
+        return render(
+            request, "championship/discipline/create_discipline.html", context
+        )
 
     if request.method == "POST":
         form = DiciplineForm(request.POST)
@@ -556,6 +579,7 @@ def create_discipline(request):
             print("dsda")
             form.save()
             return redirect("disciplines")
+
 
 # --Elimnar disciplinas---------------------------------------------------------------
 
@@ -582,11 +606,8 @@ def edit_discipline(request, discipline_id):
 
     context = {"form": form, "disciplines": discipline}
 
-    return render(
-        request,
-        "championship/discipline/edit_discipline.html",
-        context
-    )
+    return render(request, "championship/discipline/edit_discipline.html", context)
+
 
 # --Fin Disciplina--------------------------------
 # --Inicio Temporada--------------------------------
@@ -597,6 +618,7 @@ def seasons(request):
     seasons = Season.objects.all().order_by("name")
     context = {"seasons": seasons}
     return render(request, "championship/season/seasons.html", context)
+
 
 # --Crear disciplinas---------------------------------------------------------------
 
@@ -612,6 +634,7 @@ def create_season(request):
             print("dsda")
             form.save()
             return redirect("seasons")
+
 
 # --Elimnar disciplinas---------------------------------------------------------------
 
@@ -638,11 +661,8 @@ def edit_season(request, season_id):
 
     context = {"form": form, "seasons": season}
 
-    return render(
-        request,
-        "championship/season/edit_season.html",
-        context
-    )
+    return render(request, "championship/season/edit_season.html", context)
+
 
 # --Fin Disciplina--------------------------------
 
