@@ -215,24 +215,24 @@ def remove_player_from_team(request, team_id, player_id):
     return redirect(next)
 
 
-# --Funcion para actualizar una persona si es delegado de equipo
+# --Funcion para zar una persona si es delegado de equipo
 
 
 def actualizar_jugador(request, player_id):
     if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
-            # Realizar la lógica para actualizar el campo promotion_delegate a True
+            # Realizar la lógica para zar el campo promotion_delegate a True
             jugador.promotion_delegate = True
             jugador.save()
-            return JsonResponse({"message": "Jugador actualizado correctamente"})
+            return JsonResponse({"message": "Jugador zado correctamente"})
         except Person.DoesNotExist:
             return JsonResponse({"error": "Jugador no encontrado"}, status=404)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
-# --Funcion para actualizar una persona en caso ya no sea delegado de equipo
+# --Funcion para zar una persona en caso ya no sea delegado de equipo
 
 
 def actualizar_jugador1(request, player_id):
@@ -240,10 +240,10 @@ def actualizar_jugador1(request, player_id):
     if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
-            # Realizar la lógica para actualizar el campo promotion_delegate a True
+            # Realizar la lógica para zar el campo promotion_delegate a True
             jugador.promotion_delegate = False
             jugador.save()
-            return JsonResponse({"message": "Jugador actualizado correctamente"})
+            return JsonResponse({"message": "Jugador zado correctamente"})
         except Person.DoesNotExist:
             return JsonResponse({"error": "Jugador no encontrado"}, status=404)
 
@@ -302,7 +302,7 @@ def view_team(request, team_id):
                     player.save()
 
                 # Verifica si se han agregado 7 personas que cumplen la condición
-                if no_cumplen_condicion <= 15:
+                if no_cumplen_condicion <= 25:
                     team.Persons.add(player)
                     # Agrega un mensaje con la etiqueta "jugador_agregado"
                     messages.success(
@@ -514,9 +514,19 @@ def create_category(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
-            print(form)
-            form.save()
-            return redirect("categorys")
+            category_name = form.cleaned_data['name']
+            if Category.objects.filter(name = category_name).exists():
+                # Si ya existe una categoria con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal categoria")
+                return render(request, "championship/category/create_category.html", context)
+            else:
+                form.save()
+                return redirect("categorys")
+        else:
+                # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            context = {"form": form}
+            return render(request, "championship/category/create_category.html", context)
 
 
 # --Lista categorias----------------------------------------------------------------
@@ -540,10 +550,19 @@ def edit_category(request, category_id):
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
-            form.save()
-            return redirect(
-                "categorys"
-            )  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+            category_name = form.cleaned_data['name']
+            if Category.objects.filter(name = category_name).exists():
+                # Si ya existe una categoria con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal categoria")
+                return render(request, "championship/category/edit_category.html", context)
+            else:
+                form.save()
+                return redirect("categorys")
+        else:
+                # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            context = {"form": form}
+            return render(request, "championship/category/edit_category.html", context)
     else:
         form = CategoryForm(instance=category)
 
@@ -555,6 +574,7 @@ def edit_category(request, category_id):
 
 
 # --Fin Categoria--------------------------------
+
 # --Inicio Disciplinas--------------------------------
 # ----Listar disciplinas
 def disciplines(request):
@@ -564,8 +584,6 @@ def disciplines(request):
 
 
 # --Crear disciplinas---------------------------------------------------------------
-
-
 def create_discipline(request):
     if request.method == "GET":
         context = {"form": DiciplineForm}
@@ -576,14 +594,24 @@ def create_discipline(request):
     if request.method == "POST":
         form = DiciplineForm(request.POST)
         if form.is_valid():
-            print("dsda")
-            form.save()
-            return redirect("disciplines")
+            discipline_name = form.cleaned_data['name']
+            if Discipline.objects.filter(name = discipline_name).exists():
+                # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal disciplina")
+                return render(request, "championship/discipline/create_discipline.html", context)
+            else:
+                form.save()
+                return redirect("disciplines")
+        else:
+                # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            messages.success(request, "Solo se aceptan letras")    
+            context = {"form": form}
+            return render(request, "championship/discipline/create_discipline.html", context)
+
 
 
 # --Elimnar disciplinas---------------------------------------------------------------
-
-
 def delete_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, pk=discipline_id)
     discipline.delete()
@@ -593,25 +621,32 @@ def delete_discipline(request, discipline_id):
 # --Editar disciplinas----------------------------------------------------------------
 def edit_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, id=discipline_id)
-
+    form = DiciplineForm(instance=discipline)
     if request.method == "POST":
         form = DiciplineForm(request.POST, instance=discipline)
         if form.is_valid():
-            form.save()
-            return redirect(
-                "disciplines"
-            )  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+            discipline_name = form.cleaned_data['name']
+            if Discipline.objects.filter(name = discipline_name).exists():
+                # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal disciplina")
+                return render(request, "championship/discipline/edit_discipline.html", context)
+            else:
+                form.save()
+                return redirect("disciplines")
+        else:
+            # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            messages.success(request, "Solo se aceptan letras")    
+            context = {"form": form}
+            return render(request, "championship/discipline/edit_discipline.html", context)
     else:
-        form = DiciplineForm(instance=discipline)
-
-    context = {"form": form, "disciplines": discipline}
-
-    return render(request, "championship/discipline/edit_discipline.html", context)
+        context = {"form": form, "disciplines": discipline}
+        return render(request, "championship/discipline/edit_discipline.html", context)
 
 
 # --Fin Disciplina--------------------------------
 # --Inicio Temporada--------------------------------
-# ----Listar disciplinas
+# ----Listar temporadas--------------------------------
 
 
 def seasons(request):
@@ -620,10 +655,10 @@ def seasons(request):
     return render(request, "championship/season/seasons.html", context)
 
 
-# --Crear disciplinas---------------------------------------------------------------
+# --Crear temporadas---------------------------------------------------------------
 
 
-def create_season(request):
+def create_season(request):         
     if request.method == "GET":
         context = {"form": SeasonForm}
         return render(request, "championship/season/create_season.html", context)
@@ -631,12 +666,23 @@ def create_season(request):
     if request.method == "POST":
         form = SeasonForm(request.POST)
         if form.is_valid():
-            print("dsda")
-            form.save()
-            return redirect("seasons")
+            season_name = form.cleaned_data['name']
+            if Season.objects.filter(name = season_name).exists():
+                # Si ya existe una temporada con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal temporada")
+                return render(request, "championship/season/create_season.html", context)
+            else:
+                form.save()
+                return redirect("seasons")
+        else:
+                # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            messages.success(request, "Solo se aceptan letras") 
+            context = {"form": form}
+            return render(request, "championship/season/create_season.html", context)
 
 
-# --Elimnar disciplinas---------------------------------------------------------------
+# --Elimnar temporadas---------------------------------------------------------------
 
 
 def delete_season(request, season_id):
@@ -645,26 +691,33 @@ def delete_season(request, season_id):
     return redirect("seasons")
 
 
-# --Editar disciplinas----------------------------------------------------------------
+# --Editar temporadas----------------------------------------------------------------
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
-
+    form = SeasonForm(instance=season)
     if request.method == "POST":
         form = SeasonForm(request.POST, instance=season)
         if form.is_valid():
-            form.save()
-            return redirect(
-                "seasons"
-            )  # Reemplaza 'list_categories' con la URL de la vista que muestra todas las categorías.
+            season_name = form.cleaned_data['name']
+            if Season.objects.filter(name = season_name).exists():
+                # Si ya existe una temporada con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                context = {"form": form}
+                messages.success(request, "Ya existe tal temporada")
+                return render(request, "championship/season/create_season.html", context)
+            else:
+                form.save()
+                return redirect("seasons")
+        else:
+                # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
+            messages.success(request, "Solo se aceptan letras") 
+            context = {"form": form}
+            return render(request, "championship/season/create_season.html", context)
     else:
-        form = SeasonForm(instance=season)
-
-    context = {"form": form, "seasons": season}
-
-    return render(request, "championship/season/edit_season.html", context)
+        context = {"form": form, "seasons": season}
+        return render(request, "championship/season/edit_season.html", context)
 
 
-# --Fin Disciplina--------------------------------
+# --Fin temporadas--------------------------------
 
 
 # --Modulo Fixture----------------------------------------------------------------

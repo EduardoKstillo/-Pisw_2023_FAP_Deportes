@@ -101,7 +101,7 @@ class Category(models.Model):
 
 
 class Discipline(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=30, validators=[validate_str])
 
     def __str__(self):
         return self.name
@@ -110,7 +110,7 @@ class Discipline(models.Model):
 
 
 class Season(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=30, validators=[validate_str])
 
     def __str__(self):
         return self.name
