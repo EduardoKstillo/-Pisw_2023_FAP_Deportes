@@ -703,7 +703,7 @@ def edit_season(request, season_id):
                 # Si ya existe una temporada con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
                 context = {"form": form}
                 messages.success(request, "Ya existe tal temporada")
-                return render(request, "championship/season/create_season.html", context)
+                return render(request, "championship/season/edit_season.html", context)
             else:
                 form.save()
                 return redirect("seasons")
@@ -711,7 +711,7 @@ def edit_season(request, season_id):
                 # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
             messages.success(request, "Solo se aceptan letras") 
             context = {"form": form}
-            return render(request, "championship/season/create_season.html", context)
+            return render(request, "championship/season/edit_season.html", context)
     else:
         context = {"form": form, "seasons": season}
         return render(request, "championship/season/edit_season.html", context)
