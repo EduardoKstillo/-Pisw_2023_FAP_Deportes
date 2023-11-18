@@ -180,7 +180,12 @@ def edit_team(request, team_id):
 # --Elminar equipo----------------------------------------------------------------------
 def delete_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
+    team_year = team.year
+    team_mouth = team.month
+    team_group = team.group
     team.delete()
+    
+    messages.success(request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.')
     return redirect("teams")
 
 
@@ -194,6 +199,7 @@ def teams(request):
 def remove_player_from_team(request, team_id, player_id):
     team = get_object_or_404(Team, pk=team_id)
     player = get_object_or_404(Person, pk=player_id)
+    player_name = player.name
 
     next = request.POST.get('next', '/')
     print(next)
@@ -207,6 +213,7 @@ def remove_player_from_team(request, team_id, player_id):
         else:
             team.Persons.remove(player)
 
+    messages.success(request, f'El jugador "{player_name}" ha sido removido del equipo exitosamente.')
     return redirect(next)
 # --Funcion para actualizar una persona si es delegado de equipo
 
@@ -383,7 +390,12 @@ def edit_championship(request, championship_id):
 
 def delete_championship(request, id):
     championship = get_object_or_404(Championship, pk=id)
+    championship_name = championship.name
+    championship_year = championship.year
+    championship_season = championship.seasons
     championship.delete()
+
+    messages.success(request, f'El campeonato "{championship_name}/{championship_year}/{championship_season}" ha sido eliminado exitosamente.')
     return redirect("championships")
 
 
@@ -392,6 +404,9 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
     team = get_object_or_404(Team, pk=team_id)
+    team_month = team.month
+    team_year = team.year
+    team_group = team.group
 
     if request.method == "POST":
         # Elimina al equipo del campeonato
@@ -403,8 +418,8 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
         )
         championship_team.delete()
 
+    messages.success(request, f'El equipo "{team_month}.{team_year}.{team_group}" ah sido removido de la categoria exitosamente.')
     return redirect("add_team_championship", championship_id=championship.id, categorys_id=category.id)
-
 
 # --Listar campeonatos----------------------------------------------------------------------
 def championships(request):
@@ -412,6 +427,17 @@ def championships(request):
     context = {"championships": championships}
     return render(request, "championship/championship/championship.html", context)
 
+# --Listar tabla de posiciones----------------------------------------------------------------------
+def tabla_posiciones(request):
+    return render(request, 'championship/fixture/tabla_posiciones.html')
+
+# --Listar tabla de posiciones----------------------------------------------------------------------
+def amonestaciones(request):
+    return render(request, 'championship/fixture/amonestaciones.html')
+
+# --Listar tabla de posiciones----------------------------------------------------------------------
+def goleadores(request):
+    return render(request, 'championship/fixture/goleadores.html')
 
 # --Funcion que muestra los equipo que pertenecen a un equipo--------------------------------------
 # --Funcion que agrega equipos a un campeonato
@@ -455,7 +481,7 @@ def add_team_championship(request, championship_id, categorys_id):
             messages.warning(
                 request, "ID de equipo no válido.", extra_tags="equipo_invalido"
             )
-
+    
     return render(
         request,
         "championship/championship/add_team_championship.html",
@@ -559,7 +585,10 @@ def create_discipline(request):
 
 def delete_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, pk=discipline_id)
+    discipline_name = discipline.name
     discipline.delete()
+
+    messages.success(request, f'La disciplina "{discipline_name}" ha sido eliminada exitosamente.')
     return redirect("disciplines")
 
 
@@ -615,7 +644,10 @@ def create_season(request):
 
 def delete_season(request, season_id):
     season = get_object_or_404(Season, pk=season_id)
+    season_name = season.name
     season.delete()
+
+    messages.success(request, f'La temporada "{season_name}" ha sido eliminada exitosamente.')
     return redirect("seasons")
 
 

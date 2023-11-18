@@ -71,4 +71,8 @@ urlpatterns = [
     #--Actualizacion de la persona marcada como delegado del equipo
     path('actualizar_jugador/<int:player_id>/', views.actualizar_jugador, name='actualizar_jugador'),
     path('actualizar_jugador1/<int:player_id>/', views.actualizar_jugador1, name='actualizar_jugador1'),
+
+    path('tabla_posiciones/', views.tabla_posiciones, name='tabla_posiciones'),
+    path('amonestaciones/', views.amonestaciones, name='amonestaciones'),
+    path('goleadores/', views.goleadores, name='goleadores'),
 ]

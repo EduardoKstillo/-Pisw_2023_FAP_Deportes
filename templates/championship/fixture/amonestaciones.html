@@ -1,41 +1,50 @@
 {% extends 'layout/main.html' %} {% block content %}
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
-    <h1
-      class="text-left mt-3"
-      style="
-        font-family: 'Montserrat';
-        font-size: 50px;
-        color: #2a4365;
-        border-bottom: 1.5px solid #babfc5;
-        padding-bottom: 15px;
-      "
-    >
-      Campeonatos
-    </h1>
-    <a
-      class="btn mt-4 mb-2"
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+        Pedro Diez Canseco - 2023 - Apertura - Categoría: 1990
+      </h1>
+      <h1
+        class="text-left mt-3"
+        style="
+          font-family: 'Montserrat';
+          font-size: 50px;
+          color: #2a4365;
+          border-bottom: 1.5px solid #babfc5;
+          padding-bottom: 15px;
+        "
+      >
+        Amonestaciones
+      </h1>
+      <a
+      class="btn mt-4 mb-3"
       role="button"
-      href="{% url 'create_championship' %}"
+      href="{% url 'seasons' %}"
       style="
-        background-color: #68d391;
+        background-color: #abafd0;
         font-size: 20px;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
       "
-      onmouseover="this.style.backgroundColor='#4B9A6A'"
-      onmouseout="this.style.backgroundColor='#68D391'"
+      onmouseover="this.style.backgroundColor='#7D8093'"
+      onmouseout="this.style.backgroundColor='#ABAFD0'"
     >
-      + Crear campeonato
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="black"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a categorias
     </a>
-
-    {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert">
-      {{msg}}
-    </div>
-    {% endfor %}
-
     <style type="text/css">
       .table-container {
         height: 10em;
@@ -43,7 +52,7 @@
       table {
         display: flex;
         flex-flow: column;
-        height: 65vh;
+        height: 55vh;
         width: 100%;
       }
       table thead {
@@ -70,6 +79,29 @@
       }
     </style>
 
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5">
+      <a
+        class="list-group-item  bg-white"        
+        href=""
+      >Campeonato</a>
+      <a
+        class="list-group-item bg-white"        
+        href=""
+      >Fixture</a>
+      <a
+        class="list-group-item bg-white"        
+        href="{% url 'tabla_posiciones' %}"
+      >Tabla de posiciones</a>
+      <a
+        class="list-group-item active bg-white"        
+        href="{% url 'amonestaciones' %}"
+      >Amonestaciones</a>
+      <a
+        class="list-group-item bg-white"        
+        href="{% url 'goleadores' %}"
+      >Goleadores</a>
+    </div>
+
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -88,7 +120,7 @@
                 font-weight: normal;
               "
             >
-              Nombre
+              Jugador
             </th>
             <th
               style="
@@ -97,7 +129,7 @@
                 font-weight: normal;
               "
             >
-              Año
+              Equipo
             </th>
             <th
               style="
@@ -106,41 +138,45 @@
                 font-weight: normal;
               "
             >
-              Temporada
+              Tarjetas rojas
             </th>
             <th
               style="
                 background-color: #f4f4f4;
-                border-right: 1px solid rgba(0, 0, 0, 0.15);
                 font-weight: normal;
               "
             >
-              Habilitado
-            </th>
-            <th
-              style="
-                background-color: #f4f4f4;
-                border-right: 1px solid rgba(0, 0, 0, 0.15);
-                font-weight: normal;
-              "
-            >
-              Categorias
-            </th>
-            <th
-              style="
-                background-color: #f4f4f4;
-                border-right: 1px solid rgba(0, 0, 0, 0.15);
-                font-weight: normal;
-              "
-            >
-              Editar
-            </th>
-            <th style="background-color: #f4f4f4; font-weight: normal">
-              Eliminar
-            </th>
+              Tarjetas amarillas
+            </th>            
           </tr>
         </thead>
         <tbody>
+            <tr
+            style="
+              font-size: 16px;
+              font-family: 'Montserrat';
+              color: black;
+              font-weight: 1;
+            "
+            >
+                <td>Paco Perez</td>
+                <td>Enero.1990.A</td>
+                <td>10</td>
+                <td>9</td>
+            </tr>
+            <tr
+            style="
+              font-size: 16px;
+              font-family: 'Montserrat';
+              color: black;
+              font-weight: 1;
+            "
+            >
+                <td>Juan Martínez</td>
+                <td>Enero.1999.A</td>
+                <td>10</td>
+                <td>8</td>
+            </tr>
           {% for championship in championships %}
           <tr
             style="
@@ -222,12 +258,4 @@
     </div>
   </div>
 </div>
-<script>
-  function confirmDelete(event) {
-    event.preventDefault();
-    if (confirm("¿Estás seguro de que deseas eliminar este campeonato?")) {
-      window.location.href = event.currentTarget.href;
-    }
-  }
-</script>
 {% endblock %}

@@ -101,6 +101,12 @@
       </div>
     </form>
 
+    {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert" style="margin-top: 10px;">
+      {{msg}}
+    </div>
+    {% endfor %}
+
     <style type="text/css">
       .table-container {
         height: 10em;
