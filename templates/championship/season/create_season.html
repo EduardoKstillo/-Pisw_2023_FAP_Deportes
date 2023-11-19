@@ -14,6 +14,11 @@
         "
       >
         Crear Temporada
+        <h5>
+          {% for msg in messages %}
+          <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+          {% endfor %}
+        </h5>
       </h1>
       <a
         class="btn mt-4 mb-2"

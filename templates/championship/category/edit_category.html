@@ -47,6 +47,11 @@
         </svg>
         Volver a categorias
       </a>
+      <h5>
+        {% for msg in messages %}
+        <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+        {% endfor %}
+      </h5>
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
         <label class="form-label" style="
