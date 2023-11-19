@@ -61,7 +61,6 @@ class Person(models.Model):
         unique=True, blank=True, null=True, validators=[validate_phone])
     phone = models.PositiveIntegerField(
         blank=True, null=True, validators=[validate_phone])
-    num_promotion = models.PositiveIntegerField(blank=True, null=True)
     promotion_delegate = models.BooleanField(
         choices=BOOLEAN_CHOICES, default=False)
     promotion_sub_delegate = models.BooleanField(

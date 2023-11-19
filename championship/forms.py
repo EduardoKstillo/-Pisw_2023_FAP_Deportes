@@ -305,7 +305,7 @@ class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = ['name', 'surnames', 'birthdate', 'dni', 'military_card', 'province', 'department', 'address', 'district', 'activity',
-                  'degree_instruction', 'civil_status', 'profession', 'phone', 'num_promotion', 'NSA_code', 'promotion_delegate',
+                  'degree_instruction', 'civil_status', 'profession', 'phone', 'NSA_code', 'promotion_delegate',
                   'promotion_sub_delegate', 'partner', 'month_promotion', 'year_promotion', 'image']
         widgets = {
             'name': forms.TextInput(
@@ -368,10 +368,6 @@ class PersonForm(forms.ModelForm):
                 attrs={
                     'class': "form-control",
                 }),
-            'num_promotion': forms.NumberInput(
-                attrs={
-                    'class': "form-control",
-                }),
             'NSA_code': forms.TextInput(
                 attrs={
                     'class': "form-control",
@@ -409,7 +405,6 @@ class PersonForm(forms.ModelForm):
             'address': 'Dirección:',
             'district': 'Distrito:',
             'phone': 'N° de teléfono:',
-            'num_promotion': 'N° de promoción:',
             'NSA_code': 'Código NSA:',
             'image': 'Imagen: ',
             'promotion_sub_delegate': 'Sub Delegado de promocion:',
