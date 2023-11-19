@@ -33,6 +33,12 @@
       + Crear Disciplina
     </a>
 
+    {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
+
     <div class="ek-shadow mt-3 mb-3"
         style="
             background-color: white;

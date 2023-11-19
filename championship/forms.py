@@ -65,44 +65,6 @@ DISCIPLINA_CHOICES = [
 
 
 class ChampionshipForm(forms.ModelForm):
-    """
-    discipline = forms.ChoiceField(
-        choices=DISCIPLINA_CHOICES,
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-            'style': 'font-size: 20px; font-family: Montserrat;'
-        }),
-        label='Disciplina:'
-    )
-
-    discipline = forms.ModelChoiceField(
-        queryset=Discipline.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-            'style': 'font-size: 20px; font-family: Montserrat;'
-        }),  # Puedes usar otro widget si prefieres
-        required=True,  # Ajusta a True si la selección de al menos una categoría es necesaria
-        label='Disciplina:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
-    )
-
-    categorys = forms.ModelMultipleChoiceField(
-        queryset=Category.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
-        widget=forms.CheckboxSelectMultiple,  # Puedes usar otro widget si prefieres
-        required=True,  # Ajusta a True si la selección de al menos una categoría es necesaria
-        label='Categorías:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
-    )
-
-    season = forms.ModelChoiceField(
-        queryset=Season.objects.all(),  # Reemplaza 'Category' por tu modelo de categorías
-        widget=forms.Select(attrs={
-            'class': 'form-select',
-            'style': 'font-size: 20px; font-family: Montserrat;'
-        }),  # Puedes usar otro widget si prefieres
-        required=True,  # Ajusta a True si la selección de al menos una categoría es necesaria
-        label='Temporada:'  # Coloca la coma al final de la línea de required y agrega label para Categorías
-    )
-    """
-
     class Meta:
         model = Championship
         fields = ['name', 'year', 'disciplines',
