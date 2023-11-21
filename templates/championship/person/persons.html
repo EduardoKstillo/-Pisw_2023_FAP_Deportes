@@ -1,0 +1,163 @@
+{% extends 'layout/main.html' %} {% block title %} Equipos {% endblock title %}
+{% block content %}
+
+<div class="mt-4 mb-4">
+  <div class="col-md-8 offset-md-2">
+    <h1
+      class="text-left mt-3 fw-semibold fs-1"
+      style="
+        font-family: 'Montserrat';
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      Personas
+    </h1>
+    <a
+      class="btn mt-4 mb-2 fs-4"
+      role="button"
+      href="{% url 'create_person' %}"
+      style="
+        background-color: #68d391;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+      "
+      onmouseover="this.style.backgroundColor='#4B9A6A'"
+      onmouseout="this.style.backgroundColor='#68D391'"
+    >
+      + Crear persona
+    </a>
+    {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
+    <form method="get">
+      <div class="row g-2 align-items-center mt-3">
+        {% for field in filter.form %}
+        <div class="col-auto">
+          <label class="col-form-label fw-bold" for="{{ field.auto_id }}"
+            >{{ field.label_tag }}</label
+          >
+        </div>
+        <div class="col-auto">{{ field }}</div>
+        {% endfor %}
+        <div class="col-auto">
+          <button class="btn btn-primary">Filtrar</button>
+        </div>
+      </div>
+    </form>
+    <div
+      class="mt-3 mb-3"
+      style="
+        background-color: white;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: black;
+      "
+    >
+      <div class="table-responsive">
+        <table class="table text-center">
+          <thead style="height: 65px; vertical-align: middle text-center">
+            <tr style="font-family: 'Montserrat'">
+              <th style="background-color: #f4f4f4; font-weight: normal">
+                Nombre
+              </th>
+              <th style="background-color: #f4f4f4; font-weight: normal">
+                Apellido
+              </th>
+              <th style="background-color: #f4f4f4; font-weight: normal">
+                Detalles
+              </th>
+              <th
+                style="
+                  background-color: #f4f4f4;
+                  border-right: 1px solid rgba(0, 0, 0, 0.15);
+                  font-weight: normal;
+                "
+              >
+                Editar
+              </th>
+              <th style="background-color: #f4f4f4; font-weight: normal">
+                Eliminar
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for person in persons %}
+            <tr>
+              <td>{{ person.name }}</td>
+              <td>{{ person.surnames }}</td>
+
+              <td>
+                <a href="{% url 'view_person' person.id %}" type="button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50"
+                    height="30"
+                    fill="green"
+                    class="bi bi-eye-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                    <path
+                      d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
+                    />
+                  </svg>
+                </a>
+              </td>
+              <td>
+                <a href="{% url 'edit_person' person.id %}" type="button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    fill="#FF8C00"
+                    class="bi bi-pencil-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
+                    />
+                  </svg>
+                </a>
+              </td>
+              <td>
+                <a
+                  href="{% url 'delete_person' person.id %}"
+                  type="button"
+                  onclick="confirmDelete(event)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    fill="#D95050"
+                    class="bi bi-trash-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                    />
+                  </svg>
+                </a>
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function confirmDelete(event) {
+    event.preventDefault();
+    if (confirm("¿Estás seguro de que deseas eliminar este equipo?")) {
+      window.location.href = event.currentTarget.href;
+    }
+  }
+</script>
+{% endblock content %}

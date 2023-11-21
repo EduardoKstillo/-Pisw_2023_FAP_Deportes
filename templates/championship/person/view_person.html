@@ -1,0 +1,320 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="container light-style">
+  <div class="row ">
+    <div class="col-xl-9 col-lg-9 ">
+        <h4 class="font-weight-bold py-3 mb-4 fs-1" style="
+        font-family: 'Montserrat';
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+        font-weight: 600;
+      ">Perfil de persona</h4>
+    </div>
+    <div class="col-xl-3 col-lg-3 text-xl-end">
+
+  <a
+      class="btn mt-4 mb-2"
+      role="button"
+      href="{% url 'persons' %}"
+      style="
+        background-color: #68d391;
+        font-size: 20px;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+      "
+      onmouseover="this.style.backgroundColor='#4B9A6A'"
+      onmouseout="this.style.backgroundColor='#68D391'"
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="black"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a persona
+    </a>
+  </div>
+</div>
+<div class="container">
+  <div class="list-group list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"  >
+    <a
+      class="list-group-item  bg-transparent active "
+      data-toggle="list"
+      href="#general" 
+      >General</a
+    >
+    <a
+      class="list-group-item  bg-transparent"
+      data-toggle="list"
+      href="#info"
+      >Informacion</a
+    >
+    <a
+      class="list-group-item  list-group-item bg-transparent"
+      data-toggle="list"
+      href="#ocupacion"
+      >Ocupación</a
+    >
+    <a
+      class="list-group-item  list-group-item bg-transparent"
+      data-toggle="list"
+      href="#rol"
+      >Roles</a
+    >
+  </div>
+
+  <div class="card overflow-hidden ">
+    <div class="row row-bordered row-border-dark">
+      <div class="col-12 mx-0 ">
+        <div class="tab-content   ">
+          <div class="tab-pane fade active show " id="general">
+            <div class="card-body  text-center">
+              {% if person.image %}
+              <!-- Verifica si hay una imagen disponible. -->
+              <img
+                src="{{ person.image.url }}"
+                alt="Imagen de la persona"
+                class="img-fluid mt-3 border border-2 shadow"
+
+                style="width:200px"
+              />
+              {% else %}
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                alt="avatar"
+                class="rounded-circle img-fluid"
+              />
+              {% endif %}
+            </div>
+            <hr class="border-light" />
+            <div class="card-body ">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Nombre</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.name }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3 font-weight-bold">
+                  <p class="mb-0">Apellidos</p>
+                </div>
+                <div class="col-sm-9">
+                  {{ person.surnames}}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Estado civil</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.civil_status }}</p>
+                </div>
+              </div>
+              <hr />
+  
+              <div class="row">
+                <div class="col-sm-3 font-weight-bold">
+                  <p class="mb-0">Dni</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.dni }}</p>
+                </div>
+              </div>
+              <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Telefono</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.phone }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Número de promoción</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.num_promotion }}</p>
+              </div>
+            </div>
+            <hr />
+            </div>
+          </div>
+          
+          <div class="tab-pane fade" id="info">
+            <div class="card-body pb-2">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Fecha de cumpleaños</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.birthdate }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Documento militar</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.military_card }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Código NSA</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.NSA_code }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Departamento</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.department }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Provincia</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.province }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Distrito</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.district }}</p>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Dirección</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.address }}</p>
+                </div>
+              </div>
+              <hr />
+  
+            </div>
+
+        
+          </div>
+          
+          <div class="tab-pane fade" id="ocupacion">
+            <div class="card-body pb-2">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Grado de instrucción</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.degree_instruction }}</p>
+                </div>
+              </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Ocupación</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  {{ person.profession}}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Actividad</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.activity }}</p>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="rol">
+            <div class="card-body pb-2">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">¿Es delegado?</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ person.promotion_delegate }}</p>
+                </div>
+              </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">¿Es sub-delegado?</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  {{ person.promotion_sub_delegate }}
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">¿Es socio?</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.partner }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mes de promocion</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.month_promotion }}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Año de promocion</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ person.year_promotion }}</p>
+              </div>
+            </div>
+            <hr />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+</div>
+
+{% endblock content %}

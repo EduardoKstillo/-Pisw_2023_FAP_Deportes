@@ -1,0 +1,50 @@
+{% extends 'layout/main.html' %} 
+{% block content %}
+<div class="mt-4 mb-4">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-15">
+        <form method="POST">
+          <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+            Editar campeonato
+          </h1>
+          <h1 class="text-left mt-3" style="font-family: 'Montserrat'; font-size: 50px; color: #2a4365; border-bottom: 1.5px solid #babfc5; padding-bottom: 15px;">
+            {{championships.name}}
+          </h1>
+          <a class="btn mt-4 mb-2" role="button" href="{% url 'championships' %}" style="background-color: #abafd0; font-size: 20px; font-family: 'Montserrat'; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#7D8093'" onmouseout="this.style.backgroundColor='#ABAFD0'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+            </svg>
+            Volver a campeonatos
+          </a>
+          {% csrf_token %}
+          {% for group in grouped_fields %}
+          <div class="row">
+            {% for field in group %}
+            <div class="mb-3 mt-3 col-md-4">
+              <label class="form-label" style="color: black; font-family: 'Montserrat'; font-size: 20px; font-weight: normal;" for="{{ field.auto_id }}">
+                {{ field.label }} {% if field.field.required %}
+                <span class="text-danger">*</span>
+                {% endif %}
+              </label>
+              {{ field }} {% if field.errors %}
+              <div class="text-danger small">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <a class="btn mt-4 mb-2 w-100" role="button" href="{% url 'championships' %}" style="background-color: #d95050; font-size: 20px; font-family: 'Montserrat'; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#BA4040'" onmouseout="this.style.backgroundColor='#D95050'">
+              Cancelar
+            </a>
+            <button class="btn mt-4 mb-2 w-100" style="background-color: #68d391; font-size: 20px; font-family: 'Montserrat'; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#4B9A6A'" onmouseout="this.style.backgroundColor='#68D391'">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

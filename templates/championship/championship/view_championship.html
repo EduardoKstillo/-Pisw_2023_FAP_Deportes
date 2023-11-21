@@ -1,0 +1,55 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="container mt-5">
+  <h1 class="text-center mt-3">Info</h1>
+  <div class="d-flex justify-content-center">
+    <div class="bg-white p-3 shadow-sm">
+      <h3>Formato del Torneo</h3>
+      <p>
+        El Campeonato de Fútbol XYZ se juega siguiendo un formato de liga con
+        todos contra todos.
+      </p>
+      <h3>Calendario</h3>
+      <p>Los partidos se jugarán cada sábado y domingo a las 16:00 horas.</p>
+
+      <h3>Reglas del Juego</h3>
+      <ul>
+        <li>
+          Se seguirán las reglas oficiales de la FIFA para el fútbol de campo.
+        </li>
+        <li>
+          La duración de cada partido será de 90 minutos, divididos en dos
+          tiempos de 45 minutos cada uno.
+        </li>
+        <li>
+          Se permiten hasta 3 sustituciones por equipo durante el partido.
+        </li>
+        <li>
+          Los puntos se otorgarán de la siguiente manera:
+          <ul>
+            <li>3 puntos por victoria</li>
+            <li>1 punto por empate</li>
+            <li>0 puntos por derrota</li>
+          </ul>
+        </li>
+        <li>
+          En caso de empate en puntos al final del torneo, se utilizará la
+          diferencia de goles para definir al ganador.
+        </li>
+      </ul>
+
+      <h3>Resultados y Tabla de Posiciones</h3>
+      <p>
+        Los resultados de los partidos y la tabla de posiciones se publicarán en
+        esta página y se actualizarán después de cada jornada.
+      </p>
+
+      <h3>Premios</h3>
+      <p>
+        El equipo ganador del campeonato recibirá un trofeo y un premio en
+        efectivo de $1000.
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

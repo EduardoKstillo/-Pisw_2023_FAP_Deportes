@@ -1,0 +1,133 @@
+<nav
+  class="navbar navbar-expand-lg py-3"
+  style="background-color: #1f324c; max-width: 100%%"
+>
+  <div class="container mx-auto">
+    <a
+      class="navbar-brand me-5"
+      href="{% url 'home' %}"
+      style="font-family: 'Montserrat'; font-size: 25px; color: white"
+      >CAPSTONE</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      style="background: white"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    {% if not navoff == True %}
+    <div
+      class="collapse navbar-collapse flex-grow-0"
+      id="navbarSupportedContent"
+      style="font-family: 'Montserrat'; font-size: 19px"
+    >
+      <ul class="navbar-nav text-center" id="nav__perfil">
+        <li class="nav-item mx-auto">
+          <a class="nav-link" href="{% url 'home' %}" style="color: white"
+            >Inicio</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'persons' %}" style="color: white"
+            >Persona</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users' %}" style="color: white"
+            >Usuarios</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'categorys' %}" style="color: white"
+            >Categorias</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'teams' %}" style="color: white"
+            >Equipos</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="{% url 'disciplines' %}"
+            style="color: white"
+            >Disciplinas</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="{% url 'seasons' %}"
+            style="color: white"
+            >Temporadas</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="{% url 'championships' %}"
+            style="color: white"
+            >Campeonato</a
+          >
+        </li>
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}" style="color: white"
+            >Iniciar sesión</a
+          >
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="color: white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-user"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">{{user.username}}</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'logout' %}"
+                >Cerrar Sesion</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#"
+                ><i class="fa-solid fa-user"></i
+              ></a>
+            </li>
+          </ul>
+        </li>
+
+        {% endif %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</nav>
