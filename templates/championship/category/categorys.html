@@ -84,7 +84,7 @@
             <td>
               <form method="post" action="{% url 'delete_category' category.id %}">
                 {% csrf_token %}
-                <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')" style="background-color: white;border: white;">
+                <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar la categoría {{ category.name }}')" style="background-color: white;border: white;">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="30"

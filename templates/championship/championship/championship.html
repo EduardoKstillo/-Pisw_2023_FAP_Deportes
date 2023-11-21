@@ -216,18 +216,19 @@
               </a>
             </td>
           </tr>
+          <script>
+            function confirmDelete(event) {
+              event.preventDefault();
+              if (confirm('¿Estás seguro de que deseas eliminar el campeonato {{ championship.name }}?')) {
+                window.location.href = event.currentTarget.href;
+              }
+            }
+          </script>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
 </div>
-<script>
-  function confirmDelete(event) {
-    event.preventDefault();
-    if (confirm("¿Estás seguro de que deseas eliminar este campeonato?")) {
-      window.location.href = event.currentTarget.href;
-    }
-  }
-</script>
+
 {% endblock %}

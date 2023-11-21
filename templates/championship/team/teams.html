@@ -149,7 +149,7 @@
             <td>
               <form method="post" action="{% url 'delete_team' team.id %}">
                 {% csrf_token %}
-                <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')" style="background-color: white;border: white;">
+                <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar al equipo {{ team.month }}.{{ team.year }}.{{ team.group }}?')" style="background-color: white;border: white;">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="30"

@@ -389,11 +389,12 @@ def edit_championship(request, championship_id):
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
+    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields,}
 
     return render(
         request,
         "championship/championship/edit_championship.html",
-        {"championship": championship, "grouped_fields": grouped_fields},
+        context,
     )
 
 

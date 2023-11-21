@@ -225,7 +225,20 @@
             <td>{{ player.surnames }}</td>
             <td>{{player.month_promotion}}.{{player.year_promotion}}</td>
             <td>
-              <input type="checkbox" class="player-checkbox" name="selected_players" value="{{ player.id }}" {% if player.promotion_delegate %} checked {% endif %}     
+              <input
+                type="checkbox"
+                class="player-checkbox"
+                name="selected_players"
+                value="{{ player.id }}"
+                {%
+                if
+                player.promotion_delegate
+                %}
+                checked
+                {%
+                endif
+                %}
+              />
             </td>
             <td>
               <a href="" type="button">
@@ -269,7 +282,7 @@
                 <input type="hidden" name="next" value="{{ request.path }}" />
                 <button
                   type="submit"
-                  onclick="return confirm('¿Estás seguro que deseas eliminar a este jugador del equipo?')"
+                  onclick="return confirm('¿Estás seguro que deseas eliminar al jugador {{ player.name }} del equipo {{ team.month }}.{{team.year}}.{{team.group}}?')"
                   style="background-color: white; border: white"
                 >
                   <svg
