@@ -389,7 +389,8 @@ def edit_championship(request, championship_id):
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
-    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields,}
+    context = {"form": form, "championships": championship,
+               "grouped_fields": grouped_fields, }
 
     return render(
         request,
@@ -628,17 +629,21 @@ def create_discipline(request):
         form = DiciplineForm(request.POST)
         if form.is_valid():
             discipline_name = form.cleaned_data['name']
-            if Discipline.objects.filter(name=discipline_name).exists():
-                # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+            normalized_name = discipline_name.lower()  # Normaliza a minúsculas
+            # Usamos name__iexact para comparar sin tomar en cuenta mayusculas o minisculas
+            if Discipline.objects.filter(name__iexact=normalized_name).exists():
+                # Si ya existe una disciplina con el mismo nombre (ignorando mayúsculas/minúsculas), muestra un mensaje de error.
                 context = {"form": form}
-                messages.success(request, "Ya existe tal disciplina")
+                messages.error(
+                    request, "Ya existe una disciplina con ese nombre.")
                 return render(request, "championship/discipline/create_discipline.html", context)
             else:
                 form.save()
+                messages.success(request, "Disciplina creada exitosamente.")
                 return redirect("disciplines")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            messages.success(request, "Solo se aceptan letras")
+            messages.error(request, "Solo se aceptan letras")
             context = {"form": form}
             return render(request, "championship/discipline/create_discipline.html", context)
 
@@ -658,21 +663,31 @@ def delete_discipline(request, discipline_id):
 def edit_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, id=discipline_id)
     form = DiciplineForm(instance=discipline)
+
     if request.method == "POST":
         form = DiciplineForm(request.POST, instance=discipline)
         if form.is_valid():
             discipline_name = form.cleaned_data['name']
-            if Discipline.objects.filter(name=discipline_name).exists():
-                # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
-                context = {"form": form}
-                messages.success(request, "Ya existe tal disciplina")
-                return render(request, "championship/discipline/edit_discipline.html", context)
+            normalized_name = discipline_name.lower()  # Normaliza a minúsculas
+
+            if form.has_changed():  # Verifica si ha habido cambios en el formulario
+                if Discipline.objects.filter(name__iexact=discipline_name).exists():
+                    # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                    context = {"form": form}
+                    messages.error(request, "Ya existe tal disciplina")
+                    return render(request, "championship/discipline/edit_discipline.html", context)
+                else:
+                    form.save()
+                    messages.success(
+                        request, "Disciplina editado correctamente")
+                    return redirect("disciplines")
             else:
-                form.save()
-                return redirect("disciplines")
+                messages.info(
+                    request, "No se realizaron cambios en la disciplina.")
+            return redirect("disciplines")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            messages.success(request, "Solo se aceptan letras")
+            messages.error(request, "Solo se aceptan letras")
             context = {"form": form}
             return render(request, "championship/discipline/edit_discipline.html", context)
     else:
@@ -703,17 +718,20 @@ def create_season(request):
         form = SeasonForm(request.POST)
         if form.is_valid():
             season_name = form.cleaned_data['name']
-            if Season.objects.filter(name=season_name).exists():
-                # Si ya existe una temporada con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+            normalized_name = season_name.lower()  # Normaliza a minúsculas
+            # Usamos name__iexact para comparar sin tomar en cuenta mayusculas o minisculas
+            if Season.objects.filter(name__iexact=season_name).exists():
+                # Si ya existe una disciplina con el mismo nombre (ignorando mayúsculas/minúsculas), muestra un mensaje de error.
                 context = {"form": form}
-                messages.success(request, "Ya existe tal temporada")
+                messages.error(request, "Ya existe tal temporada")
                 return render(request, "championship/season/create_season.html", context)
             else:
                 form.save()
+                messages.success(request, "Temporada creada exitosamente.")
                 return redirect("seasons")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            messages.success(request, "Solo se aceptan letras")
+            messages.error(request, "Solo se aceptan letras")
             context = {"form": form}
             return render(request, "championship/season/create_season.html", context)
 
@@ -739,17 +757,26 @@ def edit_season(request, season_id):
         form = SeasonForm(request.POST, instance=season)
         if form.is_valid():
             season_name = form.cleaned_data['name']
-            if Season.objects.filter(name=season_name).exists():
-                # Si ya existe una temporada con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
-                context = {"form": form}
-                messages.success(request, "Ya existe tal temporada")
-                return render(request, "championship/season/edit_season.html", context)
+            normalized_name = season_name.lower()  # Normaliza a minúsculas
+
+            if form.has_changed():  # Verifica si ha habido cambios en el formulario
+                if Season.objects.filter(name__iexact=season_name).exists():
+                    # Si ya existe una disciplina con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                    context = {"form": form}
+                    messages.error(request, "Ya existe tal temporada")
+                    return render(request, "championship/season/edit_season.html", context)
+                else:
+                    form.save()
+                    messages.success(
+                        request, "Temporada editado correctamente")
+                    return redirect("seasons")
             else:
-                form.save()
-                return redirect("seasons")
+                messages.info(
+                    request, "No se realizaron cambios en la temporada.")
+            return redirect("seasons")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            messages.success(request, "Solo se aceptan letras")
+            messages.error(request, "Solo se aceptan letras")
             context = {"form": form}
             return render(request, "championship/season/edit_season.html", context)
     else:

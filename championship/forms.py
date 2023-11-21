@@ -75,7 +75,7 @@ class ChampionshipForm(forms.ModelForm):
                 'placeholder': 'Ingrese el nombre del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
             }),
-            'year': forms.TextInput(attrs={
+            'year': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ingrese el año del campeonato',
                 'style': 'font-size: 20px; font-family: Montserrat;',
