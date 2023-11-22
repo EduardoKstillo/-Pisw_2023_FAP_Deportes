@@ -1,107 +1,108 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  /*background: url(fap.svg) no-repeat center center fixed;*/
-  background-color: #f0f1f3;
-  font-family: "Montserrat";
-  display: grid;
+    /*background: url(fap.svg) no-repeat center center fixed;*/
+    background-color: #f0f1f3;
+    font-family: "Montserrat";
+    display: grid;
 }
 
 .mi-alerta {
-  margin-top: 2px;
-  padding: 5px;
-  background-color: rgb(249, 235, 234);
-  color: #f40808;
-  border-radius: 4px;
-  font-size: 14px;
+    margin-top: 2px;
+    padding: 5px;
+    background-color: rgb(252, 235, 234);
+    color: #f40808;
+    border-radius: 4px;
+    font-size: 15px;
 }
 
 .mi-alerta i {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .list-group-item.active {
-  color: #2b6ac2;
-  border-color: #a0c4f6;
-  /* Cambia el color del texto  */
+    color: #2b6ac2;
+    border-color: #a0c4f6;
+    /* Cambia el color del texto  */
 }
 
 main::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("../img/fap.svg") no-repeat center center fixed;
-  background-size: 85% 85%;
-  opacity: 0.3;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../img/fap.svg") no-repeat center center fixed;
+    background-size: 85% 85%;
+    opacity: 0.3;
+    z-index: -1;
 }
 
 .side-navbar {
-  width: 180px;
-  height: 100%;
-  position: fixed;
-  margin-left: -300px;
-  background-color: #100901;
-  transition: 0.5s;
-  color: white;
+    width: 180px;
+    height: 100%;
+    position: fixed;
+    margin-left: -300px;
+    background-color: #100901;
+    transition: 0.5s;
+    color: white;
 }
 
 .nav-link:active,
 .nav-link:focus,
 .nav-link:hover {
-  background-color: #ffffff26;
+    background-color: #ffffff26;
 }
 
 .my-container {
-  transition: 0.4s;
+    transition: 0.4s;
 }
 
 .active-nav {
-  margin-left: 0;
+    margin-left: 0;
 }
+
 
 /* for main section */
 
 .active-cont {
-  margin-left: 180px;
+    margin-left: 180px;
 }
 
 #menu-btn {
-  background-color: #100901;
-  color: #fff;
-  margin-left: -62px;
+    background-color: #100901;
+    color: #fff;
+    margin-left: -62px;
 }
 
 .my-container input {
-  border-radius: 2rem;
-  padding: 2px 20px;
+    border-radius: 2rem;
+    padding: 2px 20px;
 }
 
 #sidebar ul {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 #sidebar ul li {
-  padding: 10px;
+    padding: 10px;
 }
 
 #sidebar ul li a {
-  color: #acacac;
-  text-decoration: none;
+    color: #acacac;
+    text-decoration: none;
 }
 
 #sidebar ul li a i {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 #sidebar ul li a:hover {
-  background-color: #2986b8;
+    background-color: #2986b8;
 }
