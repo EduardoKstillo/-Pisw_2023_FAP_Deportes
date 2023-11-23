@@ -753,6 +753,7 @@ def delete_season(request, season_id):
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
     form = SeasonForm(instance=season)
+
     if request.method == "POST":
         form = SeasonForm(request.POST, instance=season)
         if form.is_valid():
@@ -767,6 +768,9 @@ def edit_season(request, season_id):
                     return render(request, "championship/season/edit_season.html", context)
                 else:
                     form.save()
+
+                    
+
                     messages.success(
                         request, "Temporada editado correctamente")
                     return redirect("seasons")
@@ -780,8 +784,11 @@ def edit_season(request, season_id):
             context = {"form": form}
             return render(request, "championship/season/edit_season.html", context)
     else:
-        context = {"form": form, "seasons": season}
-        return render(request, "championship/season/edit_season.html", context)
+        # Obtiene los campeonatos asociados a tal categoria 
+        associated_championship = Championship.objects.filter(Q(seasons=season) & Q(state=True))
+
+    context = {"form": form, "seasons": season, "associated_championship": associated_championship}
+    return render(request, "championship/season/edit_season.html", context)
 
 
 # --Fin temporadas--------------------------------
