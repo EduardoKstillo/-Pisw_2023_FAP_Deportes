@@ -807,7 +807,9 @@ def edit_season(request, season_id):
 
 # --Modulo Fixture----------------------------------------------------------------
 
-
+def fixture (request):
+    return render(request, 'championship/fixture/fixture.html')
+"""
 def fixture(request, id_champ):
     championship = get_object_or_404(Championship, pk=id_champ)
     fixtures = Game.objects.filter(
@@ -840,7 +842,7 @@ def create_fixture(request, id_champ):
     teams = championship.teams.all()
     fixture = generate_fixture(teams, championship)
     return redirect("fixture", id_champ)
-
+"""
 
 def games(request, id_champ):
     championship = get_object_or_404(Championship, pk=id_champ)
