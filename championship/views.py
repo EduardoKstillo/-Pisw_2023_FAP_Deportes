@@ -10,6 +10,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
+from copy import deepcopy
+
 
 
 # --Inicio Person------------------------------------------
@@ -580,31 +582,38 @@ def delete_category(request, category_id):
 # --Editar categoria----------------------------------------------------------------
 def edit_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
+    name_category = int(category.name)
+    form = CategoryForm(instance=category)
 
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
+
         if form.is_valid():
-            category_name = form.cleaned_data['name']
-            if Category.objects.filter(name=category_name).exists():
-                # Si ya existe una categoria con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
-                context = {"form": form}
-                messages.success(request, "Ya existe tal categoria")
-                return render(request, "championship/category/edit_category.html", context)
-            else:
-                form.save()
-                return redirect("categorys")
+            category_name = int(form.cleaned_data['name'])                   
+            if name_category != category_name :
+                if Category.objects.filter(name=category_name).exists():
+                    # Si ya existe una categoria con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
+                    context = {"form": form}
+                    messages.success(request, "Ya existe tal categoria")
+                    return render(request, "championship/category/edit_category.html", context)
+                else:
+                    form.save()
+                    messages.success(
+                        request, "Categoria editado correctamente")
+                    return redirect("categorys")
+            else :                
+                messages.info(request, "No se realizaron cambios en la categoria.")
+                return redirect("categorys")                
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            context = {"form": form}
+            associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
+            context = {"form": form, "associated_championship": associated_championship}
             return render(request, "championship/category/edit_category.html", context)
     else:
-        form = CategoryForm(instance=category)
-
-    return render(
-        request,
-        "championship/category/edit_category.html",
-        {"form": form, "category": category},
-    )
+        associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
+        
+    context = {"form": form, "category": category, "associated_championship": associated_championship}
+    return render(request,"championship/category/edit_category.html",context)
 
 
 # --Fin Categoria--------------------------------
@@ -688,11 +697,14 @@ def edit_discipline(request, discipline_id):
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
             messages.error(request, "Solo se aceptan letras")
-            context = {"form": form}
+            associated_championship = Championship.objects.filter(Q(disciplines=discipline) & Q(state=True))
+            context = {"form": form, "associated_championship": associated_championship}
             return render(request, "championship/discipline/edit_discipline.html", context)
     else:
-        context = {"form": form, "disciplines": discipline}
-        return render(request, "championship/discipline/edit_discipline.html", context)
+        associated_championship = Championship.objects.filter(Q(disciplines=discipline) & Q(state=True))
+
+    context = {"form": form, "disciplines": discipline, "associated_championship": associated_championship}
+    return render(request, "championship/discipline/edit_discipline.html", context)
 
 
 # --Fin Disciplina--------------------------------
@@ -753,6 +765,8 @@ def delete_season(request, season_id):
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
     form = SeasonForm(instance=season)
+    #form = deepcopy(original_form)
+
     if request.method == "POST":
         form = SeasonForm(request.POST, instance=season)
         if form.is_valid():
@@ -766,22 +780,26 @@ def edit_season(request, season_id):
                     messages.error(request, "Ya existe tal temporada")
                     return render(request, "championship/season/edit_season.html", context)
                 else:
-                    form.save()
+                    form.save()        
                     messages.success(
                         request, "Temporada editado correctamente")
                     return redirect("seasons")
             else:
-                messages.info(
-                    request, "No se realizaron cambios en la temporada.")
-            return redirect("seasons")
+                messages.info(request, "No se realizaron cambios en la temporada.")
+                return redirect("seasons")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
             messages.error(request, "Solo se aceptan letras")
-            context = {"form": form}
+            associated_championship = Championship.objects.filter(Q(seasons=season) & Q(state=True))
+            #form = deepcopy(original_form)
+            context = {"form": form, "associated_championship": associated_championship}
             return render(request, "championship/season/edit_season.html", context)
     else:
-        context = {"form": form, "seasons": season}
-        return render(request, "championship/season/edit_season.html", context)
+        # Obtiene los campeonatos asociados a tal categoria 
+        associated_championship = Championship.objects.filter(Q(seasons=season) & Q(state=True))
+
+    context = {"form": form, "seasons": season, "associated_championship": associated_championship}
+    return render(request, "championship/season/edit_season.html", context)
 
 
 # --Fin temporadas--------------------------------

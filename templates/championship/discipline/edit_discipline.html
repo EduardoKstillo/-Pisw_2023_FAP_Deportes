@@ -1,8 +1,46 @@
 {% extends 'layout/main.html' %} {% block sidebar %} {% endblock sidebar %}
 {%block content %}
+
+<!-- Agrega el siguiente código al final del cuerpo de tu template -->
+<div class="modal" tabindex="-1" role="dialog" id="confirmacionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Está seguro?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="mensajeModal"></p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          ,
+          id="cancelarEdicionBtn">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" 
+          id="confirmarEdicionBtn">
+          Confirmar Edición
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- AFin del codigo parte final del template -->
+
+
 <div class="mt-4 mb-4">
   <div class="col-md-4 offset-md-4">
-    <form method="POST">
       <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
         Editar disciplina
       </h1>
@@ -52,6 +90,7 @@
         </svg>
         Volver a disciplinas
       </a>
+      <form id ="editDisciplineForm" method="POST">
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
         <label class="form-label" style="
@@ -83,6 +122,8 @@
           Cancelar
         </a>
         <button
+          id="guardarCambiosBtn"
+          type="button"
           class="btn mt-4 mb-2 w-100"
           style="
             background-color: #68d391;
@@ -100,4 +141,63 @@
     </form>
   </div>
 </div>
+
+{% block script %}
+<script>
+  
+  $(document).ready(function () {
+    // Obtener el valor inicial del campo al cargar la página
+    var valorInicial = $("input[name='name']").val();
+    console.log(valorInicial);
+    // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
+    $("#guardarCambiosBtn").on("click", function () {
+      var valorCampo = $("input[name='name']").val();
+      console.log(valorCampo);
+      // Obtener el valor más reciente de nombreCampeonato
+      var nombreCampeonato = obtenerNombreCampeonato();
+      // Mostrar el modal solo si hay un campeonato asociado
+      if (nombreCampeonato && contieneSoloLetras(valorCampo) && valorInicial !== valorCampo) {
+        $("#mensajeModal").text(nombreCampeonato);
+        $("#confirmacionModal").modal("show");
+      } else {
+        // Si no hay un campeonato asociado, puedes realizar alguna acción o simplemente no hacer nada
+        console.log("sin campeonato asociado");
+        $("#editDisciplineForm").submit();
+      }
+    });
+  
+    // Evento cuando se da clic al botón de confirmación en el modal
+    $("#confirmarEdicionBtn").on("click", function () {
+      // Hace Post con los datos del formulario
+      $("#editDisciplineForm").submit();
+    });
+
+
+    // Controlar el botón de cancelar en el modal
+    $("#cancelarEdicionBtn").on("click", function () {
+      // Cierra el modal sin realizar ninguna acción
+      $("#confirmacionModal").modal("hide");
+    });
+  });
+    function obtenerNombreCampeonato(valorInicial) {
+      var nombreCampeonatoArray = [{% for championship in associated_championship %} "{{ championship.name }}", {% endfor %}];
+      var nombreCampeonatoSeasonsArray = [{% for championship1 in associated_championship %} "{{championship.seasons}}", {% endfor %}];
+      // Si hay un campeonato asociado, devolver el mensaje específico
+      const nombresConcatenados = nombreCampeonatoArray.map(championship => `"${championship}"`).join(', ');
+      if (nombreCampeonatoArray.length > 0) {
+        return `Esta disciplina está asociada al campeonato: ${nombresConcatenados}. ¿Está seguro de actualizar los datos?`;
+      } else {
+        // Si no hay un campeonato asociado, devolver null
+        return null;
+      }
+    }
+  
+    function contieneSoloLetras(dato) {
+      // Expresión regular que coincide solo con letras (mayúsculas y minúsculas)
+      var expresionRegular = /^[A-Za-z]+$/;
+      // Devuelve true si el dato contiene solo letras, de lo contrario, devuelve false
+      return expresionRegular.test(dato);
+    }
+  </script>
+{% endblock script %}
 {% endblock %}
