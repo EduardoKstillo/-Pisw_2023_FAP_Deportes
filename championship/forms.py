@@ -216,6 +216,7 @@ class PersonBasicForm(forms.ModelForm):
                 }),
             'dni': forms.NumberInput(
                 attrs={
+                    
                     'class': "form-control",
                 }),
             'promotion_delegate': forms.Select(

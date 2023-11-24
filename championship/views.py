@@ -803,7 +803,7 @@ def fixture(request, id_champ):
 
     return render(
         request,
-        "championship/fixture.html",
+        "championship/fixture/fixture.html",
         {"grouped_fixtures": grouped_fixtures, "id_champ": id_champ},
     )
 

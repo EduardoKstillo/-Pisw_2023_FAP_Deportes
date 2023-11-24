@@ -1,0 +1,251 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="container mt-5 bg-white">
+  <div class="mt-5 bg-white">
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      Fixture
+    </h1>
+  </div>
+  <div class="mt-5 bg-white">
+    <!-- Jornada 1 -->
+    <div class="text-center mt-5" id="tabla-jornada-1 ">
+      <div class="btn-group">
+        <button class="btn" onclick="mostrarTabla(-1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-left-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+            />
+          </svg>
+        </button>
+        <span class="my-auto" style="font-size: 25px">Jornada 1</span>
+        <button class="btn" onclick="mostrarTabla(1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="border border-primary-subtle text-start fs-5">Jornada 1</div>
+
+      <table class="table table-dark table-hover">
+        <thead>
+          <tr>
+            <th style="width: 30%">Lugar/Fecha</th>
+            <th style="width: 20%">Equipo 1</th>
+            <th style="width: 10%">Resultado</th>
+            <th style="width: 20%">Equipo 2</th>
+            <th style="width: 20%">Editar partido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo A</td>
+            <td>-</td>
+            <td>Equipo B</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo C</td>
+            <td>-</td>
+            <td>Equipo D</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <!-- Agrega más filas según sea necesario -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Jornada 2 -->
+    <div class="text-center" id="tabla-jornada-2" style="display: none">
+      <div class="btn-group">
+        <button class="btn" onclick="mostrarTabla(-1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-left-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+            />
+          </svg>
+        </button>
+        <span class="my-auto" style="font-size: 25px">Jornada 2</span>
+        <button class="btn" onclick="mostrarTabla(1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="border border-primary-subtle text-start fs-5">Jornada 2</div>
+
+      <table class="table table-dark table-hover">
+        <thead>
+          <tr>
+            <th style="width: 30%">Lugar/Fecha</th>
+            <th style="width: 20%">Equipo 1</th>
+            <th style="width: 10%">Resultado</th>
+            <th style="width: 20%">Equipo 2</th>
+            <th style="width: 20%">Editar partido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo B</td>
+            <td>-</td>
+            <td>Equipo D</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo A</td>
+            <td>-</td>
+            <td>Equipo C</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <!-- Agrega más filas según sea necesario -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Agrega más contenedores y tablas para jornadas adicionales -->
+    <div class="text-center" id="tabla-jornada-2" style="display: none">
+      <div class="btn-group">
+        <button class="btn" onclick="mostrarTabla(-1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-left-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+            />
+          </svg>
+        </button>
+        <span class="my-auto" style="font-size: 25px">Jornada 3</span>
+        <button class="btn" onclick="mostrarTabla(1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill="#4e688e"
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="border border-primary-subtle text-start fs-5">Jornada 3</div>
+
+      <table class="table table-dark table-hover">
+        <thead>
+          <tr>
+            <th style="width: 30%">Lugar/Fecha</th>
+            <th style="width: 20%">Equipo 1</th>
+            <th style="width: 10%">Resultado</th>
+            <th style="width: 20%">Equipo 2</th>
+            <th style="width: 20%">Editar partido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo E</td>
+            <td>-</td>
+            <td>Equipo F</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Lugar 23/11/2023 8:00</td>
+            <td>Equipo G</td>
+            <td>-</td>
+            <td>Equipo H</td>
+            <td>
+              <a class="btn btn-primary my-auto" href="#" role="button">+</a>
+            </td>
+          </tr>
+          <!-- Agrega más filas según sea necesario -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  let jornadaActual = 1;
+  mostrarTabla(0);
+
+  function mostrarTabla(numjor) {
+    const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
+
+    tablas[jornadaActual - 1].style.display = "none";
+
+    jornadaActual += numjor;
+    if (jornadaActual < 1) {
+      jornadaActual = tablas.length;
+    } else if (jornadaActual > tablas.length) {
+      jornadaActual = 1;
+    }
+    tablas[jornadaActual - 1].style.display = "block";
+  }
+</script>
+{% endblock %}
