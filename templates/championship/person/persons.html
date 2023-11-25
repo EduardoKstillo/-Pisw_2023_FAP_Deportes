@@ -15,7 +15,7 @@
       Personas
     </h1>
     <a
-      class="btn mt-4 mb-2 fs-4"
+      class="btn mt-4 mb-2 fs-5"
       role="button"
       href="{% url 'create_person' %}"
       style="
@@ -46,7 +46,9 @@
         <div class="col-auto">{{ field }}</div>
         {% endfor %}
         <div class="col-auto">
-          <button class="btn btn-primary">Filtrar</button>
+          <button class="btn fs-5 text-white" style="background-color: #4e688e">
+            Filtrar
+          </button>
         </div>
       </div>
     </form>

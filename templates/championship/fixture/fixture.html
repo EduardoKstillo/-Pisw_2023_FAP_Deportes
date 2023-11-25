@@ -45,43 +45,14 @@
       </svg>
       Volver a categorias
     </a>
-    <style type="text/css">
-      .table-container {
-        height: 10em;
-      }
-      table {
-        display: flex;
-        flex-flow: column;
-        height: 55vh;
-        width: 100%;
-      }
-      table thead {
-        flex: 0 0 auto;
-        width: calc(100% - 0.9em);
-      }
-      table tbody {
-        flex: 1 1 auto;
-        display: block;
-        overflow-y: scroll;
-      }
-      table tbody tr {
-        width: 100%;
-      }
-      table thead,
-      table tbody tr {
-        display: table;
-        table-layout: fixed;
-      }
-      .table th,
-      .table td {
-        word-wrap: break-word;
-        max-width: 150px;
+
+    <style>
+      .table > thead > tr > th {
+        background-color: #4e688e;
+        color: white;
       }
     </style>
-
-    <div
-      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
-    >
+    <div class="list-group list-group-horizontal fs-5">
       <a class="list-group-item bg-white" href="">Campeonato</a>
       <a class="list-group-item active bg-white" href="{% url 'fixture' %}"
         >Fixture</a
@@ -99,7 +70,7 @@
     <div class="container bg-white">
       <div class="bg-white mt-3">
         <!-- Jornada 1 -->
-        <div class="text-center" id="tabla-jornada-1 ">
+        <div class="text-center" id="tabla-jornada-1 " style="height: 55vh">
           <div class="btn-group">
             <button class="btn" onclick="mostrarTabla(-1)">
               <svg
@@ -133,11 +104,12 @@
               </svg>
             </button>
           </div>
+          <!--
           <div class="border border-primary-subtle text-start fs-5">
             Jornada 1
           </div>
-
-          <table class="table table-light table-hover">
+        -->
+          <table class="table">
             <thead>
               <tr>
                 <th>Lugar/Fecha</th>
@@ -154,7 +126,11 @@
                 <td>-</td>
                 <td>Equipo B</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>
@@ -165,7 +141,11 @@
                 <td>-</td>
                 <td>Equipo D</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>
@@ -176,7 +156,11 @@
         </div>
 
         <!-- Jornada 2 -->
-        <div class="text-center" id="tabla-jornada-2" style="display: none">
+        <div
+          class="text-center"
+          id="tabla-jornada-2"
+          style="display: none; height: 55vh"
+        >
           <div class="btn-group">
             <button class="btn" onclick="mostrarTabla(-1)">
               <svg
@@ -210,18 +194,19 @@
               </svg>
             </button>
           </div>
+          <!--
           <div class="border border-primary-subtle text-start fs-5">
             Jornada 2
           </div>
-
-          <table class="table table-dark table-hover">
+-->
+          <table class="table">
             <thead>
               <tr>
-                <th style="width: 30%">Lugar/Fecha</th>
-                <th style="width: 20%">Equipo 1</th>
-                <th style="width: 10%">Resultado</th>
-                <th style="width: 20%">Equipo 2</th>
-                <th style="width: 20%">Editar partido</th>
+                <th>Lugar/Fecha</th>
+                <th>Equipo 1</th>
+                <th>Resultado</th>
+                <th>Equipo 2</th>
+                <th>Editar partido</th>
               </tr>
             </thead>
             <tbody>
@@ -231,7 +216,11 @@
                 <td>-</td>
                 <td>Equipo D</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>
@@ -242,7 +231,11 @@
                 <td>-</td>
                 <td>Equipo C</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>
@@ -253,7 +246,11 @@
         </div>
 
         <!-- Agrega más contenedores y tablas para jornadas adicionales -->
-        <div class="text-center" id="tabla-jornada-2" style="display: none">
+        <div
+          class="text-center"
+          id="tabla-jornada-2"
+          style="display: none; height: 55vh"
+        >
           <div class="btn-group">
             <button class="btn" onclick="mostrarTabla(-1)">
               <svg
@@ -287,18 +284,20 @@
               </svg>
             </button>
           </div>
+          <!--
           <div class="border border-primary-subtle text-start fs-5">
             Jornada 3
           </div>
+        -->
 
-          <table class="table table-dark table-hover">
+          <table class="table">
             <thead>
               <tr>
-                <th style="width: 30%">Lugar/Fecha</th>
-                <th style="width: 20%">Equipo 1</th>
-                <th style="width: 10%">Resultado</th>
-                <th style="width: 20%">Equipo 2</th>
-                <th style="width: 20%">Editar partido</th>
+                <th>Lugar/Fecha</th>
+                <th>Equipo 1</th>
+                <th>Resultado</th>
+                <th>Equipo 2</th>
+                <th>Editar partido</th>
               </tr>
             </thead>
             <tbody>
@@ -308,7 +307,11 @@
                 <td>-</td>
                 <td>Equipo F</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>
@@ -319,7 +322,11 @@
                 <td>-</td>
                 <td>Equipo H</td>
                 <td>
-                  <a class="btn btn-primary my-auto" href="#" role="button"
+                  <a
+                    class="btn btn-primary my-auto"
+                    href="#"
+                    role="button"
+                    style="background: #4e688e"
                     >+</a
                   >
                 </td>

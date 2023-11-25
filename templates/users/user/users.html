@@ -20,11 +20,21 @@
     </div>
     {% endfor %} -->
     <a
-      class="btn btn-primary mt-4 mb-2"
+      class="btn mt-4 mb-2 fs-5"
       role="button"
       href="{% url 'create_user' %}"
-      >+ Crear Usuario</a
+      style="
+        background-color: #4e688e;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+        color: white;
+      "
+      onmouseover="this.style.backgroundColor=' #314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
     >
+      + Crear usuario
+    </a>
     <div class="ek-shadow mt-3 mb-3">
       <table class="table rounded rounded-3 overflow-hidden text-center">
         <thead>
