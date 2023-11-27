@@ -142,12 +142,14 @@
     </form>
   </div>
 </div>
+
 {% block script %}
 <script>
   $(document).ready(function () {
     // Obtener el valor inicial del campo al cargar la página
     var valorInicial = $("select[name='name']").val();
     // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
+    console.log(valorInicial);
     $("#guardarCambiosBtn").on("click", function () {
       var valorCampo = $("select[name='name']").val();
       // Obtener el valor más reciente de nombreCampeonato
@@ -178,11 +180,21 @@
   });
     function obtenerNombreCampeonato(valorInicial) {
       var nombreCampeonatoArray = [{% for championship in associated_championship %} "{{ championship.name }}", {% endfor %}];
+      var nombreTeamArray = [{% for team in championship_teams %} "{{ team.team.month }}", {% endfor %}];
+      var nombreCampeonatoTeamArray = [{% for chamionship_team in championship_teams %} "{{ chamionship_team.championship.name }}", {% endfor %}];
       var nombreCampeonatoSeasonsArray = [{% for championship1 in associated_championship %} "{{championship.seasons}}", {% endfor %}];
+      
       // Si hay un campeonato asociado, devolver el mensaje específico
       const nombresConcatenados = nombreCampeonatoArray.map(championship => `"${championship}"`).join(', ');
+      const teamsConcatenados = nombreTeamArray.map(team => `"${team}"`).join(', ');
+      const chamionship_teamConcatenados = nombreCampeonatoTeamArray.map(chamionship_team => `"${chamionship_team}"`).join(', ');
+
       if (nombreCampeonatoArray.length > 0) {
-        return `Esta categoria está asociada al campeonato: ${nombresConcatenados}. ¿Está seguro de actualizar los datos?`;
+        if (nombreTeamArray.length > 0){
+          return `Esta categoria tiene un campeonato: ${chamionship_teamConcatenados} con equipos ya asociados. En caso de seguir los equipos se eliminaran`;
+        } else{
+          return `Esta categoria está asociada al campeonato: ${nombresConcatenados}. ¿Está seguro de actualizar los datos?`;
+        }
       } else {
         // Si no hay un campeonato asociado, devolver null
         return null;
@@ -197,4 +209,5 @@
     }
   </script>
 {% endblock script %}
+
 {% endblock %}

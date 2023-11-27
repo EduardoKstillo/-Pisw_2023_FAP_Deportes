@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
 from copy import deepcopy
-
+from django.db import transaction
 
 
 # --Inicio Person------------------------------------------
@@ -137,51 +137,44 @@ def edit_team(request, team_id):
     players = team.Persons.all()
 
     if request.method == "POST":
-        form = TeamForm(
-            request.POST, instance=team
-        )  # Pasa la instancia del equipo a editar
+        form = TeamForm(request.POST, instance=team)
+
         if form.is_valid():
+            # Extraer los datos del formulario
             team_month = form.cleaned_data["month"]
             team_year = int(form.cleaned_data["year"])
             team_group = form.cleaned_data["group"]
 
-            if (Team.objects.filter(month=team_month, year=team_year, group=team_group)
-                .exclude(pk=team_id)
-                    .exists()):
-
+            # Verificar si existe un equipo con los nuevos valores
+            if Team.objects.filter(month=team_month, year=team_year, group=team_group).exclude(pk=team_id).exists():
                 form.add_error("group", "Ya existe un equipo con dicho grupo")
             else:
-                print("no existe")
-                # 🚨 No reconoce que un equipo este en un campeonato
-                print(team.championship_set.exists())
-                if team.championship_set.exists():
-                    championships = team.championship_set.all()
-                    for championship in championships:
-                        cat = championship.categorys.name
-                        # Calcula el inicio del rango aceptable
-                        acceptable_range_start = cat - (cat % 10)
-                        # Calcula el final del rango aceptable
-                        acceptable_range_end = (acceptable_range_start + 9)
+                # Verificar si el equipo está asociado a algún campeonato
+                championship_teams = ChampionshipTeam.objects.filter(team=team)
+                for championship_team in championship_teams:
+                    category_start = int(championship_team.category.name)
+                    category_end = category_start + 9
+                    if not (category_start <= team_year <= category_end):
+                        print("Eliminando campeonato asociado")
+                        championship_team.delete()
 
-                        if acceptable_range_start <= team_year <= acceptable_range_end:
-                            continue
-                        print("no esta dentro del rango de categoria")
-                        championship.teams.remove(team)
-                        team.Persons.clear()
-                else:
-                    # 🚨 ver esta linea, cuando mando datos correctos se elimina los jugadores de este team
-                    # 🚨 osea cuando el equipo no tenga campeonato se eliminan los jugadores xd.
-                    # team.Persons.clear()
-                    print("no hace nada -> solo cambia los datos y ya")
+                # Eliminar jugadores que no cumplen con los requisitos
+                # Calcula el inicio del rango aceptable
+                acceptable_range_start = team.year - (team.year % 10)
+                # Calcula el final del rango aceptable
+                acceptable_range_end = (acceptable_range_start + 9)
+                for player in players:
+                    if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
+                        print("Eliminando jugador no apto")
+                        team.Persons.remove(player)
 
-            form.save()
-
-            return redirect("teams")
+                # Guardar el formulario después de realizar todas las verificaciones
+                form.save()
+                return redirect("teams")
     else:
-        form = TeamForm(instance=team)  # Pasa la instancia del equipo a editar
+        form = TeamForm(instance=team)
 
     context = {"form": form, "teams": team}
-
     return render(request, "championship/team/edit_team.html", context)
 
 
@@ -269,12 +262,14 @@ def view_team(request, team_id):
         team_year % 10
     )  # Redondea hacia abajo al rango de 10 años más cercano
     year_range_end = year_range_start + 9
-
-    players_available = Person.objects.filter(
-        Q(year_promotion__isnull=True)
-        | Q(year_promotion__gte=year_range_start, year_promotion__lte=year_range_end),
-        team=None,
-    )
+    if team.state == True :
+        players_available = Person.objects.filter(
+            Q(year_promotion__isnull=True)
+            | Q(year_promotion__gte=year_range_start, year_promotion__lte=year_range_end),
+            team=None,
+        )
+    else:
+        players_available = None
     # Calcula cuántas personas cumplen la condición y cuántas no
     cumplen_condicion = 0
     no_cumplen_condicion = 0
@@ -379,11 +374,26 @@ def create_championship(request):
 
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
-
+    
     if request.method == "POST":
         form = ChampionshipForm(request.POST, instance=championship)
-        if form.is_valid():
+        if form.is_valid():        
+            # Guarda las categorías antes de guardar el formulario
+            categories_before_save = set(championship.categorys.all())
+            # Guarda el campeonato actualizado
             form.save()
+            # Obtiene las categorías después de guardar el formulario
+            categories_after_save = set(form.cleaned_data['categorys'])
+            # Calcula las categorías eliminadas
+            deleted_categories = categories_before_save - categories_after_save
+            # Imprime los nombres de las categorías eliminadas
+            for deleted_category in deleted_categories:
+                print(f"Categoría eliminada: {deleted_category.name}")
+            # verfica con las categorías eliminas o desmarcadas y procede con elminar los jugadores del tal categoria campeonato
+            with transaction.atomic():
+                for old_category in deleted_categories :
+                    ChampionshipTeam.objects.filter(championship=championship, category=old_category).delete()
+
             # Puedes redirigir a donde corresponda después de editar
             return redirect("championships")
     else:
@@ -427,7 +437,6 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
 
     if request.method == "POST":
         # Elimina al equipo del campeonato
-        print("amifo")
         championship_team = ChampionshipTeam.objects.get(
             championship=championship, category=category, team=team
         )
@@ -484,7 +493,7 @@ def add_team_championship(request, championship_id, categorys_id):
 
     if championship.state:
         teams_availables = Team.objects.filter(
-            year__gte=año_inicial, year__lte=año_final
+            year__gte=año_inicial, year__lte=año_final, state=True
         ).exclude(id__in=team_ids)
     else:
         teams_availables = None
@@ -598,8 +607,20 @@ def edit_category(request, category_id):
                     return render(request, "championship/category/edit_category.html", context)
                 else:
                     form.save()
-                    messages.success(
-                        request, "Categoria editado correctamente")
+                    associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
+                    # Itera sobre los campeonatos y obtén los equipos asociados
+                    #for championship in associated_championship:
+                        #championship_teams = ChampionshipTeam.objects.filter(championship=championship, category=category)                        
+                        # Itera sobre los ChampionshipTeam y obtén los equipos
+                        #for championship_team in championship_teams:
+                            
+                            #team = championship_team.team
+                            #print(team.month)
+
+                    for champioship in associated_championship :
+                        ChampionshipTeam.objects.filter(championship=champioship, category=category).delete()                        
+                    
+                    messages.success(request, "Categoria editado correctamente")
                     return redirect("categorys")
             else :                
                 messages.info(request, "No se realizaron cambios en la categoria.")
@@ -609,10 +630,11 @@ def edit_category(request, category_id):
             associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
             context = {"form": form, "associated_championship": associated_championship}
             return render(request, "championship/category/edit_category.html", context)
-    else:
+    else:  
         associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
-        
-    context = {"form": form, "category": category, "associated_championship": associated_championship}
+        championship_teams = ChampionshipTeam.objects.filter( category=category) 
+
+    context = {"form": form, "category": category, "associated_championship": associated_championship,"championship_teams": championship_teams }
     return render(request,"championship/category/edit_category.html",context)
 
 
