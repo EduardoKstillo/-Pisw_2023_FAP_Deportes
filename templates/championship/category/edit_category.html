@@ -148,10 +148,12 @@
   $(document).ready(function () {
     // Obtener el valor inicial del campo al cargar la página
     var valorInicial = $("select[name='name']").val();
+    console.log(valorInicial);
     // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
     console.log(valorInicial);
     $("#guardarCambiosBtn").on("click", function () {
       var valorCampo = $("select[name='name']").val();
+      console.log(valorCampo);
       // Obtener el valor más reciente de nombreCampeonato
       var nombreCampeonato = obtenerNombreCampeonato();
       // Mostrar el modal solo si hay un campeonato asociado

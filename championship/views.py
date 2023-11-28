@@ -167,14 +167,19 @@ def edit_team(request, team_id):
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
                         team.Persons.remove(player)
+                        if player.promotion_delegate :
+                            player.promotion_delegate = False
+                            player.save()
 
                 # Guardar el formulario después de realizar todas las verificaciones
                 form.save()
                 return redirect("teams")
     else:
         form = TeamForm(instance=team)
+        player_associated =team.Persons.all()
+        championship_team = ChampionshipTeam.objects.filter(team = team)
 
-    context = {"form": form, "teams": team}
+    context = {"form": form, "teams": team, "player_associated" : player_associated, "championship_team": championship_team }
     return render(request, "championship/team/edit_team.html", context)
 
 
@@ -398,11 +403,12 @@ def edit_championship(request, championship_id):
             return redirect("championships")
     else:
         form = ChampionshipForm(instance=championship)
+        TeamChapionshipCategory = ChampionshipTeam.objects.filter(championship=championship)
+        categoryall = Category.objects.all()
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
-    context = {"form": form, "championships": championship,
-               "grouped_fields": grouped_fields, }
+    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields, "TeamChapionshipCategory" : TeamChapionshipCategory ,"categoryall": categoryall}
 
     return render(
         request,
