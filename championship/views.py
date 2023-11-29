@@ -6,12 +6,12 @@ from .forms import (CategoryForm, ChampionshipForm, TeamForm,
 from django.contrib.auth.decorators import login_required
 from .filters import PersonFilter, TeamFilter
 from .fixture import generate_fixture, print_fixture
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
 from copy import deepcopy
-
+import json
 
 
 # --Inicio Person------------------------------------------
@@ -589,8 +589,8 @@ def edit_category(request, category_id):
         form = CategoryForm(request.POST, instance=category)
 
         if form.is_valid():
-            category_name = int(form.cleaned_data['name'])                   
-            if name_category != category_name :
+            category_name = int(form.cleaned_data['name'])
+            if name_category != category_name:
                 if Category.objects.filter(name=category_name).exists():
                     # Si ya existe una categoria con el mismo nombre, muestra un mensaje de error o toma la acción que consideres apropiada.
                     context = {"form": form}
@@ -601,19 +601,24 @@ def edit_category(request, category_id):
                     messages.success(
                         request, "Categoria editado correctamente")
                     return redirect("categorys")
-            else :                
-                messages.info(request, "No se realizaron cambios en la categoria.")
-                return redirect("categorys")                
+            else:
+                messages.info(
+                    request, "No se realizaron cambios en la categoria.")
+                return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
-            associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
-            context = {"form": form, "associated_championship": associated_championship}
+            associated_championship = Championship.objects.filter(
+                Q(categorys=category) & Q(state=True))
+            context = {"form": form,
+                       "associated_championship": associated_championship}
             return render(request, "championship/category/edit_category.html", context)
     else:
-        associated_championship = Championship.objects.filter(Q(categorys=category) & Q(state=True))
-        
-    context = {"form": form, "category": category, "associated_championship": associated_championship}
-    return render(request,"championship/category/edit_category.html",context)
+        associated_championship = Championship.objects.filter(
+            Q(categorys=category) & Q(state=True))
+
+    context = {"form": form, "category": category,
+               "associated_championship": associated_championship}
+    return render(request, "championship/category/edit_category.html", context)
 
 
 # --Fin Categoria--------------------------------
@@ -697,13 +702,17 @@ def edit_discipline(request, discipline_id):
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
             messages.error(request, "Solo se aceptan letras")
-            associated_championship = Championship.objects.filter(Q(disciplines=discipline) & Q(state=True))
-            context = {"form": form, "associated_championship": associated_championship}
+            associated_championship = Championship.objects.filter(
+                Q(disciplines=discipline) & Q(state=True))
+            context = {"form": form,
+                       "associated_championship": associated_championship}
             return render(request, "championship/discipline/edit_discipline.html", context)
     else:
-        associated_championship = Championship.objects.filter(Q(disciplines=discipline) & Q(state=True))
+        associated_championship = Championship.objects.filter(
+            Q(disciplines=discipline) & Q(state=True))
 
-    context = {"form": form, "disciplines": discipline, "associated_championship": associated_championship}
+    context = {"form": form, "disciplines": discipline,
+               "associated_championship": associated_championship}
     return render(request, "championship/discipline/edit_discipline.html", context)
 
 
@@ -765,7 +774,7 @@ def delete_season(request, season_id):
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
     form = SeasonForm(instance=season)
-    #form = deepcopy(original_form)
+    # form = deepcopy(original_form)
 
     if request.method == "POST":
         form = SeasonForm(request.POST, instance=season)
@@ -780,25 +789,30 @@ def edit_season(request, season_id):
                     messages.error(request, "Ya existe tal temporada")
                     return render(request, "championship/season/edit_season.html", context)
                 else:
-                    form.save()        
+                    form.save()
                     messages.success(
                         request, "Temporada editado correctamente")
                     return redirect("seasons")
             else:
-                messages.info(request, "No se realizaron cambios en la temporada.")
+                messages.info(
+                    request, "No se realizaron cambios en la temporada.")
                 return redirect("seasons")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
             messages.error(request, "Solo se aceptan letras")
-            associated_championship = Championship.objects.filter(Q(seasons=season) & Q(state=True))
-            #form = deepcopy(original_form)
-            context = {"form": form, "associated_championship": associated_championship}
+            associated_championship = Championship.objects.filter(
+                Q(seasons=season) & Q(state=True))
+            # form = deepcopy(original_form)
+            context = {"form": form,
+                       "associated_championship": associated_championship}
             return render(request, "championship/season/edit_season.html", context)
     else:
-        # Obtiene los campeonatos asociados a tal categoria 
-        associated_championship = Championship.objects.filter(Q(seasons=season) & Q(state=True))
+        # Obtiene los campeonatos asociados a tal categoria
+        associated_championship = Championship.objects.filter(
+            Q(seasons=season) & Q(state=True))
 
-    context = {"form": form, "seasons": season, "associated_championship": associated_championship}
+    context = {"form": form, "seasons": season,
+               "associated_championship": associated_championship}
     return render(request, "championship/season/edit_season.html", context)
 
 
@@ -826,20 +840,32 @@ def fixture(request, id_champ):
     )
 
 
-def create_fixture(request, id_champ):
-    championship = get_object_or_404(Championship, pk=id_champ)
-    print(championship)
+def create_fixture(request, championship_id, categorys_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=categorys_id)
 
-    # Verificar si ya existe un fixture para el campeonato
-    existing_fixture = Game.objects.filter(championship=championship)
-    if existing_fixture.exists():
-        print(existing_fixture)
-        messages.success(request, "El fixture ya esta creado!")
-        return redirect("fixture", id_champ)
+    championship_teams = ChampionshipTeam.objects.filter(
+        championship_id=championship_id, category_id=categorys_id
+    )
+    #datos_json = [{'nombre': obj.nombre, 'otro_campo': obj.otro_campo} for obj in objetos]
 
-    teams = championship.teams.all()
-    fixture = generate_fixture(teams, championship)
-    return redirect("fixture", id_champ)
+
+    # team_ids = championship_teams.values_list("team_id")
+    # teams = Team.objects.filter(id__in=team_ids)
+
+    print(championship_teams)
+
+    # # Verificar si ya existe un fixture para el campeonato
+    # existing_fixture = Game.objects.filter(championship=championship)
+    # if existing_fixture.exists():
+    #     print(existing_fixture)
+    #     messages.success(request, "El fixture ya esta creado!")
+    #     return redirect("fixture", id_champ)
+
+    # teams = championship.teams.all()
+    # fixture = generate_fixture(teams, championship)
+    # return redirect("fixture", id_champ)
+    return HttpResponse(championship_teams)
 
 
 def games(request, id_champ):
