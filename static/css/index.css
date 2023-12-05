@@ -11,11 +11,6 @@ body {
   display: grid;
 }
 
-.btn:hover {
-  background-color: #00ff00;
-  color: #ffffff;
-}
-
 .mi-alerta {
   margin-top: 2px;
   padding: 5px;
