@@ -45,7 +45,7 @@
       </svg>
       Volver a categorias
     </a>
-    <style type="text/css">
+    <!-- <style type="text/css">
       .table-container {
         height: 10em;
       }
@@ -77,22 +77,13 @@
         word-wrap: break-word;
         max-width: 150px;
       }
-    </style>
+    </style> -->
 
-    <div
-      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
-    >
-      <a class="list-group-item bg-white" href="">Campeonato</a>
-      <a class="list-group-item bg-white" href="{% url 'fixture' %}">Fixture</a>
-      <a class="list-group-item bg-white" href="{% url 'tabla_posiciones' %}"
-        >Tabla de posiciones</a
-      >
-      <a class="list-group-item bg-white" href="{% url 'amonestaciones' %}"
-        >Amonestaciones</a
-      >
-      <a class="list-group-item active bg-white" href="{% url 'goleadores' %}"
-        >Goleadores</a
-      >
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item bg-white flex-fill" href="{% url 'fixture' %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' %}">Amonestaciones</a>
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'goleadores' %}">Goleadores</a>
     </div>
 
     <div
@@ -103,7 +94,7 @@
         color: black;
       "
     >
-      <table class="table rounded rounded-3 overflow-hidden text-center">
+      <table class="table overflow-hidden text-center">
         <thead style="height: 65px; vertical-align: middle">
           <tr style="font-size: 17px; font-family: 'Montserrat'">
             <th
