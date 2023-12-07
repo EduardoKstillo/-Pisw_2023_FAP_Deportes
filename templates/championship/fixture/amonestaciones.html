@@ -1,26 +1,228 @@
-<!-- tu_template.html -->
-<h1>Resumen de Jugadores</h1>
+{% extends 'layout/main.html' %} {% block content %}
+<div class="mt-4 mb-4">
+  <div class="col-md-8 offset-md-2">
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+      {{championships.name}} - {{championships.year}} - {{championships.seasons}} - Categoría: {{categorys.name}}
+    </h1>
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      Amonestaciones
+    </h1>
+    <a
+      class="btn mt-4 mb-3"
+      role="button"
+      href="{% url 'seasons' %}"
+      style="
+        background-color: #abafd0;
+        font-size: 20px;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+      "
+      onmouseover="this.style.backgroundColor='#7D8093'"
+      onmouseout="this.style.backgroundColor='#ABAFD0'"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="black"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a categorias
+    </a>
+    <!-- Altura editada en height: 100%; -->
+    <!-- <style type="text/css">
+      .table-container {
+        height: 10em;
+      }
+      table {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+        width: 100%;
+      }
+      table thead {
+        flex: 0 0 auto;
+        width: calc(100% - 0.9em);
+      }
+      table tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: scroll;
+      }
+      table tbody tr {
+        width: 100%;
+      }
+      table thead,
+      table tbody tr {
+        display: table;
+        table-layout: fixed;
+      }
+      .table th,
+      .table td {
+        word-wrap: break-word;
+        max-width: 150px;
+      }
+    </style> -->
 
-<table>
-  <thead>
-    <tr>
-      <th>Jugador</th>
-      <th>Equipo</th>
-      <th>Total Card Red</th>
-      <th>Total Card Yellow</th>
-      <th>Total Goals</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for player in players %} {% for summary in players_summary %} {% if
-    summary.player == player.id %}
-    <tr>
-      <td>{{ player.name }}</td>
-      <td>{{ player.team_set.first }}</td>
-      <td>{{ summary.total_card_red|default:0 }}</td>
-      <td>{{ summary.total_card_yellow|default:0 }}</td>
-      <td>{{ summary.total_goals|default:0 }}</td>
-    </tr>
-    {% endif %} {% endfor %} {% endfor %}
-  </tbody>
-</table>
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
+    </div>
+
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-6" style="width: 100%; margin-top: 10px;">
+      <a class="list-group-item active bg-white flex-fill" data-toggle="list" href="#amarillas">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-fill" viewBox="0 0 16 16" style="margin-right: 20px;">
+          <path fill="yellow" fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2"/>
+        </svg>
+        Amarillas
+      </a>
+      <a class="list-group-item bg-white flex-fill" data-toggle="list" href="#rojas">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-fill" viewBox="0 0 16 16" style="margin-right: 20px;">
+          <path fill="red" fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2"/>
+        </svg>
+        Rojas
+      </a>
+    </div>
+
+    <div class="row row-bordered row-border-dark">
+      <div class="col-12 mx-0 ">
+        <div class="tab-content   ">
+          
+          <div
+            class="tab-pane fade active show"
+            style="
+              background-color: white; 
+              box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);             
+              color: black;
+            " id="amarillas"
+          >
+            <table class="table overflow-hidden text-center">
+              <thead style="height: 65px; vertical-align: middle">
+                <tr style="font-size: 17px; font-family: 'Montserrat'">
+                  <th
+                    style="
+                      background-color: #f4f4f4;
+                      border-right: 1px solid rgba(0, 0, 0, 0.15);
+                      font-weight: normal;
+                    "
+                  >
+                    Jugador
+                  </th>
+                  <th
+                    style="
+                      background-color: #f4f4f4;
+                      border-right: 1px solid rgba(0, 0, 0, 0.15);
+                      font-weight: normal;
+                    "
+                  >
+                    Equipo
+                  </th>
+                  <th 
+                    style="background-color: #f4f4f4; font-weight: normal">
+                    Tarjetas amarillas
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for player in players %} {% for summary in players_summary %} 
+                {% if summary.player == player.id %}
+                <tr
+                  style="
+                    font-size: 16px;
+                    font-family: 'Montserrat';
+                    color: black;
+                    font-weight: 1;
+                  "
+                >
+                  <td>{{ player.name }}</td>
+                  <td>{{ player.team_set.first }}</td>
+                  <td>{{ summary.total_card_yellow|default:0 }}</td>
+                </tr>
+                {% endif %} {% endfor %} {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          <div
+            class="tab-pane fade"
+            style="
+              background-color: white;
+              box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+              color: black;
+            " id="rojas"
+          >
+            <table class="table rounded rounded-3 overflow-hidden text-center">
+              <thead style="height: 65px; vertical-align: middle">
+                <tr style="font-size: 17px; font-family: 'Montserrat'">
+                  <th
+                    style="
+                      background-color: #f4f4f4;
+                      border-right: 1px solid rgba(0, 0, 0, 0.15);
+                      font-weight: normal;
+                    "
+                  >
+                    Jugador
+                  </th>
+                  <th
+                    style="
+                      background-color: #f4f4f4;
+                      border-right: 1px solid rgba(0, 0, 0, 0.15);
+                      font-weight: normal;
+                    "
+                  >
+                    Equipo
+                  </th>
+                  <th style="background-color: #f4f4f4; font-weight: normal">
+                    Tarjetas rojas
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for player in players %}
+                  {% for summary in players_summary %}
+                    {% if summary.player == player.id %}
+                      <tr
+                        style="
+                          font-size: 16px;
+                          font-family: 'Montserrat';
+                          color: black;
+                          font-weight: 1;
+                        "
+                      >
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.team_set.first }}</td>
+                        <td>{{ summary.total_card_red|default:0 }}</td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>      
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
