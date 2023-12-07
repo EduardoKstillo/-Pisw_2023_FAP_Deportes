@@ -1,0 +1,22 @@
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="number" name="team1_goals">
+    <input type="number" name="team2_goals">
+    <h2>{{ game.team1 }}</h2>
+    {% for form in forms_team1 %}
+        <div>
+            <strong>{{ form.initial.player.name }}</strong>
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+
+    <h2>{{ game.team2 }}</h2>
+    {% for form in forms_team2 %}
+        <div>
+            <strong>{{ form.initial.player.name }}</strong>
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Guardar Resultados</button>
+</form>

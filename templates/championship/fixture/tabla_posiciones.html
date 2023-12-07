@@ -90,11 +90,11 @@
       >Fixture</a>
       <a
         class="list-group-item active bg-white"        
-        href="{% url 'tabla_posiciones' %}"
+        href="{% url 'tabla_posiciones' 1 1 %}"
       >Tabla de posiciones</a>
       <a
         class="list-group-item bg-white"        
-        href="{% url 'amonestaciones' %}"
+        href=""
       >Amonestaciones</a>
       <a
         class="list-group-item bg-white"        
@@ -319,4 +319,41 @@
     </div>
   </div>
 </div>
+
+
+<!--Tabla de posiciones basic_front-->
+<h1>Tabla de posiciones</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Equipo</th>
+            <th>Partidos Jugados</th>
+            <th>Partidos Ganados</th>
+            <th>Partidos Empatados</th>
+            <th>Partidos Perdidos</th>
+            <th>Goles a Favor</th>
+            <th>Goles en Contra</th>
+            <th>Diferencia de Goles</th>
+            <th>Puntos Totales</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ result.team.month }}</td>
+                <td>{{ result.pj }}</td>
+                <td>{{ result.pg }}</td>
+                <td>{{ result.pe }}</td>
+                <td>{{ result.pp }}</td>
+                <td>{{ result.gf }}</td>
+                <td>{{ result.gc }}</td>
+                <td>{{ result.dg }}</td>
+                <td>{{ result.pts }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
+

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Championship, Team, Person, Discipline, Season
+from .models import Category, Championship, Team, Person, Discipline, Season, PlayerGame
 from .validators import validate_str
 from django.core import validators
 import datetime
@@ -373,3 +373,19 @@ class PersonForm(forms.ModelForm):
             'promotion_delegate': 'Delegado de promocion:',
             'partner': 'Socio:'
         }
+
+class PlayerGameForm(forms.ModelForm):
+    class Meta:
+        model = PlayerGame
+        fields = ['card_yellow', 'card_red', 'goals']
+
+    def __init__(self, *args, **kwargs):
+        super(PlayerGameForm, self).__init__(*args, **kwargs)
+    
+    def save(self, commit=True):
+        instance = super(PlayerGameForm, self).save(commit=False)
+        instance.game = self.initial['game']
+        if commit:
+            instance.player = self.initial['player']
+            instance.save()
+        return instance
