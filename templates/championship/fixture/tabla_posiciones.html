@@ -2,7 +2,7 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      Pedro Diez Canseco - 2023 - Apertura - Categoría: 1990
+      {{championships.name}} - {{championships.year}} - {{championships.seasons}} - Categoría: {{categorys.name}}
     </h1>
     <h1
       class="text-left mt-3"
@@ -45,7 +45,7 @@
       </svg>
       Volver a categorias
     </a>
-    <style type="text/css">
+    <!-- <style type="text/css">
       .table-container {
         height: 10em;
       }
@@ -77,22 +77,13 @@
         word-wrap: break-word;
         max-width: 150px;
       }
-    </style>
+    </style> -->
 
-    <div
-      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
-    >
-      <a class="list-group-item bg-white" href="">Campeonato</a>
-      <a class="list-group-item bg-white" href="{% url 'fixture' %}">Fixture</a>
-      <a
-        class="list-group-item active bg-white"
-        href="{% url 'tabla_posiciones' 1 1 %}"
-        >Tabla de posiciones</a
-      >
-      <a class="list-group-item bg-white" href="">Amonestaciones</a>
-      <a class="list-group-item bg-white" href="{% url 'goleadores' %}"
-        >Goleadores</a
-      >
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
     </div>
 
     <div
@@ -191,6 +182,7 @@
           </tr>
         </thead>
         <tbody>
+          {% for result in results %}
           <tr
             style="
               font-size: 16px;
@@ -200,109 +192,15 @@
             "
           >
             <td>1</td>
-            <td>Enero.1990.A</td>
-            <td>10</td>
-            <td>9</td>
-            <td>1</td>
-            <td>0</td>
-            <td>20</td>
-            <td>5</td>
-            <td>15</td>
-            <td>27</td>
-          </tr>
-          <tr
-            style="
-              font-size: 16px;
-              font-family: 'Montserrat';
-              color: black;
-              font-weight: 1;
-            "
-          >
-            <td>2</td>
-            <td>Enero.1999.A</td>
-            <td>10</td>
-            <td>8</td>
-            <td>1</td>
-            <td>1</td>
-            <td>18</td>
-            <td>8</td>
-            <td>10</td>
-            <td>34</td>
-          </tr>
-          {% for championship in championships %}
-          <tr
-            style="
-              font-size: 16px;
-              font-family: 'Montserrat';
-              color: black;
-              font-weight: 1;
-            "
-          >
-            <td>{{ championship.name }}</td>
-            <td>{{championship.year}}</td>
-            <td>{{championship.seasons}}</td>
-            <td>{% if championship.state %} SI {% else %} NO {% endif %}</td>
-            <td>
-              <a
-                href="{% url 'view_championship' championship.id %}"
-                type="button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="#3040d0"
-                  class="bi bi-card-list"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"
-                  />
-                  <path
-                    d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"
-                  />
-                </svg>
-              </a>
-            </td>
-            <td>
-              <a
-                href="{% url 'edit_championship' championship.id %}"
-                type="button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="#FF8C00"
-                  class="bi bi-pencil-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"
-                  />
-                </svg>
-              </a>
-            </td>
-            <td>
-              <a
-                href="{% url 'delete_championship' championship.id%}"
-                type="button"
-                onclick="confirmDelete(event)"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="#D95050"
-                  class="bi bi-trash-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-                  />
-                </svg>
-              </a>
-            </td>
+            <td>{{ result.team.month }}</td>
+            <td>{{ result.pj }}</td>
+            <td>{{ result.pg }}</td>
+            <td>{{ result.pe }}</td>
+            <td>{{ result.pp }}</td>
+            <td>{{ result.gf }}</td>
+            <td>{{ result.gc }}</td>
+            <td>{{ result.dg }}</td>
+            <td>{{ result.pts }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -312,7 +210,7 @@
 </div>
 
 <!--Tabla de posiciones basic_front-->
-<h1>Tabla de posiciones</h1>
+<!-- <h1>Tabla de posiciones</h1>
 
 <table>
   <thead>
@@ -345,4 +243,4 @@
   </tbody>
 </table>
 
-{% endblock %}
+{% endblock %} -->

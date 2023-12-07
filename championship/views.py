@@ -862,9 +862,10 @@ def create_fixture(request, championship_id, category_id):
     print(fixture)
     # filtra todos los juegos creados anteriormente
     fixture = Game.objects.filter(championship=championship, category=category)
-    # return redirect("fixture", id_champ)
-    return render(request, "championship/game/fixture.html", {'fixture': fixture})
 
+    context = {'fixture': fixture, 'championships': championship, 'categorys': category}
+    # return redirect("fixture", id_champ)
+    return render(request, "championship/game/fixture.html", context)
 
 def game(request, game_id):
     # obtengo el game en especifico
@@ -939,13 +940,20 @@ def table_result_championship(game):
 
 # --Listar tabla de posiciones----------------------------------------------------------------------
 def tabla_posiciones(request, championship_id, category_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=category_id)
     # filtra los resultados del campeoanto en especifico
     results = Result.objects.filter(championship=championship_id, category =category_id)
-    return render(request, 'championship/fixture/tabla_posiciones.html', {'results': results})
+
+    context = {'results': results, 'championships': championship, 'categorys': category}
+
+    return render(request, 'championship/fixture/tabla_posiciones.html', context)
 
 
 
 def amonestaciones(request, championship_id, category_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=category_id)
     # Filtrar los juegos según category_id y championship_id
     leaked_games = Game.objects.filter(category_id=category_id, championship_id=championship_id)
 
@@ -967,6 +975,8 @@ def amonestaciones(request, championship_id, category_id):
     context = {
         'players_summary': players_summary,
         'players': players,
+        'championships': championship, 
+        'categorys': category
     }
 
     return render(request, 'championship/fixture/amonestaciones.html', context)
@@ -974,6 +984,8 @@ def amonestaciones(request, championship_id, category_id):
 
 
 def goleadores(request, championship_id, category_id):
+    championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=category_id)
     # Filtrar los juegos según category_id y championship_id
     leaked_games = Game.objects.filter(category_id=category_id, championship_id=championship_id)
 
@@ -994,6 +1006,8 @@ def goleadores(request, championship_id, category_id):
     context = {
         'players_summary': players_summary,
         'players': players,
+        'championships': championship, 
+        'categorys': category
     }
 
     return render(request, 'championship/fixture/goleadores.html', context)

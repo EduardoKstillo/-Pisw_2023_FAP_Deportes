@@ -2,7 +2,7 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      Pedro Diez Canseco - 2023 - Apertura - Categoría: 1990
+      {{championships.name}} - {{championships.year}} - {{championships.seasons}} - Categoría: {{categorys.name}}
     </h1>
     <h1
       class="text-left mt-3"
@@ -52,12 +52,13 @@
         color: white;
       }
     </style>
-    <div class="list-group list-group-horizontal fs-5">
+
+    <!-- <div class="list-group list-group-horizontal fs-5">
       <a class="list-group-item bg-white" href="">Campeonato</a>
       <a class="list-group-item active bg-white" href=""
         >Fixture</a
       >
-      <a class="list-group-item bg-white" href=""
+      <a class="list-group-item bg-white" href="{% url 'tabla_posiciones' championships.id categorys.id %}"
         >Tabla de posiciones</a
       >
       <a class="list-group-item bg-white" href=""
@@ -66,7 +67,15 @@
       <a class="list-group-item bg-white" href=""
         >Goleadores</a
       >
+    </div> -->
+
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
     </div>
+
     <div class="container bg-white">
       <div class="bg-white mt-3">
         <!-- Jornada 1 -->
