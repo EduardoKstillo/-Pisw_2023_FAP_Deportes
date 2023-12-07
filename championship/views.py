@@ -852,25 +852,49 @@ def create_fixture(request, championship_id, category_id):
     # Verificar si ya existe un fixture para el campeonato
     existing_fixture = Game.objects.filter(championship=championship, category=category)
     if existing_fixture.exists():
+        championship = get_object_or_404(Championship, pk=championship_id)
+        category = get_object_or_404(Category, pk=category_id)
+        print("fixture existente")
         print(existing_fixture)
+        grouped_fixtures = {}
+        for fixture in existing_fixture:
+            round_number = fixture.round_number
+            if round_number not in grouped_fixtures:
+                grouped_fixtures[round_number] = []
+            grouped_fixtures[round_number].append(fixture)
         #messages.success(request, "El fixture ya esta creado!")
         # retorna el fixture existente del campeanato
-        return render(request, "championship/game/fixture.html", {'fixture': existing_fixture})
+        context = {'grouped_fixtures': grouped_fixtures, 'championships': championship, 'categorys': category}
+        return render(request, "championship/game/fixture.html", context)
     
     # crear el fixture, los diferentes juegos que tendra el campeonato
     fixture = generate_fixture(teams, championship, category)
+    print("nuevo fixture")
     print(fixture)
+    
     # filtra todos los juegos creados anteriormente
     fixture = Game.objects.filter(championship=championship, category=category)
+    grouped_fixtures = {}
 
-    context = {'fixture': fixture, 'championships': championship, 'categorys': category}
+
+    for fixture in fixture:
+        round_number = fixture.round_number
+        if round_number not in grouped_fixtures:
+            grouped_fixtures[round_number] = []
+        grouped_fixtures[round_number].append(fixture)
+
+    print("groupfixtures")
+
+    print(grouped_fixtures)
+
+    context = {'grouped_fixtures': grouped_fixtures, 'championships': championship, 'categorys': category}
+    
     # return redirect("fixture", id_champ)
     return render(request, "championship/game/fixture.html", context)
 
-def game(request, game_id):
+def game(request, game_id ):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
-    
     # Obtener jugadores de cada equipo
     players_team1 = game.team1.Persons.all()
     players_team2 = game.team2.Persons.all()
@@ -902,6 +926,7 @@ def game(request, game_id):
                     game.save()
                 #
                 table_result_championship(game)
+                return()
 
         else:
             #messages.success(request, "Ingrese valores validos")

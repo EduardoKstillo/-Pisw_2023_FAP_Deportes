@@ -17,6 +17,7 @@ def generate_fixture(teams_queryset, championship, category):
         round_fixtures = []
         for i in range(half_size):
             local_team = teams[i]
+            print("team local")
             print(local_team)
             away_team = teams[-i - 1]
             print(away_team)

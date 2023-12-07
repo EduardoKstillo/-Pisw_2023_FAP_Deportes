@@ -2,7 +2,8 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      {{championships.name}} - {{championships.year}} - {{championships.seasons}} - Categoría: {{categorys.name}}
+      {{championships.name}} - {{championships.year}} -
+      {{championships.seasons}} - Categoría: {{categorys.name}}
     </h1>
     <h1
       class="text-left mt-3"
@@ -19,7 +20,7 @@
     <a
       class="btn mt-4 mb-3"
       role="button"
-      href="{% url 'seasons' %}"
+      href="{% url 'categorys' %}"
       style="
         background-color: #abafd0;
         font-size: 20px;
@@ -79,11 +80,30 @@
       }
     </style> -->
 
-    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
-      <a class="list-group-item bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
-      <a class="list-group-item active bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
-      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
-      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
+    <div
+      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
+      style="width: 100%"
+    >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'create_fixture' championships.id categorys.id %}"
+        >Fixture</a
+      >
+      <a
+        class="list-group-item active bg-white flex-fill"
+        href="{% url 'tabla_posiciones' championships.id categorys.id %}"
+        >Tabla de posiciones</a
+      >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'amonestaciones' championships.id categorys.id %}"
+        >Amonestaciones</a
+      >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'goleadores' championships.id categorys.id %}"
+        >Goleadores</a
+      >
     </div>
 
     <div

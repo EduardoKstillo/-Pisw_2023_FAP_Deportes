@@ -20,7 +20,7 @@
     <a
       class="btn mt-4 mb-3"
       role="button"
-      href="{% url 'seasons' %}"
+      href="{% url 'view_championship' championships.id %}"
       style="
         background-color: #abafd0;
         font-size: 20px;
@@ -53,37 +53,19 @@
         color: white;
       }
     </style>
-
-    <div
-      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
-      style="width: 100%"
-    >
-      <a
-        class="list-group-item active bg-white flex-fill"
-        href="{% url 'create_fixture' championships.id categorys.id %}"
-        >Fixture</a
-      >
-      <a
-        class="list-group-item bg-white flex-fill"
-        href="{% url 'tabla_posiciones' championships.id categorys.id %}"
-        >Tabla de posiciones</a
-      >
-      <a
-        class="list-group-item bg-white flex-fill"
-        href="{% url 'amonestaciones' championships.id categorys.id %}"
-        >Amonestaciones</a
-      >
-      <a
-        class="list-group-item bg-white flex-fill"
-        href="{% url 'goleadores' championships.id categorys.id %}"
-        >Goleadores</a
-      >
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
     </div>
+
 
     <div class="container bg-white">
       <div class="bg-white mt-3">
         <!-- Jornada 1 -->
-        <div class="text-center" id="tabla-jornada-1 " style="height: 55vh">
+        {% for round_number, fixtures in grouped_fixtures.items %}
+        <div class="text-center" id="tabla-jornada-{{round_number}} " style="display: none; height: 55vh">
           <div class="btn-group">
             <button class="btn" onclick="mostrarTabla(-1)">
               <svg
@@ -100,7 +82,7 @@
                 />
               </svg>
             </button>
-            <span class="my-auto" style="font-size: 25px">Jornada 1</span>
+            <span class="my-auto" style="font-size: 25px">Jornada {{round_number}}</span>
             <button class="btn" onclick="mostrarTabla(1)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -117,433 +99,239 @@
               </svg>
             </button>
           </div>
-          <!--
-          <div class="border border-primary-subtle text-start fs-5">
-            Jornada 1
+            <!--
+            <div class="border border-primary-subtle text-start fs-5">
+              Jornada 1
+            </div>
+          -->
+            {% comment %} {% for fix in fixture %} {% if fix.round_number == 1%}
+            <p>{{fix}}</p>
+            {% endif %} {% endfor%} {% endcomment %}
+            
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Lugar/Fecha</th>
+                  <th>Equipo 1</th>
+                  <th>Resultado</th>
+                  <th>Equipo 2</th>
+                  <th>Editar partido</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                {% for fixture in fixtures %}
+                <tr>
+                  <td>Lugar 23/11/2023 8:00</td>
+                  <td class="text-center">{{ fixture.team1.name}}{{ fixture.team1.month}}{{ fixture.team1.year}}</td>
+                  <td class="text-center">-</td>
+                  <td class="text-center">{{ fixture.team2.name}}{{ fixture.team2.month}}</td>
+                  <td>
+                    <a
+                      class="btn btn-primary my-auto"
+                      href="{% url 'game' fixture.id  %}"
+                      role="button"
+                      style="background: #4e688e"
+                      >+</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-        -->
-          {% for fix in fixture %} {% if fix.round_number == 1%}
-          <p>{{fix}}</p>
-          {% endif %} {% endfor%}
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lugar/Fecha</th>
-                <th>Equipo 1</th>
-                <th>Resultado</th>
-                <th>Equipo 2</th>
-                <th>Editar partido</th>
-              </tr>
-            </thead>
-            <tbody class="text-center">
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo A</td>
-                <td>-</td>
-                <td>Equipo B</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo C</td>
-                <td>-</td>
-                <td>Equipo D</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    data-toggle="modal"
-                    data-target="#modalResultados"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <!-- Agrega más filas según sea necesario -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Jornada 2 -->
-        <div
-          class="text-center"
-          id="tabla-jornada-2"
-          style="display: none; height: 55vh"
-        >
-          <div class="btn-group">
-            <button class="btn" onclick="mostrarTabla(-1)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-caret-left-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="#4e688e"
-                  d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
-                />
-              </svg>
-            </button>
-            <span class="my-auto" style="font-size: 25px">Jornada 2</span>
-            <button class="btn" onclick="mostrarTabla(1)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-caret-right-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="#4e688e"
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
-                />
-              </svg>
-            </button>
-          </div>
-          <!--
-          <div class="border border-primary-subtle text-start fs-5">
-            Jornada 2
-          </div>
--->
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lugar/Fecha</th>
-                <th>Equipo 1</th>
-                <th>Resultado</th>
-                <th>Equipo 2</th>
-                <th>Editar partido</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo B</td>
-                <td>-</td>
-                <td>Equipo D</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo A</td>
-                <td>-</td>
-                <td>Equipo C</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <!-- Agrega más filas según sea necesario -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Agrega más contenedores y tablas para jornadas adicionales -->
-        <div
-          class="text-center"
-          id="tabla-jornada-2"
-          style="display: none; height: 55vh"
-        >
-          <div class="btn-group">
-            <button class="btn" onclick="mostrarTabla(-1)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-caret-left-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="#4e688e"
-                  d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
-                />
-              </svg>
-            </button>
-            <span class="my-auto" style="font-size: 25px">Jornada 3</span>
-            <button class="btn" onclick="mostrarTabla(1)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-caret-right-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="#4e688e"
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
-                />
-              </svg>
-            </button>
-          </div>
-          <!--
-          <div class="border border-primary-subtle text-start fs-5">
-            Jornada 3
-          </div>
-        -->
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lugar/Fecha</th>
-                <th>Equipo 1</th>
-                <th>Resultado</th>
-                <th>Equipo 2</th>
-                <th>Editar partido</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo E</td>
-                <td>-</td>
-                <td>Equipo F</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Lugar 23/11/2023 8:00</td>
-                <td>Equipo G</td>
-                <td>-</td>
-                <td>Equipo H</td>
-                <td>
-                  <a
-                    class="btn btn-primary my-auto"
-                    href="#"
-                    role="button"
-                    style="background: #4e688e"
-                    >+</a
-                  >
-                </td>
-              </tr>
-              <!-- Agrega más filas según sea necesario -->
-            </tbody>
-          </table>
+          {% endfor %}
         </div>
       </div>
-    </div>
-    <div class="modal modal-lg" id="modalResultados">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <!-- Cabecera de la ventana emergente -->
-          <div class="modal-header">
-            <h4 class="modal-title">Formulario de Resultados</h4>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
+      <div class="modal modal-lg" id="modalResultados">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Cabecera de la ventana emergente -->
+            <div class="modal-header">
+              <h4 class="modal-title">Formulario de Resultados</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
 
-          <!-- Contenido del formulario -->
-          <div class="modal-body">
-            <!-- Formulario para ingresar resultados del partido -->
-            <form>
-              <div class="container">
-                <div class="row">
-                  <div class="form-group col-6">
-                    <label for="golesTotalesEquipo1"
-                      >Goles Totales del Equipo 1:</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="golesTotalesEquipo1"
-                      placeholder="Ingrese los goles totales del Equipo 1"
-                    />
-                  </div>
-                  <div class="form-group col-6">
-                    <label for="golesTotalesEquipo2"
-                      >Goles Totales del Equipo 2:</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="golesTotalesEquipo2"
-                      placeholder="Ingrese los goles totales del Equipo 1"
-                    />
+            <!-- Contenido del formulario -->
+            <div class="modal-body">
+              <!-- Formulario para ingresar resultados del partido -->
+              <form>
+                <div class="container">
+                  <div class="row">
+                    <div class="form-group col-6">
+                      <label for="golesTotalesEquipo1"
+                        >Goles Totales del Equipo 1:</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="golesTotalesEquipo1"
+                        placeholder="Ingrese los goles totales del Equipo 1"
+                      />
+                    </div>
+                    <div class="form-group col-6">
+                      <label for="golesTotalesEquipo2"
+                        >Goles Totales del Equipo 2:</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="golesTotalesEquipo2"
+                        placeholder="Ingrese los goles totales del Equipo 1"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Sección para los jugadores del Equipo 1 -->
-              <div id="equipo1Section">
-                <h5>Equipo 1</h5>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Nombre del Jugador</th>
-                      <th scope="col">Tarjetas Rojas</th>
-                      <th scope="col">Tarjetas Amarillas</th>
-                      <th scope="col">Goles Marcados</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Ejemplo de 5 filas -->
-                    <tr>
-                      <td>
-                        <span class="my-auto">Jugador 1</span>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Tarjetas Rojas"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Tarjetas Amarillas"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Goles Marcados"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <!-- Repite según sea necesario -->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <!-- Sección para los jugadores del Equipo 1 -->
+                <div id="equipo1Section">
+                  <h5>Equipo 1</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre del Jugador</th>
+                        <th scope="col">Tarjetas Rojas</th>
+                        <th scope="col">Tarjetas Amarillas</th>
+                        <th scope="col">Goles Marcados</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Ejemplo de 5 filas -->
+                      <tr>
+                        <td>
+                          <span class="my-auto">Jugador 1</span>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Tarjetas Rojas"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Tarjetas Amarillas"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Goles Marcados"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <!-- Repite según sea necesario -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-              <!-- Sección para los jugadores del Equipo 2 (inicialmente oculta) -->
-              <div id="equipo2Section" style="display: none">
-                <h5>Equipo 2</h5>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Nombre del Jugador</th>
-                      <th scope="col">Tarjetas Rojas</th>
-                      <th scope="col">Tarjetas Amarillas</th>
-                      <th scope="col">Goles Marcados</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Ejemplo de 5 filas -->
-                    <tr>
-                      <td>
-                        <span class="my-auto">Jugador 1</span>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Tarjetas Rojas"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Tarjetas Amarillas"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          class="form-control"
-                          placeholder="Goles Marcados"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <!-- Repite según sea necesario -->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <!-- Sección para los jugadores del Equipo 2 (inicialmente oculta) -->
+                <div id="equipo2Section" style="display: none">
+                  <h5>Equipo 2</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre del Jugador</th>
+                        <th scope="col">Tarjetas Rojas</th>
+                        <th scope="col">Tarjetas Amarillas</th>
+                        <th scope="col">Goles Marcados</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Ejemplo de 5 filas -->
+                      <tr>
+                        <td>
+                          <span class="my-auto">Jugador 1</span>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Tarjetas Rojas"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Tarjetas Amarillas"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Goles Marcados"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <!-- Repite según sea necesario -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-              <!-- Botón para pasar a los jugadores del Equipo 2 -->
+                <!-- Botón para pasar a los jugadores del Equipo 2 -->
+                <button
+                  type="button"
+                  class="btn btn-primary mt-3"
+                  id="btnSiguiente"
+                >
+                  Siguiente
+                </button>
+              </form>
+            </div>
+
+            <!-- Pie de la ventana emergente -->
+            <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-primary mt-3"
-                id="btnSiguiente"
+                class="btn btn-secondary"
+                data-dismiss="modal"
               >
-                Siguiente
+                Cerrar
               </button>
-            </form>
-          </div>
-
-          <!-- Pie de la ventana emergente -->
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cerrar
-            </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Script para mostrar/ocultar las secciones del Equipo 1 y Equipo 2 -->
-    <script>
-      document
-        .getElementById("btnSiguiente")
-        .addEventListener("click", function () {
-          document.getElementById("equipo1Section").style.display = "none";
-          document.getElementById("equipo2Section").style.display = "block";
-        });
-    </script>
+      <!-- Script para mostrar/ocultar las secciones del Equipo 1 y Equipo 2 -->
+      <script>
+        document
+          .getElementById("btnSiguiente")
+          .addEventListener("click", function () {
+            document.getElementById("equipo1Section").style.display = "none";
+            document.getElementById("equipo2Section").style.display = "block";
+          });
+      </script>
 
-    <script>
-      let jornadaActual = 1;
-      mostrarTabla(0);
+      <script>
+        let jornadaActual = 1;
+        mostrarTabla(0);
 
-      function mostrarTabla(numjor) {
-        const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
+        function mostrarTabla(numjor) {
+          const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
 
-        tablas[jornadaActual - 1].style.display = "none";
+          tablas[jornadaActual - 1].style.display = "none";
 
-        jornadaActual += numjor;
-        if (jornadaActual < 1) {
-          jornadaActual = tablas.length;
-        } else if (jornadaActual > tablas.length) {
-          jornadaActual = 1;
+          jornadaActual += numjor;
+          if (jornadaActual < 1) {
+            jornadaActual = tablas.length;
+          } else if (jornadaActual > tablas.length) {
+            jornadaActual = 1;
+          }
+          tablas[jornadaActual - 1].style.display = "block";
         }
-        tablas[jornadaActual - 1].style.display = "block";
-      }
-    </script>
+      </script>
+    </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}
