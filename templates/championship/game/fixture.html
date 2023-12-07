@@ -54,18 +54,14 @@
     </style>
     <div class="list-group list-group-horizontal fs-5">
       <a class="list-group-item bg-white" href="">Campeonato</a>
-      <a class="list-group-item active bg-white" href=""
+      <a
+        class="list-group-item active bg-white"
+        href="{% url 'goleadores' fixture.championship fixture.category %}"
         >Fixture</a
       >
-      <a class="list-group-item bg-white" href=""
-        >Tabla de posiciones</a
-      >
-      <a class="list-group-item bg-white" href=""
-        >Amonestaciones</a
-      >
-      <a class="list-group-item bg-white" href=""
-        >Goleadores</a
-      >
+      <a class="list-group-item bg-white" href="">Tabla de posiciones</a>
+      <a class="list-group-item bg-white" href="">Amonestaciones</a>
+      <a class="list-group-item bg-white" href="">Goleadores</a>
     </div>
     <div class="container bg-white">
       <div class="bg-white mt-3">
@@ -109,11 +105,9 @@
             Jornada 1
           </div>
         -->
-        {% for fix in fixture %}
-        {% if fix.round_number == 1%}
-        <p>{{fix}}</p>
-        {% endif %}
-        {% endfor%}
+          {% for fix in fixture %} {% if fix.round_number == 1%}
+          <p>{{fix}}</p>
+          {% endif %} {% endfor%}
           <table class="table">
             <thead>
               <tr>

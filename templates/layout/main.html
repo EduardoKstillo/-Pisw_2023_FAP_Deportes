@@ -2,6 +2,30 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+    <style>
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Ajusta el índice z si es necesario */
+        /* Agrega más estilos según tus necesidades, como colores, márgenes, etc. */
+        /* Ejemplo:
+        background-color: #1f324c;
+        padding: 10px 0;
+        */
+      }
+
+      /* Ajusta el espacio después del encabezado para que el contenido no se superponga */
+      body {
+        padding-top: 80px;
+      }
+
+      /* Resto de tu CSS existente */
+    </style>
+    
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -24,7 +48,7 @@
   </head>
 
   <body>
-    <header style="width: 100%">{% include "layout/header.html" %}</header>
+    <header>{% include "layout/header.html" %}</header>
 
     {% block login %} {% endblock login%}
 

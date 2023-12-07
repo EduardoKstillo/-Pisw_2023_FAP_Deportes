@@ -52,20 +52,11 @@
         color: white;
       }
     </style>
-    <div class="list-group list-group-horizontal fs-5">
-      <a class="list-group-item bg-white" href="">Campeonato</a>
-      <a class="list-group-item active bg-white" href="{% url 'fixture' %}"
-        >Fixture</a
-      >
-      <a class="list-group-item bg-white" href="{% url 'tabla_posiciones' %}"
-        >Tabla de posiciones</a
-      >
-      <a class="list-group-item bg-white" href="{% url 'amonestaciones' %}"
-        >Amonestaciones</a
-      >
-      <a class="list-group-item bg-white" href="{% url 'goleadores' %}"
-        >Goleadores</a
-      >
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'fixture' %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' %}">Goleadores</a>
     </div>
     <div class="container bg-white">
       <div class="bg-white mt-3">
