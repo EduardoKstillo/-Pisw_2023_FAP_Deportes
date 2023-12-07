@@ -391,6 +391,11 @@
         }
       });
     });
+    // Comprobación inicial
+    var checkboxMarcado = Array.from(checkboxes).find(checkbox => checkbox.checked);
+    if (checkboxMarcado) {
+      checked = checkboxMarcado;
+    }
   });
 
   // Función para obtener la cookie CSRF
@@ -411,4 +416,5 @@
     return cookieValue;
   }
 </script>
+
 {% endblock content %}

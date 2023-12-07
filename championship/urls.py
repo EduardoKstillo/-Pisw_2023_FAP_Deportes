@@ -13,10 +13,11 @@ urlpatterns = [
     path("teams/", views.teams, name="teams"),
     path("create_team/", views.create_team, name="create_team"),
     # path("delete_team1/<int:id>/<int:id_champ>/", views.delete_team, name="delete_team"),
-    path("fixture/", views.fixture, name="fixture"),
-    #path("fixture/<int:id_champ>", views.fixture, name="fixture"),
-    #path("create_fixture/", views.create_fixture, name="create_fixture"),
-    path("games/<int:id_champ>", views.games, name="games"),
+
+    path("create_fixture/<int:championship_id>/<int:category_id>/", views.create_fixture, name="create_fixture"),
+    path("game/<int:game_id>/", views.game, name="game"),
+
+
     path("delete_team/<int:id>/<int:id_champ>/", views.delete_team, name="delete_team"),
     # path('add_player_team/<int:player_id>/', views.add__player_team, name='add_player_team'),
     path("view_team/<int:team_id>/", views.view_team, name="view_team"),
@@ -73,7 +74,7 @@ urlpatterns = [
     path('actualizar_jugador/<int:player_id>/', views.actualizar_jugador, name='actualizar_jugador'),
     path('actualizar_jugador1/<int:player_id>/', views.actualizar_jugador1, name='actualizar_jugador1'),
 
-    path('tabla_posiciones/', views.tabla_posiciones, name='tabla_posiciones'),
-    path('amonestaciones/', views.amonestaciones, name='amonestaciones'),
-    path('goleadores/', views.goleadores, name='goleadores'),
+    path('tabla_posiciones/<int:championship_id>/<int:category_id>/', views.tabla_posiciones, name='tabla_posiciones'),
+    path('amonestaciones/<int:championship_id>/<int:category_id>/', views.amonestaciones, name='amonestaciones'),
+    path('goleadores/<int:championship_id>/<int:category_id>/', views.goleadores, name='goleadores'),
 ]

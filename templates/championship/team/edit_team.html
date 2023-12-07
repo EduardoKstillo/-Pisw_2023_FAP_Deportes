@@ -1,7 +1,45 @@
 {% extends 'layout/main.html' %} {% block content %}
+
+<!-- Agrega el siguiente código al final del cuerpo de tu template -->
+<div class="modal" tabindex="-1" role="dialog" id="confirmacionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Está seguro?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="mensajeModal"></p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          ,
+          id="cancelarEdicionBtn"
+        >
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmarEdicionBtn">
+          Confirmar Edición
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- AFin del codigo parte final del template -->
+
 <div class="mt-4 mb-4">
   <div class="col-md-6 offset-md-3">
-    <form method="POST">
+    <form id="editTeamForm" method="POST">
       <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
         Editar equipo
       </h1>
@@ -102,4 +140,74 @@
     </form>
   </div>
 </div>
-{% endblock content %}
+
+{% block script %}
+<!-- <script>
+  
+  $(document).ready(function () {
+    // Obtener el valor inicial del campo al cargar la página
+    // Obtener el valor del campo "year" por nombre de campo
+    var nombreCampeonatoArray = [{% for championship in championship_team %} "{{ championship.championship.name }}", {% endfor %}];
+    console.log(nombreCampeonatoArray[0]);
+    var valorInicial = $("select[name='year']").val(); 
+    console.log(valorInicial);    
+    // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
+    $("#guardarCambiosBtn").on("click", function () {
+      var valorCampo = $("select[name='year']").val();
+      console.log(valorCampo);
+      // Obtener el valor más reciente de nombreCampeonato
+      var nombreCampeonato = validarTeam(valorInicial,valorCampo);
+      
+      // Mostrar el modal solo si hay un campeonato asociado
+      if (nombreCampeonato) {
+        $("#mensajeModal").text(nombreCampeonato);
+        $("#confirmacionModal").modal("show");
+      } else {
+        // Si no hay un campeonato asociado, puedes realizar alguna acción o simplemente no hacer nada
+        console.log("sin campeonato asociado");
+        $("#editTeamForm").submit();
+      }
+    });
+  
+    // Evento cuando se da clic al botón de confirmación en el modal
+    $("#confirmarEdicionBtn").on("click", function () {
+      // Hace Post con los datos del formulario
+      $("#editTeamForm").submit();
+    });
+
+
+    // Controlar el botón de cancelar en el modal
+    $("#cancelarEdicionBtn").on("click", function () {
+      // Cierra el modal sin realizar ninguna acción
+      $("#confirmacionModal").modal("hide");
+    });
+  });
+    function validarTeam(valorInicial, valorCampo) {
+      var nombreCampeonatoArray = [{% for player in player_associated %} "{{ player.name }}", {% endfor %}];
+      var ChampionsTeam = [{% for championshipTeam in championship_team %} "{{ championshipTeam.championship.name }}", {% endfor %}];
+      var tienValoresChampionTeam = ChampionsTeam.length > 0;
+      var tieneValores = nombreCampeonatoArray.length > 0;
+      var rangeStart = valorInicial - (valorInicial % 10);
+      var rangeEnd = rangeStart + 9; 
+      if (valorCampo >= rangeStart && valorCampo <= rangeEnd) {
+        return null;
+      } else {
+        if(tieneValores && tienValoresChampionTeam){
+          return `Este equipo tiene jugadores y esta asociado a un campeoanto si continuas se eliminara los jugadores y sera eliminado del campeonato`;
+        }else{
+          if(tieneValores){
+            return `Este equipo tiene jugadores si continuas se eliminaran del equipo`;
+          }else{
+            if(tienValoresChampionTeam){
+              return `Este equipo esta asociado a un campeonato si continuas sera eliminado de tal campeonato`;;
+            }else{
+              return null;
+            }
+          }          
+        }        
+      }
+    }
+
+  </script> -->
+
+{% endblock script %} {% endblock content %}

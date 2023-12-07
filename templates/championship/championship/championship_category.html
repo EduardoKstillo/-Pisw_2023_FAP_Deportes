@@ -166,7 +166,10 @@
               </a>
             </td>
             <td>
-              <a href="{% url 'fixture'%}" type="button">
+              <a
+                href="{% url 'create_fixture' championship.id categorys.id %}"
+                type="button"
+              >
                 <svg
                   width="30"
                   height="30"

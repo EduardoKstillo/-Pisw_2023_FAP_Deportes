@@ -80,6 +80,7 @@ class Person(models.Model):
 
 
 class Team(models.Model):
+    name = models.CharField(max_length=50)
     month = models.CharField(max_length=100, validators=[validate_month])
     year = models.PositiveIntegerField(validators=[validate_year])
     group = models.CharField(max_length=5)
@@ -144,8 +145,8 @@ class ChampionshipTeam(models.Model):
 
 class Game(models.Model):
     round_number = models.PositiveIntegerField(default=0)
-    championship = models.ForeignKey(
-        Championship, on_delete=models.CASCADE)
+    championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     team1 = models.ForeignKey(
         Team, related_name='team1', on_delete=models.CASCADE)
     team2 = models.ForeignKey(
@@ -154,18 +155,17 @@ class Game(models.Model):
     team1_goals = models.IntegerField(default=0)
     team2_goals = models.IntegerField(default=0)
     # state = models.BooleanField(default=True)
-    # players = models.ManyToManyField(Player, through="PlayerGame")
+    players = models.ManyToManyField(Person, through="PlayerGame")
 
     def __str__(self):
-        return self.championship.name + " " + self.team1.name + " " + str(self.team1_goals) + "-" + str(self.team2_goals) + " " + self.team2.name
+        return "Fecha: " + str(self.round_number) + ". " + self.team1.month + " " + str(self.team1_goals) + "-" + str(self.team2_goals) + " " + self.team2.month + " | "
 
 # -----------------------------------
 
 
-"""
 class PlayerGame(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    player = models.ForeignKey(Person, on_delete=models.CASCADE)
     card_red = models.IntegerField(default=0)
     card_yellow = models.IntegerField(default=0)
     goals = models.IntegerField(default=0)
@@ -176,7 +176,8 @@ class PlayerGame(models.Model):
 
 class Result(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     pj = models.IntegerField(default=0)
     pg = models.IntegerField(default=0)
     pe = models.IntegerField(default=0)
@@ -186,4 +187,3 @@ class Result(models.Model):
     # diferencia de goles a favor y en contra
     dg = models.IntegerField(default=0)
     pts = models.IntegerField(default=0)
-"""
