@@ -862,8 +862,12 @@ def create_fixture(request, championship_id, category_id):
             if round_number not in grouped_fixtures:
                 grouped_fixtures[round_number] = []
             grouped_fixtures[round_number].append(fixture)
+        
+      
         #messages.success(request, "El fixture ya esta creado!")
         # retorna el fixture existente del campeanato
+        print(grouped_fixtures )
+
         context = {'grouped_fixtures': grouped_fixtures, 'championships': championship, 'categorys': category}
         return render(request, "championship/game/fixture.html", context)
     
@@ -898,12 +902,14 @@ def game(request, game_id ):
     # Obtener jugadores de cada equipo
     players_team1 = game.team1.Persons.all()
     players_team2 = game.team2.Persons.all()
-    print(game.team1.Persons.all())
+    print("equipo 1",game.team1.Persons.all())
     print(game.team2.Persons.all())
 
     # Crear formularios para cada jugador
     forms_team1 = [PlayerGameForm(prefix=f'equipo1-{jugador.id}', initial={'player': jugador, 'game': game}) for jugador in players_team1]
     forms_team2 = [PlayerGameForm(prefix=f'equipo2-{jugador.id}', initial={'player': jugador, 'game': game}) for jugador in players_team2]
+    print("equipo 1",forms_team1)
+
 
     if request.method == 'POST':
         # goles de cada equipo
