@@ -92,29 +92,22 @@
 
 {% block script %}
 <script>
-  
   $(document).ready(function () {
-    // Obtener el valor inicial del campo al cargar la página
-    // Obtener el valor del campo "year" por nombre de campo
-    var nombreCampeonatoArray = [{% for championship in TeamChapionshipCategory %} "{{ championship.category.name}}", {% endfor %}];
-    var nombreCategorys = [{% for cat in categoryall %} "{{cat.name}}", {% endfor %}];
-    console.log(nombreCampeonatoArray[0]);
-    var chexboxMarcadosInicio =obtenerValores();
-    console.log(chexboxMarcadosInicio[1]);
- 
+    // Obtener los valores del checkboxes antes de cualquier cambio
+    const chexboxMarcadosInicio =obtenerValores();
     // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
     $("#guardarCambiosBtn").on("click", function () {
-      var valorCampo = $("select[name='year']").val();
+      const valorCampo = $("select[name='year']").val();
       console.log(valorCampo);
-      // Obtener el valor más reciente de nombreCampeonato
+      // Obtener los valores del checkboxes despues de cualquier cambio
       var chexboxMarcadosFinal =obtenerValores();
+      // Se hace una compracion para obtener los valores que hayan sido eliminados del array chexboxMarcadosInicio con chexboxMarcadosFinal
       var elementosNoEncontrados = chexboxMarcadosInicio.filter(function(elemento) {
         return !chexboxMarcadosFinal.includes(elemento);
       });
 
       // Muestra los elementos no encontrados
-      console.log("Elementos no encontrados:", elementosNoEncontrados);
-      var nombreCampeonato = validarTeam(elementosNoEncontrados);
+      var nombreCampeonato = compararchexbox(elementosNoEncontrados);
       
       // Mostrar el modal solo si hay un campeonato asociado
       if (nombreCampeonato) {
@@ -140,27 +133,23 @@
       $("#confirmacionModal").modal("hide");
     });
   });
-    function validarTeam(elementosNoEncontrados) {
-      var nombreCampeonatoArray = [{% for championship in TeamChapionshipCategory %} "{{ championship.category.name}}", {% endfor %}];
-      var nombreCategorys = [{% for cat in categoryall %} "{{cat.name}}", {% endfor %}];
-      console.log("Ele:", nombreCampeonatoArray);
-      var arrayNuevo = elementosNoEncontrados.map(function(indice) {
+    function compararchexbox(elementosNoEncontrados) {
+      let nombreCampeonatoArray = [{% for championship in TeamChapionshipCategory %} "{{ championship.category.name}}", {% endfor %}];
+      let nombreCategorys = [{% for cat in categoryall %} "{{cat.name}}", {% endfor %}];
+
+      let arrayNuevo = elementosNoEncontrados.map(function(indice) {
         return nombreCategorys[indice-1];
       });
-      var valorEncontrado = arrayNuevo.find(function(valor) {
+
+      let valorEncontrado = arrayNuevo.find(function(valor) {
         return nombreCampeonatoArray.includes(valor);
       });
       console.log("Valor encontrado:", valorEncontrado);
       if (valorEncontrado) {
-        return `La categoria: ${valorEncontrado} teien equiposasociados si continua se eliminaran?`;
+        return `La categoria: ${valorEncontrado} tiene equipos asociados, si continua se eliminaran?`;
       } else {
         return null;
       }
-      // Muestra el nuevo array con los elementos correspondientes
-      console.log("Array nuevo:", arrayNuevo);
-      // Muestra los elementos no encontrados
-      console.log("Elementos no encontrados:", elementosNoEncontrados);
-      console.log(ds[0]);
     }
 
     function obtenerValores() {
@@ -173,10 +162,6 @@
       return valoresMarcados;
       // Mostrar los valores de las checkboxes marcadas      
     }
-
   </script>
-
 {% endblock script %}
-
-
 {% endblock %}
