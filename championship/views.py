@@ -59,6 +59,7 @@ def edit_person(request, person_id):
 
                     # si la año de la persona no esta dentro del rango permitido
                     if not (acceptable_range_start <= new_year_promotion <= acceptable_range_end):
+                        person.promotion_delegate = False
                         person.save()
                         # remuevo a la persona de ese equipo
                         team.Persons.remove(person)
@@ -189,6 +190,10 @@ def delete_team(request, team_id):
     team_year = team.year
     team_mouth = team.month
     team_group = team.group
+    players = Person.objects.filter(team=team)
+    for player in players:
+        player.promotion_delegate = False
+        player.save()
     team.delete()
 
     messages.success(
@@ -212,8 +217,9 @@ def remove_player_from_team(request, team_id, player_id):
 
     if request.method == "POST":
         # Elimina al jugador del equipo
-        if player.is_jale == True:
+        if player.is_jale == True or player.promotion_delegate== True:
             player.is_jale = False
+            player.promotion_delegate = False
             player.save()
             team.Persons.remove(player)
         else:
