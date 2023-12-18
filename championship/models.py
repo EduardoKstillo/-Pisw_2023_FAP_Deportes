@@ -170,10 +170,8 @@ class PlayerGame(models.Model):
     card_yellow = models.IntegerField(default=0)
     goals = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.player.name + " " + self.game.championship.name
-
-
+    
+    
 class Result(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE)

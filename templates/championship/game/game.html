@@ -2,8 +2,8 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      {{championships.name}} - {{championships.year}} -
-      {{championships.seasons}} - Categoría: {{categorys.name}}
+      {{game.championship.name}} - {{game.championship.year}} -
+      {{game.championship.seasons}} - Categoría: {{game.category.name}}
     </h1>
     <h1
       class="text-left mt-3"
@@ -20,7 +20,7 @@
     <a
       class="btn mt-4 mb-3"
       role="button"
-      href=""
+      href="{% url 'create_fixture' game.championship.id game.category.id %}"
       style="
         background-color: #4e688e;
         font-size: 20px;
@@ -54,7 +54,7 @@
         color: white;
       }
     </style>
-    <div
+    <!-- <div
       class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
       style="width: 100%"
     >
@@ -64,7 +64,7 @@
       >
       <a class="list-group-item bg-white flex-fill" href="">Amonestaciones</a>
       <a class="list-group-item bg-white flex-fill" href="">Goleadores</a>
-    </div>
+    </div> -->
 
     <div class="container bg-white">
       <div class="bg-white mt-3">
@@ -114,14 +114,14 @@
             >
               {{ game.team1 }}
             </h2>
-            <div>
+            <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Tarjeta amarilla</th>
-                    <th scope="col">Tarjeta Roja</th>
-                    <th scope="col">Goles</th>
+                    <th scope="col" class="col-6">Nombre</th>
+                    <th scope="col" class="col-2">Tarjeta amarilla</th>
+                    <th scope="col" class="col-2">Tarjeta Roja</th>
+                    <th scope="col" class="col-2">Goles</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -149,14 +149,14 @@
             >
               {{ game.team2 }}
             </h2>
-            <div>
+            <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Tarjeta amarilla</th>
-                    <th scope="col">Tarjeta Roja</th>
-                    <th scope="col">Goles</th>
+                    <th scope="col" class="col-6">Nombre</th>
+                    <th scope="col" class="col-2">Tarjeta amarilla</th>
+                    <th scope="col" class="col-2">Tarjeta Roja</th>
+                    <th scope="col" class="col-2">Goles</th>
                   </tr>
                 </thead>
                 <tbody>

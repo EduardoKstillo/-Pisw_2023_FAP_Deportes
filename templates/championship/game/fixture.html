@@ -124,7 +124,7 @@
                 <tr>
                   <td>Lugar 23/11/2023 8:00</td>
                   <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}{{ fixture.team1.year}}{% endif %}</td>
-                  <td class="text-center">-</td>
+                  <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
                   <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}{{ fixture.team2.year}}{% endif %}
                   </td>
                   <td>
