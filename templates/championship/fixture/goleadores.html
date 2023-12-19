@@ -20,7 +20,7 @@
     <a
       class="btn mt-4 mb-3"
       role="button"
-      href="{% url 'categorys' %}"
+      href="{% url 'seasons' %}"
       style="
         background-color: #abafd0;
         font-size: 20px;
@@ -159,7 +159,8 @@
           </tr>
         </thead>
         <tbody>
-          {% for summary in players_summary %} 
+          {% for player in players %} {% for summary in players_summary %}
+          {% if summary.player == player.id %}
           <tr
             style="
               font-size: 16px;
@@ -168,11 +169,11 @@
               font-weight: 1;
             "
           >
-            <td>{{ summary.player__name }}</td>
-            <td>{{ summary.game__team1__month or summary.game__team2__month }}</td>
+            <td>{{ player.name }}</td>
+            <td>{{ player.team_set.first }}</td>
             <td>{{ summary.total_goals|default:0 }}</td>
           </tr>
-          {% endfor %}
+          {% endif %} {% endfor %} {% endfor %}
         </tbody>
       </table>
     </div>
