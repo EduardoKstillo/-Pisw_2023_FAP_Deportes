@@ -128,6 +128,15 @@
                   <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}{{ fixture.team2.year}}{% endif %}
                   </td>
                   <td>
+                    {% if fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA' %}
+                    <button
+                      class="btn btn-primary my-auto"
+                      href=""
+                      role="button"
+                      style="background: #4e688e"
+                      disabled
+                      >+</button>
+                    {% else %}
                     <a
                       class="btn btn-primary my-auto"
                       href="{% url 'game' fixture.id  %}"
@@ -135,6 +144,7 @@
                       style="background: #4e688e"
                       >+</a
                     >
+                    {% endif %}
                   </td>
                 </tr>
                 {% endfor %}
