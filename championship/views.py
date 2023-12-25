@@ -39,7 +39,7 @@ def create_person(request):
 
 @login_required
 def edit_person(request, person_id):
-
+    
     person = get_object_or_404(Person, pk=person_id)
 
     if request.method == "POST":
@@ -83,6 +83,7 @@ def edit_person(request, person_id):
         context = {"form": form, "team": team}
 
     return render(request, "championship/person/edit_person.html", context)
+
 
 
 @login_required
@@ -169,7 +170,7 @@ def edit_team(request, team_id):
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
                         team.Persons.remove(player)
-                        if player.promotion_delegate:
+                        if player.promotion_delegate :
                             player.promotion_delegate = False
                             player.save()
 
@@ -178,12 +179,13 @@ def edit_team(request, team_id):
                 return redirect("teams")
     else:
         form = TeamForm(instance=team)
-        player_associated = team.Persons.all()
-        championship_team = ChampionshipTeam.objects.filter(team=team)
+        player_associated =team.Persons.all()
+        championship_team = ChampionshipTeam.objects.filter(team = team)
 
-    context = {"form": form, "teams": team, "player_associated": player_associated,
-               "championship_team": championship_team}
+    context = {"form": form, "teams": team, "player_associated" : player_associated, "championship_team": championship_team }
     return render(request, "championship/team/edit_team.html", context)
+   
+
 
 
 # --Elminar equipo----------------------------------------------------------------------
@@ -201,6 +203,7 @@ def delete_team(request, team_id):
     messages.success(
         request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.')
     return redirect("teams")
+
 
 
 # --Lista equipos------------------------------------------------------------------------
@@ -275,7 +278,7 @@ def view_team(request, team_id):
         team_year % 10
     )  # Redondea hacia abajo al rango de 10 años más cercano
     year_range_end = year_range_start + 9
-    if team.state == True:
+    if team.state == True :
         players_available = Person.objects.filter(
             Q(year_promotion__isnull=True)
             | Q(year_promotion__gte=year_range_start, year_promotion__lte=year_range_end),
@@ -355,6 +358,7 @@ def view_team(request, team_id):
     )
 
 
+
 # --Fin Equipo-----------------------------------------------------------------
 
 
@@ -387,10 +391,10 @@ def create_championship(request):
 
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
-
+    
     if request.method == "POST":
         form = ChampionshipForm(request.POST, instance=championship)
-        if form.is_valid():
+        if form.is_valid():        
             # Guarda las categorías antes de guardar el formulario
             categories_before_save = set(championship.categorys.all())
             # Guarda el campeonato actualizado
@@ -404,22 +408,27 @@ def edit_championship(request, championship_id):
                 print(f"Categoría eliminada: {deleted_category.name}")
             # verfica con las categorías eliminas o desmarcadas y procede con elminar los jugadores del tal categoria campeonato
             with transaction.atomic():
-                for old_category in deleted_categories:
-                    ChampionshipTeam.objects.filter(
-                        championship=championship, category=old_category).delete()
+                for old_category in deleted_categories :
+                    ChampionshipTeam.objects.filter(championship=championship, category=old_category).delete()
 
             # Puedes redirigir a donde corresponda después de editar
             return redirect("championships")
     else:
         form = ChampionshipForm(instance=championship)
-        TeamChapionshipCategory = ChampionshipTeam.objects.filter(
-            championship=championship)
+        TeamChapionshipCategory = ChampionshipTeam.objects.filter(championship=championship)
         categoryall = Category.objects.all()
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
-    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields,
-               "TeamChapionshipCategory": TeamChapionshipCategory, "categoryall": categoryall}
+    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields, "TeamChapionshipCategory" : TeamChapionshipCategory ,"categoryall": categoryall}
+
+    return render(
+        request,
+        "championship/championship/edit_championship.html",
+        context,
+    )
+
+
 
     return render(
         request,

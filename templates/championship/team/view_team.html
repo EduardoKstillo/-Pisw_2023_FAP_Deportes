@@ -17,24 +17,24 @@
       {{ team.month }}.{{team.year}}.{{team.group}}
     </h1>
     <a
-      class="btn mt-4 mb-2 fs-5"
+      class="btn mt-4 mb-2"
       role="button"
       href="{% url 'teams' %}"
       style="
-        background-color: #4e688e;
+        background-color: #abafd0;
+        font-size: 20px;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
-        color: white;
       "
-      onmouseover="this.style.backgroundColor=' #314159'"
-      onmouseout="this.style.backgroundColor='#4e688e'"
+      onmouseover="this.style.backgroundColor='#7D8093'"
+      onmouseout="this.style.backgroundColor='#ABAFD0'"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
         height="25"
-        fill="white"
+        fill="black"
         class="bi bi-arrow-left"
         viewBox="0 0 16 16"
       >
@@ -83,17 +83,17 @@
         </div>
         <div class="col-md-6" style="display: flex; align-items: flex-end">
           <button
-            class="btn fs-5"
+            class="btn"
             type="submit"
             style="
-              background-color: #4e688e;
+              background-color: #68d391;
+              font-size: 20px;
               font-family: 'Montserrat';
               box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
               transition: background-color 0.3s;
-              color: white;
             "
-            onmouseover="this.style.backgroundColor=' #314159'"
-            onmouseout="this.style.backgroundColor='#4e688e'"
+            onmouseover="this.style.backgroundColor='#4B9A6A'"
+            onmouseout="this.style.backgroundColor='#68D391'"
           >
             + Agregar jugador
           </button>
@@ -235,13 +235,7 @@
                 class="player-checkbox"
                 name="selected_players"
                 value="{{ player.id }}"
-                {%if
-                player.promotion_delegate
-                %}
-                checked
-                {%
-                endif
-                %}
+                {%if player.promotion_delegate %} checked {% endif%}
               />
             </td>
             <td>
@@ -392,7 +386,9 @@
       });
     });
     // Comprobación inicial
-    var checkboxMarcado = Array.from(checkboxes).find(checkbox => checkbox.checked);
+    var checkboxMarcado = Array.from(checkboxes).find(
+      (checkbox) => checkbox.checked
+    );
     if (checkboxMarcado) {
       checked = checkboxMarcado;
     }

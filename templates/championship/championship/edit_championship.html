@@ -1,4 +1,5 @@
 {% extends 'layout/main.html' %} {% block content %}
+
 <!-- Agrega el siguiente código al final del cuerpo de tu template -->
 <div class="modal" tabindex="-1" role="dialog" id="confirmacionModal">
   <div class="modal-dialog" role="document">
@@ -63,21 +64,20 @@
             role="button"
             href="{% url 'championships' %}"
             style="
-              background-color: #4e688e;
+              background-color: #abafd0;
               font-size: 20px;
               font-family: 'Montserrat';
               box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
               transition: background-color 0.3s;
-              color: white;
             "
-            onmouseover="this.style.backgroundColor=' #314159'"
-            onmouseout="this.style.backgroundColor='#4e688e'"
+            onmouseover="this.style.backgroundColor='#7D8093'"
+            onmouseout="this.style.backgroundColor='#ABAFD0'"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
               height="25"
-              fill="white"
+              fill="black"
               class="bi bi-arrow-left"
               viewBox="0 0 16 16"
             >
@@ -117,7 +117,7 @@
             <button
               id="guardarCambiosBtn"
               type="button"
-              class="btn mt-4 mb-2 w-50"
+              class="btn mt-4 mb-2 w-100"
               style="
                 background-color: #4e688e;
                 font-size: 20px;
@@ -126,7 +126,7 @@
                 transition: background-color 0.3s;
                 color: white;
               "
-              onmouseover="this.style.backgroundColor=' #314159'"
+              onmouseover="this.style.backgroundColor='#314159'"
               onmouseout="this.style.backgroundColor='#4e688e'"
             >
               Guardar cambios
@@ -211,5 +211,4 @@
       // Mostrar los valores de las checkboxes marcadas
     }
 </script>
-
 {% endblock script %} {% endblock %}
