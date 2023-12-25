@@ -134,7 +134,7 @@
 </div>
 
 {% block script %}
-<!-- <script>
+<script>
   $(document).ready(function () {
     // Obtener el valor inicial del campo al cargar la página
     var valorInicial = $("select[name='name']").val();
@@ -156,7 +156,7 @@
         $("#editCategoryForm").submit();
       }
     });
-  
+
     // Evento cuando se da clic al botón de confirmación en el modal
     $("#confirmarEdicionBtn").on("click", function () {
       // Hace Post con los datos del formulario
@@ -175,7 +175,7 @@
       var nombreTeamArray = [{% for team in championship_teams %} "{{ team.team.month }}", {% endfor %}];
       var nombreCampeonatoTeamArray = [{% for chamionship_team in championship_teams %} "{{ chamionship_team.championship.name }}", {% endfor %}];
       var nombreCampeonatoSeasonsArray = [{% for championship1 in associated_championship %} "{{championship.seasons}}", {% endfor %}];
-      
+
       // Si hay un campeonato asociado, devolver el mensaje específico
       const nombresConcatenados = nombreCampeonatoArray.map(championship => `"${championship}"`).join(', ');
       const teamsConcatenados = nombreTeamArray.map(team => `"${team}"`).join(', ');
@@ -192,12 +192,13 @@
         return null;
       }
     }
-  
+
     function contieneSoloLetras(dato) {
       // Expresión regular que coincide solo con letras (mayúsculas y minúsculas)
       var expresionRegular = /^[A-Za-z]+$/;
       // Devuelve true si el dato contiene solo letras, de lo contrario, devuelve false
       return expresionRegular.test(dato);
     }
-  </script> -->
+</script>
+
 {% endblock script %} {% endblock %}
