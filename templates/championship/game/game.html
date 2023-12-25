@@ -76,7 +76,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <h3 class="fs-2 pt-4">
-                    {{ game.team1 }}{{ game.team1.year}}
+                    {{ game.team1 }}.{{ game.team1.year}}.{{ game.team1.group}}
                   </h3>
                   <input
                     type="number"
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="col-md-6">
-                  <h3 class="fs-2 pt-4">{{game.team2}}{{game.team2.year}}</h3>
+                  <h3 class="fs-2 pt-4">{{game.team2}}.{{game.team2.year}}.{{ game.team2.group}}</h3>
                   <input
                     type="number"
                     name="team2_goals"
@@ -112,7 +112,7 @@
                 padding-bottom: 15px;
               "
             >
-              {{game.team1}}{{game.team1.year}}
+            {{ game.team1 }}.{{ game.team1.year}}.{{ game.team1.group}}
             </h2>
             <div class="table-responsive">
               <table class="table">
@@ -147,7 +147,7 @@
                 padding-bottom: 15px;
               "
             >
-              {{game.team2}}{{game.team2.year}}
+            {{game.team2}}.{{game.team2.year}}.{{ game.team2.group}}
             </h2>
             <div class="table-responsive">
               <table class="table">

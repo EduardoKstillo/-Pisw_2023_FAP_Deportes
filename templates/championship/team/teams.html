@@ -38,39 +38,7 @@
     </div>
     {% endfor %}
 
-    <style type="text/css">
-      .table-container {
-        height: 10em;
-      }
-      table {
-        display: flex;
-        flex-flow: column;
-        height: 65vh;
-        width: 100%;
-      }
-      table thead {
-        flex: 0 0 auto;
-        width: calc(100% - 0.9em);
-      }
-      table tbody {
-        flex: 1 1 auto;
-        display: block;
-        overflow-y: scroll;
-      }
-      table tbody tr {
-        width: 100%;
-      }
-      table thead,
-      table tbody tr {
-        display: table;
-        table-layout: fixed;
-      }
-      .table th,
-      .table td {
-        word-wrap: break-word;
-        max-width: 150px;
-      }
-    </style>
+    
 
     <div
       class="ek-shadow mt-3 mb-3"
@@ -115,7 +83,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style="vertical-align: middle">
           {% for team in teams %}
           <tr
             style="

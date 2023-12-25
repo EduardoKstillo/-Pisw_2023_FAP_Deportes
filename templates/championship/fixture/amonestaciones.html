@@ -207,7 +207,7 @@
                   "
                 >
                   <td>{{ player.name }}</td>
-                  <td>{{ player.team_set.first }}</td>
+                  <td>{{ player.team_set.first }}.{{ player.team_set.first.year }}.{{ player.team_set.first.group }}</td>
                   <td>{{ summary.total_card_yellow|default:0 }}</td>
                 </tr>
                 {% endif %} {% endfor %} {% endfor %}
@@ -262,7 +262,7 @@
                   "
                 >
                   <td>{{ player.name }}</td>
-                  <td>{{ player.team_set.first }}</td>
+                  <td>{{ player.team_set.first }}.{{ player.team_set.first.year }}.{{ player.team_set.first.group }}</td>
                   <td>{{ summary.total_card_red|default:0 }}</td>
                 </tr>
                 {% endif %} {% endfor %} {% endfor %}

@@ -114,39 +114,7 @@
     </div>
     {% endfor %}
 
-    <style type="text/css">
-      .table-container {
-        height: 10em;
-      }
-      table {
-        display: flex;
-        flex-flow: column;
-        height: 50vh;
-        width: 100%;
-      }
-      table thead {
-        flex: 0 0 auto;
-        width: calc(100% - 0.9em);
-      }
-      table tbody {
-        flex: 1 1 auto;
-        display: block;
-        overflow-y: scroll;
-      }
-      table tbody tr {
-        width: 100%;
-      }
-      table thead,
-      table tbody tr {
-        display: table;
-        table-layout: fixed;
-      }
-      .table th,
-      .table td {
-        word-wrap: break-word;
-        max-width: 150px;
-      }
-    </style>
+    
 
     <div
       class="ek-shadow mt-3 mb-3"
@@ -195,7 +163,7 @@
             >
               Delegado
             </th>
-            <th
+            <!-- <th
               style="
                 background-color: #f4f4f4;
                 border-right: 1px solid rgba(0, 0, 0, 0.15);
@@ -212,7 +180,7 @@
               "
             >
               Editar
-            </th>
+            </th> -->
             <th style="background-color: #f4f4f4; font-weight: normal">
               Eliminar
             </th>
@@ -240,7 +208,7 @@
                 {%if player.promotion_delegate%}checked{%endif%}
               />
             </td>
-            <td>
+            <!-- <td>
               <a href="" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +240,7 @@
                   />
                 </svg>
               </a>
-            </td>
+            </td> -->
             <td>
               <form
                 method="post"
