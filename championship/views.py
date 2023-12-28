@@ -126,6 +126,7 @@ def create_team(request):
                 form.add_error("group", "ya existe un equipo con dicho grupo")
             else:
                 form.save()
+                messages.success(request, "¡Equipo creado correctamente!", extra_tags='created')
                 return redirect("teams")
     else:
         form = TeamForm()
@@ -200,8 +201,7 @@ def delete_team(request, team_id):
         player.save()
     team.delete()
 
-    messages.success(
-        request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.')
+    messages.success(request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect("teams")
 
 
@@ -272,7 +272,7 @@ def actualizar_jugador1(request, player_id):
 
 def view_team(request, team_id):
     team = get_object_or_404(Team, id=team_id)
-    players = team.Persons.all()
+    players = team.persons.all()
     team_year = team.year
     year_range_start = team_year - (
         team_year % 10
@@ -321,7 +321,7 @@ def view_team(request, team_id):
 
                 # Verifica si se han agregado 7 personas que cumplen la condición
                 if no_cumplen_condicion <= 25:
-                    team.Persons.add(player)
+                    team.persons.add(player)
                     # Agrega un mensaje con la etiqueta "jugador_agregado"
                     messages.success(
                         request,
@@ -576,6 +576,7 @@ def create_category(request):
                 return render(request, "championship/category/create_category.html", context)
             else:
                 form.save()
+                messages.success(request, "¡Categoría creada correctamente!", extra_tags='created')
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -594,6 +595,7 @@ def categorys(request):
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     category.delete()
+    messages.success(request, f'La categoría "{category.name}" ha sido eliminada exitosamente.', extra_tags='deleted')
     return redirect("categorys")
 
 
@@ -631,12 +633,10 @@ def edit_category(request, category_id):
                         ChampionshipTeam.objects.filter(
                             championship=champioship, category=category).delete()
 
-                    messages.success(
-                        request, "Categoria editado correctamente")
+                    messages.success(request, "¡Categoría editada correctamente!", extra_tags='edited')
                     return redirect("categorys")
             else:
-                messages.info(
-                    request, "No se realizaron cambios en la categoria.")
+                messages.success(request, "No se realizaron cambios", extra_tags='deleted')                
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -923,10 +923,10 @@ def game(request, game_id):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
     # Obtener jugadores de cada equipo
-    players_team1 = game.team1.Persons.all()
-    players_team2 = game.team2.Persons.all()
-    print("equipo 1", game.team1.Persons.all())
-    print(game.team2.Persons.all())
+    players_team1 = game.team1.persons.all()
+    players_team2 = game.team2.persons.all()
+    print("equipo 1", game.team1.persons.all())
+    print(game.team2.persons.all())
 
     # Crear formularios para cada jugador
     forms_team1 = [PlayerGameForm(prefix=f'equipo1-{jugador.id}', initial={
@@ -1051,33 +1051,19 @@ def goleadores(request, championship_id, category_id):
         category_id=category_id, championship_id=championship_id)
 
     # Filtrar PlayerGame (jugadores por partido o Game)
-    # players_game = PlayerGame.objects.filter(game__in=leaked_games)
+    #players_game = PlayerGame.objects.filter(game__in=leaked_games)
+    players_game = Person.objects.filter(playergame__game__in=leaked_games).distinct()
 
-    players_summary = PlayerGame.objects.filter(game__in=leaked_games).values(
-        'player__name', 'game__team1__month', 'game__team2__month').annotate(total_goals=Sum('goals')).order_by('-total_goals')
+    result = (
+    players_game
+    .annotate(total_goals=Sum('playergame__goals'))
+    .values('name', 'team__month', 'total_goals')
+    .order_by('-total_goals')
+    )
 
-    print(players_summary)
-
-    # Obtener jugadores implicados
-    # jugadores_implicados = Person.objects.filter(playergame__game__in=leaked_games).distinct()
-
-    # Sumar las columnas card_red, card_yellow, y goals agrupadas por jugador
-    # players_summary = players_game.values('player').annotate(
-    #     total_goals=Sum('goals')
-    # ).order_by('-total_goals')
-
-    # Obtener información de los jugadores
-    players = Person.objects.all()
-
-    context = {
-        'players_summary': players_summary,
-        'players': players,
-        'championships': championship,
-        'categorys': category
-    }
-
+    context = {'result':result, 'championships': championship, 'categorys': category}
+    
     return render(request, 'championship/fixture/goleadores.html', context)
-
 
 """
 def add__player_team(request, player_id):

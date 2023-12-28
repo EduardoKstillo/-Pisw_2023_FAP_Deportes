@@ -85,7 +85,7 @@ class Team(models.Model):
     year = models.PositiveIntegerField(validators=[validate_year])
     group = models.CharField(max_length=5)
     state = models.BooleanField(choices=BOOLEAN_CHOICES, default=True)
-    Persons = models.ManyToManyField(Person)
+    persons = models.ManyToManyField(Person)
 
     def __str__(self):
         return self.month
@@ -166,9 +166,9 @@ class Game(models.Model):
 class PlayerGame(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(Person, on_delete=models.CASCADE)
-    card_red = models.IntegerField(default=0)
-    card_yellow = models.IntegerField(default=0)
-    goals = models.IntegerField(default=0)
+    card_red = models.PositiveIntegerField(default=0)
+    card_yellow = models.PositiveIntegerField(default=0)
+    goals = models.PositiveIntegerField(default=0)
 
     
     

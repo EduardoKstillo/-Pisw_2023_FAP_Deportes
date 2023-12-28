@@ -1,6 +1,4 @@
-{% extends 'layout/main.html' %} {% block sidebar %} {% endblock sidebar %}
-{%block content %}
-
+{% extends 'layout/main.html' %} {%block content %}
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1
@@ -13,7 +11,7 @@
         padding-bottom: 15px;
       "
     >
-      Categorias
+      Categorías
     </h1>
 
     <a
@@ -30,8 +28,19 @@
       onmouseover="this.style.backgroundColor=' #314159'"
       onmouseout="this.style.backgroundColor='#4e688e'"
     >
-      + Crear categoria
+      + Crear categoría
     </a>
+
+    {% for msg in messages %}
+    <div class="alert
+        {% if 'created' in msg.tags %} alert-success
+        {% elif 'deleted' in msg.tags %} alert-danger
+        {% elif 'edited' in msg.tags %} alert-success
+        {% endif %}
+        fade show" id="msg" role="alert">
+      {{ msg }}
+    </div>
+    {% endfor %}    
 
     <div
       class="ek-shadow mt-3 mb-3"
@@ -39,11 +48,10 @@
         background-color: white;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         color: black;
-        overflow: auto;
-        max-height: 65vh;
       "
     >
-      <table class="table rounded rounded-3 overflow-hidden text-center">
+    
+      <table class="table overflow-hidden text-center">
         <thead style="height: 65px; vertical-align: middle">
           <tr
             style="
@@ -59,7 +67,7 @@
                 font-weight: normal;
               "
             >
-              Categoria
+              Categoría
             </th>
             <th
               style="
@@ -75,7 +83,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style="vertical-align: middle">
           {% for category in categorys %}
           <tr>
             <td>{{ category.name }}</td>
