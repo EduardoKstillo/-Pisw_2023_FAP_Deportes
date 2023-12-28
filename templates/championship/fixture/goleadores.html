@@ -159,8 +159,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for player in players %} {% for summary in players_summary %}
-          {% if summary.player == player.id %}
+          {% for summary in result %}          
           <tr
             style="
               font-size: 16px;
@@ -169,11 +168,11 @@
               font-weight: 1;
             "
           >
-            <td>{{ player.name }}</td>
-            <td>{{ player.team_set.first }}</td>
+            <td>{{ summary.name }}</td>
+            <td>{{ summary.team__month }}</td>
             <td>{{ summary.total_goals|default:0 }}</td>
           </tr>
-          {% endif %} {% endfor %} {% endfor %}
+          {% endfor %}
         </tbody>
       </table>
     </div>
