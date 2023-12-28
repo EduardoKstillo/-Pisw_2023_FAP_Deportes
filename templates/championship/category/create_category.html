@@ -13,15 +13,9 @@
           padding-bottom: 15px;
         "
       >
-        Crear categoría
-        <h5>
-          {% for msg in messages %}
-          <div class="alert alert-danger fade show" id="msg" role="alert">
-            {{msg}}
-          </div>
-          {% endfor %}
-        </h5>
-      </h1>
+        Crear categoría        
+      </h1>    
+           
       <a
         class="btn mt-4 mb-2 fs-5"
         role="button"
@@ -51,6 +45,13 @@
         </svg>
         Volver a categorías
       </a>
+
+      {% for msg in messages %}
+      <div class="alert alert-danger fade show" id="msg" role="alert" style="margin-top: 15px;">
+        {{msg}}
+      </div>
+      {% endfor %}  
+
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
         <label
@@ -59,7 +60,7 @@
             font-family: 'Montserrat';
             font-size: 20px;
             color: #2a4365;
-            margin-top: 5px;
+            margin-top: 0px;
           "
           for="{{ field.auto_id }}"
           >{{ field.label_tag }}</label
@@ -80,7 +81,7 @@
           onmouseover="this.style.backgroundColor=' #314159'"
           onmouseout="this.style.backgroundColor='#4e688e'"
         >
-          Guardar cambios
+          Crear categoría
         </button>
       </div>
     </form>

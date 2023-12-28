@@ -33,12 +33,10 @@
     </a>
 
     {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert">
-      {{msg}}
+    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+      {{ msg }}
     </div>
-    {% endfor %}
-
-    
+    {% endfor %}    
 
     <div
       class="ek-shadow mt-3 mb-3"
