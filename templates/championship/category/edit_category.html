@@ -41,7 +41,7 @@
 <div class="mt-4 mb-4">
   <div class="col-md-4 offset-md-4">
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-      Editar categoria
+      Editar categoría
     </h1>
     <h1
       class="text-left mt-3"
@@ -83,16 +83,15 @@
           d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
         />
       </svg>
-      Volver a categoriasss
+      Volver a categorías
     </a>
 
-    <h5>
-      {% for msg in messages %}
-      <div class="alert alert-danger fade show" id="msg" role="alert">
-        {{msg}}
-      </div>
-      {% endfor %}
-    </h5>
+    {% for msg in messages %}
+    <div class="alert alert-danger fade show" id="msg" role="alert" style="margin-top: 15px;">
+      {{msg}}
+    </div>
+    {% endfor %}  
+    
     <form id="editCategoryForm" method="POST">
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
@@ -126,7 +125,7 @@
           onmouseover="this.style.backgroundColor=' #314159'"
           onmouseout="this.style.backgroundColor='#4e688e'"
         >
-          Guardar cambios
+          Editar categoría
         </button>
       </div>
     </form>

@@ -126,6 +126,7 @@ def create_team(request):
                 form.add_error("group", "ya existe un equipo con dicho grupo")
             else:
                 form.save()
+                messages.success(request, "¡Equipo creado correctamente!", extra_tags='created')
                 return redirect("teams")
     else:
         form = TeamForm()
@@ -200,8 +201,7 @@ def delete_team(request, team_id):
         player.save()
     team.delete()
 
-    messages.success(
-        request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.')
+    messages.success(request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect("teams")
 
 
@@ -576,6 +576,7 @@ def create_category(request):
                 return render(request, "championship/category/create_category.html", context)
             else:
                 form.save()
+                messages.success(request, "¡Categoría creada correctamente!", extra_tags='created')
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -594,6 +595,7 @@ def categorys(request):
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     category.delete()
+    messages.success(request, f'La categoría "{category.name}" ha sido eliminada exitosamente.', extra_tags='deleted')
     return redirect("categorys")
 
 
@@ -631,12 +633,10 @@ def edit_category(request, category_id):
                         ChampionshipTeam.objects.filter(
                             championship=champioship, category=category).delete()
 
-                    messages.success(
-                        request, "Categoria editado correctamente")
+                    messages.success(request, "¡Categoría editada correctamente!", extra_tags='edited')
                     return redirect("categorys")
             else:
-                messages.info(
-                    request, "No se realizaron cambios en la categoria.")
+                messages.success(request, "No se realizaron cambios", extra_tags='deleted')                
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
