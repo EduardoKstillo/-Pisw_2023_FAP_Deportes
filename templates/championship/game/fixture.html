@@ -54,6 +54,12 @@
         color: white;
       }
     </style>
+     {% for msg in messages %}
+    <div class="alert alert-success fade show" id="msg" role="alert">
+      {{msg}}
+    </div>
+    {% endfor %}
+
     <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
       <a class="list-group-item active bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
       <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>

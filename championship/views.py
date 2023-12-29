@@ -687,7 +687,7 @@ def create_discipline(request):
                 return render(request, "championship/discipline/create_discipline.html", context)
             else:
                 form.save()
-                messages.success(request, "Disciplina creada exitosamente.")
+                messages.success(request, "Disciplina creada exitosamente.",extra_tags='created')
                 return redirect("disciplines")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -703,7 +703,7 @@ def delete_discipline(request, discipline_id):
     discipline.delete()
 
     messages.success(
-        request, f'La disciplina "{discipline_name}" ha sido eliminada exitosamente.')
+        request, f'La disciplina "{discipline_name}" ha sido eliminada exitosamente.', extra_tags='deleted')
     return redirect("disciplines")
 
 
@@ -727,7 +727,7 @@ def edit_discipline(request, discipline_id):
                 else:
                     form.save()
                     messages.success(
-                        request, "Disciplina editado correctamente")
+                        request, "Disciplina editada correctamente",extra_tags='edited')
                     return redirect("disciplines")
             else:
                 messages.info(
@@ -915,6 +915,7 @@ def create_fixture(request, championship_id, category_id):
 
     context = {'grouped_fixtures': grouped_fixtures,
                'championships': championship, 'categorys': category}
+    messages.success(request, "Fixture creado exitosamente.",extra_tags='created')
 
     return render(request, "championship/game/fixture.html", context)
 
