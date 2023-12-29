@@ -63,7 +63,7 @@ def edit_person(request, person_id):
                         person.promotion_delegate = False
                         person.save()
                         # remuevo a la persona de ese equipo
-                        team.Persons.remove(person)
+                        team.persons.remove(person)
 
             form.save()
             messages.success(request, "¡Persona editada correctamente!")
@@ -137,7 +137,7 @@ def create_team(request):
 def edit_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     form = TeamForm(instance=team)
-    players = team.Persons.all()
+    players = team.persons.all()
 
     if request.method == "POST":
         form = TeamForm(request.POST, instance=team)
@@ -169,7 +169,7 @@ def edit_team(request, team_id):
                 for player in players:
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
-                        team.Persons.remove(player)
+                        team.persons.remove(player)
                         if player.promotion_delegate :
                             player.promotion_delegate = False
                             player.save()
@@ -179,7 +179,7 @@ def edit_team(request, team_id):
                 return redirect("teams")
     else:
         form = TeamForm(instance=team)
-        player_associated =team.Persons.all()
+        player_associated =team.persons.all()
         championship_team = ChampionshipTeam.objects.filter(team = team)
 
     context = {"form": form, "teams": team, "player_associated" : player_associated, "championship_team": championship_team }
@@ -226,9 +226,9 @@ def remove_player_from_team(request, team_id, player_id):
             player.is_jale = False
             player.promotion_delegate = False
             player.save()
-            team.Persons.remove(player)
+            team.persons.remove(player)
         else:
-            team.Persons.remove(player)
+            team.persons.remove(player)
 
     messages.success(
         request, f'El jugador "{player_name}" ha sido removido del equipo exitosamente.')
@@ -1073,7 +1073,7 @@ def add__player_team(request, player_id):
     if request.method == 'POST':
         player_id = request.POST.get('player_id')
         player = Person.objects.get(pk=player_id)
-        team.Persons.add(player)  # Agregar la persona al equipo
+        team.persons.add(player)  # Agregar la persona al equipo
         
     return render(request, 'championship/team/add_player_team.html', {'team': team, 'players':players_available})
 """
