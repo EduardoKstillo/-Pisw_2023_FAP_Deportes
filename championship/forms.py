@@ -1,8 +1,10 @@
 from django import forms
-from .models import Category, Championship, Team, Person, Discipline, Season, PlayerGame
+from .models import Category, Championship, Team, Person, Discipline, Season, PlayerGame, Game
 from .validators import validate_str
 from django.core import validators
 import datetime
+from django.forms import inlineformset_factory
+
 
 remainder = datetime.date.today().year % 10
 current_year = datetime.date.today().year-remainder
@@ -216,7 +218,7 @@ class PersonBasicForm(forms.ModelForm):
                 }),
             'dni': forms.NumberInput(
                 attrs={
-                    
+
                     'class': "form-control",
                 }),
             'promotion_delegate': forms.Select(
@@ -375,18 +377,41 @@ class PersonForm(forms.ModelForm):
             'partner': 'Socio:'
         }
 
+
 class PlayerGameForm(forms.ModelForm):
     class Meta:
         model = PlayerGame
         fields = ['card_yellow', 'card_red', 'goals']
-
+        widgets = {
+            'card_yellow': forms.NumberInput(
+                attrs={
+                    'class': "form-control form-control-sm",
+                }),
+            'card_red': forms.NumberInput(
+                attrs={
+                    'class': "form-control form-control-sm",
+                }),
+            'goals': forms.NumberInput(
+                attrs={
+                    'class': "form-control form-control-sm",
+                }),
+        }
+   
     def __init__(self, *args, **kwargs):
         super(PlayerGameForm, self).__init__(*args, **kwargs)
     
-    def save(self, commit=True):
-        instance = super(PlayerGameForm, self).save(commit=False)
-        instance.game = self.initial['game']
-        if commit:
-            instance.player = self.initial['player']
-            instance.save()
-        return instance
+
+class GameForm(forms.ModelForm):
+    class Meta:
+        model = Game
+        fields = ['team1_goals', 'team2_goals']
+        widgets = {
+            'team1_goals': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                }),
+            'team2_goals': forms.NumberInput(
+                attrs={
+                    'class': "form-control",
+                }),
+        }

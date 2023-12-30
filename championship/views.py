@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import (Category, Championship, Team, Game,
                      Person, ChampionshipTeam, Discipline, Season, PlayerGame, Result)
 from .forms import (CategoryForm, ChampionshipForm, TeamForm,
-                    PersonBasicForm, PersonForm, DiciplineForm, SeasonForm, PlayerGameForm)
+                    PersonBasicForm, PersonForm, DiciplineForm, SeasonForm, PlayerGameForm, GameForm)
+from django.forms import inlineformset_factory
+
 from django.contrib.auth.decorators import login_required
 from .filters import PersonFilter, TeamFilter
 from .fixture import generate_fixture
@@ -39,7 +41,7 @@ def create_person(request):
 
 @login_required
 def edit_person(request, person_id):
-    
+
     person = get_object_or_404(Person, pk=person_id)
 
     if request.method == "POST":
@@ -85,7 +87,6 @@ def edit_person(request, person_id):
     return render(request, "championship/person/edit_person.html", context)
 
 
-
 @login_required
 def delete_person(request, person_id):
     person = get_object_or_404(Person, pk=person_id)
@@ -126,7 +127,8 @@ def create_team(request):
                 form.add_error("group", "ya existe un equipo con dicho grupo")
             else:
                 form.save()
-                messages.success(request, "¡Equipo creado correctamente!", extra_tags='created')
+                messages.success(
+                    request, "¡Equipo creado correctamente!", extra_tags='created')
                 return redirect("teams")
     else:
         form = TeamForm()
@@ -171,7 +173,7 @@ def edit_team(request, team_id):
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
                         team.persons.remove(player)
-                        if player.promotion_delegate :
+                        if player.promotion_delegate:
                             player.promotion_delegate = False
                             player.save()
 
@@ -180,13 +182,12 @@ def edit_team(request, team_id):
                 return redirect("teams")
     else:
         form = TeamForm(instance=team)
-        player_associated =team.persons.all()
-        championship_team = ChampionshipTeam.objects.filter(team = team)
+        player_associated = team.persons.all()
+        championship_team = ChampionshipTeam.objects.filter(team=team)
 
-    context = {"form": form, "teams": team, "player_associated" : player_associated, "championship_team": championship_team }
+    context = {"form": form, "teams": team, "player_associated": player_associated,
+               "championship_team": championship_team}
     return render(request, "championship/team/edit_team.html", context)
-   
-
 
 
 # --Elminar equipo----------------------------------------------------------------------
@@ -201,9 +202,9 @@ def delete_team(request, team_id):
         player.save()
     team.delete()
 
-    messages.success(request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.', extra_tags='deleted')
+    messages.success(
+        request, f'El equipo "{team_mouth}.{team_year}.{team_group}" ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect("teams")
-
 
 
 # --Lista equipos------------------------------------------------------------------------
@@ -222,7 +223,7 @@ def remove_player_from_team(request, team_id, player_id):
 
     if request.method == "POST":
         # Elimina al jugador del equipo
-        if player.is_jale == True or player.promotion_delegate== True:
+        if player.is_jale == True or player.promotion_delegate == True:
             player.is_jale = False
             player.promotion_delegate = False
             player.save()
@@ -278,7 +279,7 @@ def view_team(request, team_id):
         team_year % 10
     )  # Redondea hacia abajo al rango de 10 años más cercano
     year_range_end = year_range_start + 9
-    if team.state == True :
+    if team.state == True:
         players_available = Person.objects.filter(
             Q(year_promotion__isnull=True)
             | Q(year_promotion__gte=year_range_start, year_promotion__lte=year_range_end),
@@ -358,7 +359,6 @@ def view_team(request, team_id):
     )
 
 
-
 # --Fin Equipo-----------------------------------------------------------------
 
 
@@ -391,10 +391,10 @@ def create_championship(request):
 
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
-    
+
     if request.method == "POST":
         form = ChampionshipForm(request.POST, instance=championship)
-        if form.is_valid():        
+        if form.is_valid():
             # Guarda las categorías antes de guardar el formulario
             categories_before_save = set(championship.categorys.all())
             # Guarda el campeonato actualizado
@@ -408,27 +408,28 @@ def edit_championship(request, championship_id):
                 print(f"Categoría eliminada: {deleted_category.name}")
             # verfica con las categorías eliminas o desmarcadas y procede con elminar los jugadores del tal categoria campeonato
             with transaction.atomic():
-                for old_category in deleted_categories :
-                    ChampionshipTeam.objects.filter(championship=championship, category=old_category).delete()
+                for old_category in deleted_categories:
+                    ChampionshipTeam.objects.filter(
+                        championship=championship, category=old_category).delete()
 
             # Puedes redirigir a donde corresponda después de editar
             return redirect("championships")
     else:
         form = ChampionshipForm(instance=championship)
-        TeamChapionshipCategory = ChampionshipTeam.objects.filter(championship=championship)
+        TeamChapionshipCategory = ChampionshipTeam.objects.filter(
+            championship=championship)
         categoryall = Category.objects.all()
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
-    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields, "TeamChapionshipCategory" : TeamChapionshipCategory ,"categoryall": categoryall}
+    context = {"form": form, "championships": championship, "grouped_fields": grouped_fields,
+               "TeamChapionshipCategory": TeamChapionshipCategory, "categoryall": categoryall}
 
     return render(
         request,
         "championship/championship/edit_championship.html",
         context,
     )
-
-
 
     return render(
         request,
@@ -576,7 +577,8 @@ def create_category(request):
                 return render(request, "championship/category/create_category.html", context)
             else:
                 form.save()
-                messages.success(request, "¡Categoría creada correctamente!", extra_tags='created')
+                messages.success(
+                    request, "¡Categoría creada correctamente!", extra_tags='created')
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -595,7 +597,8 @@ def categorys(request):
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     category.delete()
-    messages.success(request, f'La categoría "{category.name}" ha sido eliminada exitosamente.', extra_tags='deleted')
+    messages.success(
+        request, f'La categoría "{category.name}" ha sido eliminada exitosamente.', extra_tags='deleted')
     return redirect("categorys")
 
 
@@ -633,10 +636,12 @@ def edit_category(request, category_id):
                         ChampionshipTeam.objects.filter(
                             championship=champioship, category=category).delete()
 
-                    messages.success(request, "¡Categoría editada correctamente!", extra_tags='edited')
+                    messages.success(
+                        request, "¡Categoría editada correctamente!", extra_tags='edited')
                     return redirect("categorys")
             else:
-                messages.success(request, "No se realizaron cambios", extra_tags='deleted')                
+                messages.success(
+                    request, "No se realizaron cambios", extra_tags='deleted')
                 return redirect("categorys")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -687,7 +692,8 @@ def create_discipline(request):
                 return render(request, "championship/discipline/create_discipline.html", context)
             else:
                 form.save()
-                messages.success(request, "Disciplina creada exitosamente.",extra_tags='created')
+                messages.success(
+                    request, "Disciplina creada exitosamente.", extra_tags='created')
                 return redirect("disciplines")
         else:
             # Si el formulario no es válido, vuelve a mostrar el formulario con los errores.
@@ -727,7 +733,7 @@ def edit_discipline(request, discipline_id):
                 else:
                     form.save()
                     messages.success(
-                        request, "Disciplina editada correctamente",extra_tags='edited')
+                        request, "Disciplina editada correctamente", extra_tags='edited')
                     return redirect("disciplines")
             else:
                 messages.info(
@@ -864,12 +870,10 @@ def create_fixture(request, championship_id, category_id):
     championship_teams = ChampionshipTeam.objects.filter(
         championship_id=championship_id, category_id=category_id
     )
-    print(championship_teams)
     # obtengo una lista de los ID de los equipos
     team_ids = championship_teams.values_list("team_id")
     # filtro los equipos con tales IDs
     teams = Team.objects.filter(id__in=team_ids)
-    print(teams)
 
     # Verificar si ya existe un fixture para el campeonato
     existing_fixture = Game.objects.filter(
@@ -877,8 +881,6 @@ def create_fixture(request, championship_id, category_id):
     if existing_fixture.exists():
         championship = get_object_or_404(Championship, pk=championship_id)
         category = get_object_or_404(Category, pk=category_id)
-        print("fixture existente")
-        print(existing_fixture)
         grouped_fixtures = {}
         for fixture in existing_fixture:
             round_number = fixture.round_number
@@ -888,7 +890,6 @@ def create_fixture(request, championship_id, category_id):
 
         # messages.success(request, "El fixture ya esta creado!")
         # retorna el fixture existente del campeanato
-        print(grouped_fixtures)
 
         context = {'grouped_fixtures': grouped_fixtures,
                    'championships': championship, 'categorys': category}
@@ -896,8 +897,6 @@ def create_fixture(request, championship_id, category_id):
 
     # crear el fixture, los diferentes juegos que tendra el campeonato
     fixture = generate_fixture(teams, championship, category)
-    print("nuevo fixture")
-    print(fixture)
 
     # filtra todos los juegos creados anteriormente
     fixture = Game.objects.filter(championship=championship, category=category)
@@ -909,13 +908,11 @@ def create_fixture(request, championship_id, category_id):
             grouped_fixtures[round_number] = []
         grouped_fixtures[round_number].append(fixture)
 
-    print("groupfixtures")
-
-    print(grouped_fixtures)
 
     context = {'grouped_fixtures': grouped_fixtures,
                'championships': championship, 'categorys': category}
-    messages.success(request, "Fixture creado exitosamente.",extra_tags='created')
+    messages.success(request, "Fixture creado exitosamente.",
+                     extra_tags='created')
 
     return render(request, "championship/game/fixture.html", context)
 
@@ -923,53 +920,77 @@ def create_fixture(request, championship_id, category_id):
 def game(request, game_id):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
+    # instacion el Gamefor con game
+    game_form = GameForm(instance=game)
+    # si alguno de los equipos es DESCANSA, entonces no puedes ingresar al form (te redirecciona)
+    if (game.team1.name or game.team2.name) == 'DESCANSA':
+        return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
+
     # Obtener jugadores de cada equipo
     players_team1 = game.team1.persons.all()
     players_team2 = game.team2.persons.all()
-    print("equipo 1", game.team1.persons.all())
-    print(game.team2.persons.all())
 
-    # Crear formularios para cada jugador
-    forms_team1 = [PlayerGameForm(prefix=f'equipo1-{jugador.id}', initial={
-                                  'player': jugador, 'game': game}) for jugador in players_team1]
-    forms_team2 = [PlayerGameForm(prefix=f'equipo2-{jugador.id}', initial={
-                                  'player': jugador, 'game': game}) for jugador in players_team2]
-    print("equipo 1", forms_team1)
+    forms_team1 = []
+    for jugador in players_team1:
+        try:
+            player_game_instance = jugador.playergame_set.get(game=game)
+        except PlayerGame.DoesNotExist:
+            # Si el PlayerGame no existe, créalo antes de intentar obtenerlo
+            player_game_instance = PlayerGame(player=jugador, game=game)
+            player_game_instance.save()
+
+        forms_team1.append(PlayerGameForm(
+            prefix=f'equipo1-{jugador.id}', instance=player_game_instance))
+
+    forms_team2 = []
+    for jugador in players_team2:
+        try:
+            player_game_instance = jugador.playergame_set.get(game=game)
+        except PlayerGame.DoesNotExist:
+            # Si el PlayerGame no existe, créalo antes de intentar obtenerlo
+            player_game_instance = PlayerGame(player=jugador, game=game)
+            player_game_instance.save()
+
+        forms_team2.append(PlayerGameForm(
+            prefix=f'equipo2-{jugador.id}', instance=player_game_instance))
 
     if request.method == 'POST':
-        # goles de cada equipo
-        team1_goals = request.POST['team1_goals']
-        team2_goals = request.POST['team2_goals']
-        # valida si los goles son numeros
-        if team1_goals.isdigit() and team1_goals.isdigit():
-            # instancio valores de cada jugador
-            forms_team1 = [PlayerGameForm(request.POST, prefix=f'equipo1-{jugador.id}', initial={
-                                          'player': jugador, 'game': game}) for jugador in players_team1]
-            forms_team2 = [PlayerGameForm(request.POST, prefix=f'equipo2-{jugador.id}', initial={
-                                          'player': jugador, 'game': game}) for jugador in players_team2]
-            # verifico la valides del los formularios
-            if all(form.is_valid() for form in forms_team1 + forms_team2):
-                for form in forms_team1 + forms_team2:
-                    # inserto goles para cada equipo
-                    game.team1_goals = team1_goals
-                    game.team2_goals = team2_goals
-                    # cambia el estado del juego a finalizado
-                    # game.status = False
-                    form.save()
-                    game.save()
-                #
-                table_result_championship(game)
-                # redirige al fixture
-                return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
+        game_form = GameForm(request.POST, instance=game)
 
+        forms_team1 = [PlayerGameForm(request.POST, prefix=f'equipo1-{jugador.id}', instance=jugador.playergame_set.get(
+            game=game) if jugador.playergame_set.filter(game=game).exists() else None) for jugador in players_team1]
+
+        forms_team2 = [PlayerGameForm(request.POST, prefix=f'equipo2-{jugador.id}', instance=jugador.playergame_set.get(
+            game=game) if jugador.playergame_set.filter(game=game).exists() else None) for jugador in players_team2]
+
+        if game_form.is_valid() and all(form.is_valid() for form in forms_team1 + forms_team2):
+
+             # Validar la suma de goles para el equipo 1
+            total_goles_equipo1 = sum(form.cleaned_data.get('goals', 0) for form in forms_team1)
+            if total_goles_equipo1 != game_form.cleaned_data.get('team1_goals'):
+                messages.error(request, f"La suma de goles de los jugadores del equipo {game.team1.month}.{game.team1.year}.{game.team1.group} no coincide con los goles totales del equipo.")
+                return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
+
+            # Validar la suma de goles para el equipo 2
+            total_goles_equipo2 = sum(form.cleaned_data.get('goals', 0) for form in forms_team2)
+            if total_goles_equipo2 != game_form.cleaned_data.get('team2_goals'):
+                messages.error(request, f"La suma de goles de los jugadores del equipo {game.team2.month}.{game.team2.year}.{game.team2.group} no coincide con los goles totales del equipo.")
+                return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
+
+            for form in forms_team1 + forms_team2:
+                form.save()
+
+            game_form.save()
+            table_result_championship(game)
+            return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
         else:
-            # messages.success(request, "Ingrese valores validos")
-            print('algo salio mal')
+            messages.error(request, "Por restricción el número de goles no puede exceder a 30")
 
-    return render(request, "championship/game/game.html", {'game': game, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
-
+    return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
 
 # instancia la tabla de posiciones
+
+
 def table_result_championship(game):
     # Actualizar los resultados del equipo1
     result_team1, created = Result.objects.get_or_create(
@@ -1052,19 +1073,22 @@ def goleadores(request, championship_id, category_id):
         category_id=category_id, championship_id=championship_id)
 
     # Filtrar PlayerGame (jugadores por partido o Game)
-    #players_game = PlayerGame.objects.filter(game__in=leaked_games)
-    players_game = Person.objects.filter(playergame__game__in=leaked_games).distinct()
+    # players_game = PlayerGame.objects.filter(game__in=leaked_games)
+    players_game = Person.objects.filter(
+        playergame__game__in=leaked_games).distinct()
 
     result = (
-    players_game
-    .annotate(total_goals=Sum('playergame__goals'))
-    .values('name', 'team__month', 'total_goals')
-    .order_by('-total_goals')
+        players_game
+        .annotate(total_goals=Sum('playergame__goals'))
+        .values('name', 'team__month', 'team__year', 'team__group', 'total_goals')
+        .order_by('-total_goals')
     )
 
-    context = {'result':result, 'championships': championship, 'categorys': category}
-    
+    context = {'result': result,
+               'championships': championship, 'categorys': category}
+
     return render(request, 'championship/fixture/goleadores.html', context)
+
 
 """
 def add__player_team(request, player_id):
