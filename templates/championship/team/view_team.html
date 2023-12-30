@@ -20,16 +20,17 @@
       class="btn mt-4 mb-2"
       role="button"
       href="{% url 'teams' %}"
+      id="cambiarPagina"
       style="
-              background-color: #4e688e;
-              font-size: 20px;
-              font-family: 'Montserrat';
-              box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-              transition: background-color 0.3s;
-              color: white;
-            "
-            onmouseover="this.style.backgroundColor='#314159'"
-            onmouseout="this.style.backgroundColor='#4e688e'"
+        background-color: #4e688e;
+        font-size: 20px;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+        color: white;
+      "
+      onmouseover="this.style.backgroundColor='#314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -113,9 +114,6 @@
       {{msg}}
     </div>
     {% endfor %}
-
-    
-
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -205,8 +203,7 @@
                 class="player-checkbox"
                 name="selected_players"
                 value="{{ player.id }}"
-                
-                {%if player.promotion_delegate%}checked{%endif%}
+                {%if player.team_delegate%}checked{%endif%}
               />
             </td>
             <!-- <td>
@@ -277,8 +274,74 @@
     </div>
   </div>
 </div>
-
+<!--codigo del mensaje flotante que aparece el cual se tiene que editar -->
+<div class="overlay"style="  display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 9998;"></div>
+<div
+  id="popupMessage"
+  style="
+     display: none;
+      position: relative;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+  "
+>
+  <p>No tiene ningún delegado de equipo marcado.</p>
+</div>
+</div>
 <script>
+  window.addEventListener("DOMContentLoaded", function () {
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let popupMessage = document.getElementById("popupMessage");
+    let enlaces = document.querySelectorAll("a");
+    let mensajeMostrado = false;
+
+    function verificarCheckboxes() {
+      let algunoMarcado = false;
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          algunoMarcado = true;
+        }
+      });
+      return algunoMarcado;
+    }
+
+    function mostrarMensaje(e) {
+      if (!verificarCheckboxes() && !mensajeMostrado) {
+        e.preventDefault(); // Evitar el cambio de página si no hay checkbox marcados
+        popupMessage.style.display = "block"; // Mostrar el mensaje
+        mensajeMostrado = true; // Establecer que el mensaje se ha mostrado
+        setTimeout(function () {
+          popupMessage.style.display = "none"; // Ocultar el mensaje después de 5 segundos
+        }, 1000);
+      }
+    }
+
+    enlaces.forEach((enlace) => {
+      enlace.addEventListener("click", mostrarMensaje);
+    });
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        popupMessage.style.display = "none";
+      });
+    });
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
     var checkboxes = document.querySelectorAll(".player-checkbox");
     var checked = null;

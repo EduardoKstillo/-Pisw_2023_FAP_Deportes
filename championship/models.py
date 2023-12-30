@@ -73,7 +73,9 @@ class Person(models.Model):
         max_length=15, validators=[validate_month])
     year_promotion = models.PositiveIntegerField(validators=[validate_year])
     is_jale = models.BooleanField(default=False)
-
+    # Agregamos el campo team_delagate
+    team_delegate = models.BooleanField(
+        choices=BOOLEAN_CHOICES, default=False)
     def __str__(self):
         return self.name
 # -----------------------------

@@ -60,7 +60,7 @@ def edit_person(request, person_id):
 
                     # si la año de la persona no esta dentro del rango permitido
                     if not (acceptable_range_start <= new_year_promotion <= acceptable_range_end):
-                        person.promotion_delegate = False
+                        person.team_delegate = False
                         person.save()
                         # remuevo a la persona de ese equipo
                         team.persons.remove(person)
@@ -171,8 +171,8 @@ def edit_team(request, team_id):
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
                         team.persons.remove(player)
-                        if player.promotion_delegate :
-                            player.promotion_delegate = False
+                        if player.team_delegate :
+                            player.team_delegate = False
                             player.save()
 
                 # Guardar el formulario después de realizar todas las verificaciones
@@ -197,7 +197,7 @@ def delete_team(request, team_id):
     team_group = team.group
     players = Person.objects.filter(team=team)
     for player in players:
-        player.promotion_delegate = False
+        player.team_delegate = False
         player.save()
     team.delete()
 
@@ -222,9 +222,9 @@ def remove_player_from_team(request, team_id, player_id):
 
     if request.method == "POST":
         # Elimina al jugador del equipo
-        if player.is_jale == True or player.promotion_delegate== True:
+        if player.is_jale == True or player.team_delegate== True:
             player.is_jale = False
-            player.promotion_delegate = False
+            player.team_delegate = False
             player.save()
             team.persons.remove(player)
         else:
@@ -240,8 +240,8 @@ def actualizar_jugador(request, player_id):
     if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
-            # Realizar la lógica para zar el campo promotion_delegate a True
-            jugador.promotion_delegate = True
+            # Realizar la lógica para zar el campo team_delegate a True
+            jugador.team_delegate = True
             jugador.save()
             return JsonResponse({"message": "Jugador zado correctamente"})
         except Person.DoesNotExist:
@@ -256,8 +256,8 @@ def actualizar_jugador1(request, player_id):
     if request.method == "POST":
         try:
             jugador = Person.objects.get(pk=player_id)
-            # Realizar la lógica para zar el campo promotion_delegate a True
-            jugador.promotion_delegate = False
+            # Realizar la lógica para zar el campo team_delegate a True
+            jugador.team_delegate = False
             jugador.save()
             return JsonResponse({"message": "Jugador zado correctamente"})
         except Person.DoesNotExist:

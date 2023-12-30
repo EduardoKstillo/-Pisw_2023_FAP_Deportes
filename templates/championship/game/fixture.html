@@ -114,48 +114,49 @@
             {% comment %} {% for fix in fixture %} {% if fix.round_number == 1%}
             <p>{{fix}}</p>
             {% endif %} {% endfor%} {% endcomment %}
-            
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Lugar/Fecha</th>
-                  <th>Equipo 1</th>
-                  <th>Resultado</th>
-                  <th>Equipo 2</th>
-                  <th>Editar partido</th>
-                </tr>
-              </thead>
-              <tbody class="text-center">
-                {% for fixture in fixtures %}
-                <tr>
-                  <td>Lugar 23/11/2023 8:00</td>
-                  <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
-                  <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
-                  <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
-                  </td>
-                  <td>
-                    {% if fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA' %}
-                    <button
-                      class="btn btn-primary my-auto"
-                      href=""
-                      role="button"
-                      style="background: #4e688e"
-                      disabled
-                      >+</button>
-                    {% else %}
-                    <a
-                      class="btn btn-primary my-auto"
-                      href="{% url 'game' fixture.id  %}"
-                      role="button"
-                      style="background: #4e688e"
-                      >+</a
-                    >
-                    {% endif %}
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Lugar/Fecha</th>
+                    <th>Equipo 1</th>
+                    <th>Resultado</th>
+                    <th>Equipo 2</th>
+                    <th>Editar partido</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  {% for fixture in fixtures %}
+                  <tr>
+                    <td>Lugar 23/11/2023 8:00</td>
+                    <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
+                    <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
+                    <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
+                    </td>
+                    <td>
+                      {% if fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA' %}
+                      <button
+                        class="btn btn-primary my-auto"
+                        href=""
+                        role="button"
+                        style="background: #4e688e"
+                        disabled
+                        >+</button>
+                      {% else %}
+                      <a
+                        class="btn btn-primary my-auto"
+                        href="{% url 'game' fixture.id  %}"
+                        role="button"
+                        style="background: #4e688e"
+                        >+</a
+                      >
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
           {% endfor %}
         </div>
