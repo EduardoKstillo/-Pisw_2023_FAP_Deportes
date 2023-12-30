@@ -170,7 +170,7 @@
             "
           >
             <td>{{ summary.name }}</td>
-            <td>{{ summary.team__month }}</td>
+            <td>{{ summary.team__month }}.{{ summary.team__year }}.{{ summary.team__group }}</td>
             <td>{{ summary.total_goals|default:0 }}</td>
           </tr>
           {% endfor %}

@@ -66,6 +66,16 @@
       <a class="list-group-item bg-white flex-fill" href="">Goleadores</a>
     </div> -->
 
+    {% for msg in messages %}
+    <div
+      class="alert {% if 'created' in msg.tags %} alert-success {% elif 'error' in msg.tags %} alert-danger {% elif 'edited' in msg.tags %} alert-success {% endif %} fade show"
+      id="msg"
+      role="alert"
+    >
+      {{ msg }}
+    </div>
+    {% endfor %}
+
     <div class="container bg-white">
       <div class="bg-white mt-3">
         <div class="container text-center">
@@ -78,15 +88,10 @@
                   <h3 class="fs-2 pt-4" style:"color: #2a4365">
                     {{ game.team1 }}.{{ game.team1.year}}.{{ game.team1.group}}
                   </h3>
-                  <input
-                    type="number"
-                    name="team1_goals"
-                    class="form-control"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    style="border: 1px solid #7fb3d5"
-                  />
+                  <!-- Este es el input para goles del equipo1 (solo necesitas esto) -->
+                  {{ game_form.team1_goals }}
                 </div>
+                
                 <div class="col-md-2">
                   <h3 style="font-size: 55px; margin-top: 35px; color: #2a4365">VS</h3>
                 </div>
@@ -94,30 +99,26 @@
                   <h3 class="fs-2 pt-4" style="color: #2a4365">
                     {{game.team2}}.{{game.team2.year}}.{{ game.team2.group}}
                   </h3>
-                  <input
-                    type="number"
-                    name="team2_goals"
-                    class="form-control"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    style="border: 1px solid #7fb3d5"
-                  />
+                  <!-- Este es el input para goles del equipo2 (solo necesitas esto)-->
+                  {{ game_form.team2_goals }}
                 </div>
               </div>
             </div>
 
-            <h2
-              class="text-left mt-3"
+            <br><br><br>
+
+            <h3
+              class="text-start mt-3"
               style="
                 font-family: 'Montserrat';
-                font-size: 50px;
+                font-size: 25px;
                 color: #2a4365;
                 border-bottom: 1.5px solid #babfc5;
-                padding-bottom: 15px;
               "
             >
-              {{ game.team1 }}.{{ game.team1.year}}.{{ game.team1.group}}
-            </h2>
+              Detalles del equipo {{ game.team1 }}.{{ game.team1.year}}.{{game.team1.group}}
+            </h3>
+
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -131,7 +132,7 @@
                 <tbody>
                   {% for form in forms_team1 %}
                   <tr class="">
-                    <td>{{ form.initial.player.name }}</td>
+                    <td>{{ form.instance.player.name }}</td>
                     <td>{{ form.card_yellow }}</td>
                     <td>{{ form.card_red }}</td>
                     <td>{{ form.goals }}</td>
@@ -141,18 +142,17 @@
               </table>
             </div>
 
-            <h2
-              class="text-left mt-3"
+            <h3
+              class="text-start mt-3"
               style="
                 font-family: 'Montserrat';
-                font-size: 50px;
+                font-size: 25px;
                 color: #2a4365;
                 border-bottom: 1.5px solid #babfc5;
-                padding-bottom: 15px;
               "
             >
-              {{game.team2}}.{{game.team2.year}}.{{ game.team2.group}}
-            </h2>
+              Detalles del equipo {{game.team2}}.{{game.team2.year}}.{{game.team2.group}}
+            </h3>
             <div class="table-responsive">
               <table class="table">
                 <thead>
@@ -166,7 +166,7 @@
                 <tbody>
                   {% for form in forms_team2 %}
                   <tr class="">
-                    <td>{{ form.initial.player.name }}</td>
+                    <td>{{ form.instance.player.name }}</td>
                     <td>{{ form.card_yellow }}</td>
                     <td>{{ form.card_red }}</td>
                     <td>{{ form.goals }}</td>
@@ -193,7 +193,7 @@
               Guardar Resultados
             </button>
             {% comment %} <button type="submit">Guardar Resultados</button>
-            {%endcomment %}
+            {% endcomment %}
           </form>
         </div>
       </div>

@@ -1,5 +1,7 @@
 from django.db import models
 from .validators import validate_str, validate_dni, validate_phone, validate_month, validate_year
+from django.core.validators import MaxValueValidator
+
 
 person_department = [
     (1, 'Amazonas'),
@@ -154,8 +156,10 @@ class Game(models.Model):
     team2 = models.ForeignKey(
         Team, related_name='team2', on_delete=models.CASCADE)
     # date = models.DateTimeField(null=True, blank=True)
-    team1_goals = models.IntegerField(default=0)
-    team2_goals = models.IntegerField(default=0)
+    team1_goals = models.PositiveIntegerField(
+        default=0, validators=[MaxValueValidator(limit_value=30)])
+    team2_goals = models.PositiveBigIntegerField(
+        default=0, validators=[MaxValueValidator(limit_value=30)])
     # state = models.BooleanField(default=True)
     players = models.ManyToManyField(Person, through="PlayerGame")
 
@@ -168,12 +172,21 @@ class Game(models.Model):
 class PlayerGame(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(Person, on_delete=models.CASCADE)
-    card_red = models.PositiveIntegerField(default=0)
-    card_yellow = models.PositiveIntegerField(default=0)
-    goals = models.PositiveIntegerField(default=0)
+    card_red = models.PositiveIntegerField(
+        validators=[MaxValueValidator(limit_value=1)], default = 0)
+    card_yellow = models.PositiveIntegerField(
+        validators=[MaxValueValidator(limit_value=2)], default = 0)
+    goals = models.PositiveIntegerField(default = 0)
 
-    
-    
+    def save(self, *args, **kwargs):
+        # Verifica si card_yellow igual a 2
+        if self.card_yellow == 2:
+            # Si es igual a 2, establece card_red en 1
+            self.card_red = 1
+
+        super().save(*args, **kwargs)
+
+
 class Result(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE)

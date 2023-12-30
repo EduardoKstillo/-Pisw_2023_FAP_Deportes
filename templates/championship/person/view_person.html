@@ -263,20 +263,23 @@
             <div class="card-body pb-2">
               <div class="row">
                 <div class="col-sm-3">
-                  <p class="mb-0">¿Es delegado?</p>
+                  <p class="mb-0">¿Es delegado de promoción?</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ person.promotion_delegate }}</p>
+                  <p class="text-muted mb-0">
+                  {% if  person.promotion_delegate %}Si{% else %} No{% endif %}</p>
                 </div>
               </div>
             <hr />
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">¿Es sub-delegado?</p>
+                <p class="mb-0">¿Es sub-delegado de procmoción?</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">
-                  {{ person.promotion_sub_delegate }}
+    
+                {% if person.promotion_sub_delegate %}Si{% else %} No{% endif %}
+                
                 </p>
               </div>
             </div>
@@ -286,7 +289,8 @@
                 <p class="mb-0">¿Es socio?</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ person.partner }}</p>
+                <p class="text-muted mb-0">
+                {% if person.partner %}Si{% else %} No{% endif %}</p>
               </div>
             </div>
             <hr />
