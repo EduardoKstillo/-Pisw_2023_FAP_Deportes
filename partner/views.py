@@ -128,4 +128,6 @@ def edit_user(request, id):
 def delete_user(request, id):
     user = get_object_or_404(User, pk=id)
     user.delete()
+    messages.success(
+        request, f'El usuario ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect('users')

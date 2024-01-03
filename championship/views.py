@@ -137,6 +137,7 @@ def create_team(request):
 
 
 # --Editar equipo----------------------------------------------------------------------
+@login_required
 def edit_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     form = TeamForm(instance=team)
@@ -173,7 +174,7 @@ def edit_team(request, team_id):
                     if not (acceptable_range_start <= player.year_promotion <= acceptable_range_end):
                         print("Eliminando jugador no apto")
                         team.persons.remove(player)
-                        if player.team_delegate :
+                        if player.team_delegate:
                             player.team_delegate = False
                             player.save()
 
@@ -191,6 +192,7 @@ def edit_team(request, team_id):
 
 
 # --Elminar equipo----------------------------------------------------------------------
+@login_required
 def delete_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     team_year = team.year
@@ -208,12 +210,14 @@ def delete_team(request, team_id):
 
 
 # --Lista equipos------------------------------------------------------------------------
+@login_required
 def teams(request):
     teams = Team.objects.all()
     return render(request, "championship/team/teams.html", {"teams": teams})
 
 
 # --Funcion de remover los personas  de un equipo ----------------------------------------
+@login_required
 def remove_player_from_team(request, team_id, player_id):
     team = get_object_or_404(Team, pk=team_id)
     player = get_object_or_404(Person, pk=player_id)
@@ -223,7 +227,7 @@ def remove_player_from_team(request, team_id, player_id):
 
     if request.method == "POST":
         # Elimina al jugador del equipo
-        if player.is_jale == True or player.team_delegate== True:
+        if player.is_jale == True or player.team_delegate == True:
             player.is_jale = False
             player.team_delegate = False
             player.save()
@@ -237,6 +241,7 @@ def remove_player_from_team(request, team_id, player_id):
 
 
 # --Funcion para zar una persona si es delegado de equipo
+@login_required
 def actualizar_jugador(request, player_id):
     if request.method == "POST":
         try:
@@ -252,6 +257,7 @@ def actualizar_jugador(request, player_id):
 
 
 # --Funcion para zar una persona en caso ya no sea delegado de equipo
+@login_required
 def actualizar_jugador1(request, player_id):
     print("amigo")
     if request.method == "POST":
@@ -270,7 +276,7 @@ def actualizar_jugador1(request, player_id):
 # --Esta funcion da detalles de un equipo-------------------------------------------------------
 # --Esta funcion agrega las personas a un equipo
 
-
+@login_required
 def view_team(request, team_id):
     team = get_object_or_404(Team, id=team_id)
     players = team.persons.all()
@@ -364,6 +370,7 @@ def view_team(request, team_id):
 
 # --Incio Campeonato----------------------------------------------------------------
 # --Crear campeonato------------------------------------------------------------------------
+@login_required
 def create_championship(request):
     if request.method == "POST":
         form = ChampionshipForm(request.POST)
@@ -388,7 +395,7 @@ def create_championship(request):
 
 # --Editar campeonato-------------------------------------------------------------------
 
-
+@login_required
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
 
@@ -440,7 +447,7 @@ def edit_championship(request, championship_id):
 
 # --Eliminar campeonato--------------------------------------------------------------------
 
-
+@login_required
 def delete_championship(request, id):
     championship = get_object_or_404(Championship, pk=id)
     championship_name = championship.name
@@ -454,6 +461,7 @@ def delete_championship(request, id):
 
 
 # --Funcion remueve los equipos de un campeonato en especifico---------------------------
+@login_required
 def remove_team_from_championship(request, championship_id, category_id, team_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -476,6 +484,7 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
 # --Listar campeonatos----------------------------------------------------------------------
 
 
+@login_required
 def championships(request):
     championships = Championship.objects.all()
     context = {"championships": championships}
@@ -485,7 +494,7 @@ def championships(request):
 # --Funcion que muestra los equipo que pertenecen a un equipo--------------------------------------
 # --Funcion que agrega equipos a un campeonato
 
-
+@login_required
 def add_team_championship(request, championship_id, categorys_id):
     championship = Championship.objects.get(pk=championship_id)
     category = Category.objects.get(pk=categorys_id)
@@ -544,7 +553,7 @@ def add_team_championship(request, championship_id, categorys_id):
 
 # --Ver campeonato y sus categorias pertenecientes----------------------------------------------------------------------
 
-
+@login_required
 def view_championship(request, championship_id):
     championship = Championship.objects.get(pk=championship_id)
     categorys = championship.categorys.all()
@@ -561,6 +570,7 @@ def view_championship(request, championship_id):
 
 # --Incio Categoria--------------------------------
 # --Crear categoria---------------------------------------------------------------
+@login_required
 def create_category(request):
     if request.method == "GET":
         context = {"form": CategoryForm}
@@ -587,6 +597,7 @@ def create_category(request):
 
 
 # --Lista categorias----------------------------------------------------------------
+@login_required
 def categorys(request):
     categorys = Category.objects.all().order_by("name")
     context = {"categorys": categorys}
@@ -594,6 +605,7 @@ def categorys(request):
 
 
 # --Elimnat categoria---------------------------------------------------------------
+@login_required
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
     category.delete()
@@ -603,6 +615,7 @@ def delete_category(request, category_id):
 
 
 # --Editar categoria----------------------------------------------------------------
+@login_required
 def edit_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     name_category = int(category.name)
@@ -664,6 +677,7 @@ def edit_category(request, category_id):
 
 # --Inicio Disciplinas--------------------------------
 # ----Listar disciplinas
+@login_required
 def disciplines(request):
     disciplines = Discipline.objects.all().order_by("name")
     context = {"disciplines": disciplines}
@@ -671,6 +685,7 @@ def disciplines(request):
 
 
 # --Crear disciplinas---------------------------------------------------------------
+@login_required
 def create_discipline(request):
     if request.method == "GET":
         context = {"form": DiciplineForm}
@@ -703,6 +718,7 @@ def create_discipline(request):
 
 
 # --Elimnar disciplinas---------------------------------------------------------------
+@login_required
 def delete_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, pk=discipline_id)
     discipline_name = discipline.name
@@ -714,6 +730,7 @@ def delete_discipline(request, discipline_id):
 
 
 # --Editar disciplinas----------------------------------------------------------------
+@login_required
 def edit_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, id=discipline_id)
     form = DiciplineForm(instance=discipline)
@@ -760,7 +777,7 @@ def edit_discipline(request, discipline_id):
 # --Inicio Temporada--------------------------------
 # ----Listar temporadas--------------------------------
 
-
+@login_required
 def seasons(request):
     seasons = Season.objects.all().order_by("name")
     context = {"seasons": seasons}
@@ -769,7 +786,7 @@ def seasons(request):
 
 # --Crear temporadas---------------------------------------------------------------
 
-
+@login_required
 def create_season(request):
     if request.method == "GET":
         context = {"form": SeasonForm}
@@ -799,7 +816,7 @@ def create_season(request):
 
 # --Elimnar temporadas---------------------------------------------------------------
 
-
+@login_required
 def delete_season(request, season_id):
     season = get_object_or_404(Season, pk=season_id)
     season_name = season.name
@@ -811,6 +828,7 @@ def delete_season(request, season_id):
 
 
 # --Editar temporadas----------------------------------------------------------------
+@login_required
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
     form = SeasonForm(instance=season)
@@ -860,7 +878,7 @@ def edit_season(request, season_id):
 
 
 # --Modulo Fixture----------------------------------------------------------------
-
+@login_required
 def create_fixture(request, championship_id, category_id):
     # obtengo el campeonato y la categoria en especifico
     championship = get_object_or_404(Championship, pk=championship_id)
@@ -908,7 +926,6 @@ def create_fixture(request, championship_id, category_id):
             grouped_fixtures[round_number] = []
         grouped_fixtures[round_number].append(fixture)
 
-
     context = {'grouped_fixtures': grouped_fixtures,
                'championships': championship, 'categorys': category}
     messages.success(request, "Fixture creado exitosamente.",
@@ -917,6 +934,7 @@ def create_fixture(request, championship_id, category_id):
     return render(request, "championship/game/fixture.html", context)
 
 
+@login_required
 def game(request, game_id):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
@@ -965,16 +983,20 @@ def game(request, game_id):
 
         if game_form.is_valid() and all(form.is_valid() for form in forms_team1 + forms_team2):
 
-             # Validar la suma de goles para el equipo 1
-            total_goles_equipo1 = sum(form.cleaned_data.get('goals', 0) for form in forms_team1)
+            # Validar la suma de goles para el equipo 1
+            total_goles_equipo1 = sum(form.cleaned_data.get(
+                'goals', 0) for form in forms_team1)
             if total_goles_equipo1 != game_form.cleaned_data.get('team1_goals'):
-                messages.error(request, f"La suma de goles de los jugadores del equipo {game.team1.month}.{game.team1.year}.{game.team1.group} no coincide con los goles totales del equipo.")
+                messages.error(
+                    request, f"La suma de goles de los jugadores del equipo {game.team1.month}.{game.team1.year}.{game.team1.group} no coincide con los goles totales del equipo.")
                 return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
 
             # Validar la suma de goles para el equipo 2
-            total_goles_equipo2 = sum(form.cleaned_data.get('goals', 0) for form in forms_team2)
+            total_goles_equipo2 = sum(form.cleaned_data.get(
+                'goals', 0) for form in forms_team2)
             if total_goles_equipo2 != game_form.cleaned_data.get('team2_goals'):
-                messages.error(request, f"La suma de goles de los jugadores del equipo {game.team2.month}.{game.team2.year}.{game.team2.group} no coincide con los goles totales del equipo.")
+                messages.error(
+                    request, f"La suma de goles de los jugadores del equipo {game.team2.month}.{game.team2.year}.{game.team2.group} no coincide con los goles totales del equipo.")
                 return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
 
             for form in forms_team1 + forms_team2:
@@ -984,13 +1006,15 @@ def game(request, game_id):
             table_result_championship(game)
             return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
         else:
-            messages.error(request, "Por restricción el número de goles no puede exceder a 30")
+            messages.error(
+                request, "Por restricción el número de goles no puede exceder a 30")
 
     return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
 
 # instancia la tabla de posiciones
 
 
+@login_required
 def table_result_championship(game):
     # Actualizar los resultados del equipo1
     result_team1, created = Result.objects.get_or_create(
@@ -1020,6 +1044,7 @@ def table_result_championship(game):
 
 
 # --Listar tabla de posiciones----------------------------------------------------------------------
+@login_required
 def tabla_posiciones(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -1033,6 +1058,7 @@ def tabla_posiciones(request, championship_id, category_id):
     return render(request, 'championship/fixture/tabla_posiciones.html', context)
 
 
+@login_required
 def amonestaciones(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -1065,6 +1091,7 @@ def amonestaciones(request, championship_id, category_id):
     return render(request, 'championship/fixture/amonestaciones.html', context)
 
 
+@login_required
 def goleadores(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
