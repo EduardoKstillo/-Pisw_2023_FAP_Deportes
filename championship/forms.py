@@ -408,10 +408,11 @@ class GameForm(forms.ModelForm):
         widgets = {
             'team1_goals': forms.NumberInput(
                 attrs={
-                    'class': "form-control",
+                    'class': "form-control border border-info-subtle ",
+                    
                 }),
             'team2_goals': forms.NumberInput(
                 attrs={
-                    'class': "form-control",
+                    'class': "form-control border border-info-subtle",
                 }),
         }

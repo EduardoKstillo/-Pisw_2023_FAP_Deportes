@@ -1014,7 +1014,7 @@ def table_result_championship(game):
     result_team2.pp += 1 if game.team2_goals < game.team1_goals else 0
     result_team2.gf += int(game.team2_goals)
     result_team2.gc += int(game.team1_goals)
-    result_team2.dg = result_team2.gf - result_team2.gc
+    result_team2.dg = result_team2.gf - result_team2.g
     result_team2.pts = 3 * result_team2.pg + result_team2.pe
     result_team2.save()
 
