@@ -84,7 +84,7 @@ def create_user(request):
                     user.groups.add(group)
 
                     messages.success(
-                        request, 'Usuario creado correctamente!')
+                    request, "Usuario creado exitosamente.", extra_tags='created')
                     return redirect('users')
 
                 else:
