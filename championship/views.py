@@ -180,6 +180,8 @@ def edit_team(request, team_id):
 
                 # Guardar el formulario después de realizar todas las verificaciones
                 form.save()
+                messages.success(
+                    request, f'El equipo ha sido editado correctamente.', extra_tags='created')
                 return redirect("teams")
     else:
         form = TeamForm(instance=team)
