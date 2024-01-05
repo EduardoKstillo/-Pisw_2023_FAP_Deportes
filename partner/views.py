@@ -32,10 +32,8 @@ def signin(request):  # login
 
             # no existe el usuario
             if user is None:
-                return render(request, 'login.html', {
-                    'message': 'user or password incorrect',
-                    'navoff': True
-                })
+                messages.success(request, "Usuario o contraseña incorrectos",extra_tags='deleted')
+                return render(request, 'login.html')
             else:
                 login(request, user)
                 return redirect(next_url)

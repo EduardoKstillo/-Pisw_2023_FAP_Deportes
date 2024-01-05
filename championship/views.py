@@ -921,7 +921,13 @@ def create_fixture(request, championship_id, category_id):
     # filtra todos los juegos creados anteriormente
     fixture = Game.objects.filter(championship=championship, category=category)
     grouped_fixtures = {}
-
+    if fixture.count()==0:
+        context = {'championships': championship, 'categorys': category}
+        print("entro aqui")
+        messages.success(request, "No se puede crear un fixture sin equipos.",
+                     extra_tags='deleted')
+        return render(request, "championship/game/fixture.html",context)
+        
     for fixture in fixture:
         round_number = fixture.round_number
         if round_number not in grouped_fixtures:

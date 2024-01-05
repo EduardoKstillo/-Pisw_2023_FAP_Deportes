@@ -1,4 +1,4 @@
-{% extends 'layout/main.html' %} {% block login %} {{message}}
+{% extends 'layout/main.html' %} {% block login %}
 
 <div class="mt-4 mb-4">
   <div class="col-md-4 offset-md-4">
@@ -15,7 +15,12 @@
       Ingresar
     </h1>
     <form method="POST">
-      {% csrf_token %}
+      {% csrf_token %} 
+      {% for msg in messages %}
+      <div class="alert alert-danger fade show" id="msg" role="alert">
+        {{msg}}
+      </div>
+      {% endfor %}
       <div class="mb-3 mt-3">
         <label
           class="form-label"
