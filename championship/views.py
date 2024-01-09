@@ -1015,18 +1015,14 @@ def game(request, game_id):
             return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
         else:
             messages.error(
-                request, "Por restricción el número de goles no puede exceder a 30")
+                request, "Número de goles o tarjetas invalidas")
 
     return render(request, "championship/game/game.html", {'game': game, 'game_form': game_form, 'forms_team1': forms_team1, 'forms_team2': forms_team2})
 
 # instancia la tabla de posiciones
-
-
-@login_required
 def table_result_championship(game):
     # Actualizar los resultados del equipo1
-    result_team1, created = Result.objects.get_or_create(
-        team=game.team1, championship=game.championship, category=game.category)
+    result_team1, created = Result.objects.get_or_create(team=game.team1,championship=game.championship, category=game.category)
     result_team1.pj += 1
     result_team1.pg += 1 if game.team1_goals > game.team2_goals else 0
     result_team1.pe += 1 if game.team1_goals == game.team2_goals else 0
@@ -1038,15 +1034,14 @@ def table_result_championship(game):
     result_team1.save()
 
     # Actualizar los resultados del equipo2
-    result_team2, created = Result.objects.get_or_create(
-        team=game.team2, championship=game.championship, category=game.category)
+    result_team2, created = Result.objects.get_or_create(team=game.team2, championship=game.championship, category=game.category)
     result_team2.pj += 1
     result_team2.pg += 1 if game.team2_goals > game.team1_goals else 0
     result_team2.pe += 1 if game.team2_goals == game.team1_goals else 0
     result_team2.pp += 1 if game.team2_goals < game.team1_goals else 0
     result_team2.gf += int(game.team2_goals)
     result_team2.gc += int(game.team1_goals)
-    result_team2.dg = result_team2.gf - result_team2.g
+    result_team2.dg = result_team2.gf - result_team2.gc
     result_team2.pts = 3 * result_team2.pg + result_team2.pe
     result_team2.save()
 
