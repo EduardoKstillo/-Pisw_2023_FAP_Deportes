@@ -441,14 +441,14 @@ class AnuncioForm(forms.ModelForm):
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
     )
     default = forms.BooleanField(
-        label="Default",
+        label="Publicar ahora",
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
     )
 
     class Meta:
         model = Anuncio
-        fields = ['name', 'content', 'championship', 'date', 'time','default', 'programar', ]
+        fields = ['default', 'programar', 'date', 'time', 'championship', 'name', 'content', ]
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -457,7 +457,7 @@ class AnuncioForm(forms.ModelForm):
             }),
             'content': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingrese comentarios del campeonato',
+                'placeholder': 'Ingrese la descripción del anuncio',
                 'style': 'font-size: 20px; font-family: Montserrat;',
                 'rows': 4,
             }),
@@ -468,9 +468,9 @@ class AnuncioForm(forms.ModelForm):
             }),
         }
         labels = {
-            'name': 'Nombre:',
-            'content': 'Contenido:',
+            'name': 'Título:',
+            'content': 'Descripción:',
             'championship': 'Campeonato:',
             'date': 'Fecha:',
-            'time': 'Horas:',
+            'time': 'Hora:',
         }
