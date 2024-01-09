@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "partner",
     "championship",
     'django_filters',
-    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
