@@ -1,10 +1,12 @@
 from django import forms
-from .models import Category, Championship, Team, Person, Discipline, Season, PlayerGame, Game
+from .models import Category, Championship, Team, Person, Discipline, Season, PlayerGame, Game, Anuncio
 from .validators import validate_str
 from django.core import validators
 import datetime
 from django.forms import inlineformset_factory
-
+#from django.forms.widgets import SelectDateWidget
+#from django.forms.widgets import SelectTimeWidget
+#from bootstrap_datepicker_plus import TimePickerInput
 
 remainder = datetime.date.today().year % 10
 current_year = datetime.date.today().year-remainder
@@ -415,4 +417,60 @@ class GameForm(forms.ModelForm):
                 attrs={
                     'class': "form-control border border-info-subtle",
                 }),
+        }
+
+
+
+class AnuncioForm(forms.ModelForm):
+    date = forms.DateField(
+        label="Fecha",
+        required=False,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date", 'class': 'form-control', 'style': 'font-size: 20px; font-family: Montserrat;'}),
+        input_formats=["%Y-%m-%d"]
+    )
+    time = forms.TimeField(
+        label="Hora",
+        required=False,
+        widget=forms.TimeInput(
+            attrs={"type": "time", 'class': 'form-control', 'placeholder': 'Seleccione la hora', 'style': 'font-size: 20px; font-family: Montserrat;'},
+        ),
+    )
+    programar = forms.BooleanField(
+        label="Programar",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    )
+    default = forms.BooleanField(
+        label="Default",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    )
+
+    class Meta:
+        model = Anuncio
+        fields = ['name', 'content', 'championship', 'date', 'time','default', 'programar', ]
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ingrese el nombre del anuncio',
+                'style': 'font-size: 20px; font-family: Montserrat;',
+            }),
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ingrese comentarios del campeonato',
+                'style': 'font-size: 20px; font-family: Montserrat;',
+                'rows': 4,
+            }),
+            'championship': forms.Select(attrs={
+                'class': 'form-select',
+                'required': True,
+                'style': 'font-size: 20px; font-family: Montserrat;',
+            }),
+        }
+        labels = {
+            'name': 'Nombre:',
+            'content': 'Contenido:',
+            'championship': 'Campeonato:',
+            'date': 'Fecha:',
+            'time': 'Horas:',
         }

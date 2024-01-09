@@ -77,4 +77,8 @@ urlpatterns = [
     path('tabla_posiciones/<int:championship_id>/<int:category_id>/', views.tabla_posiciones, name='tabla_posiciones'),
     path('amonestaciones/<int:championship_id>/<int:category_id>/', views.amonestaciones, name='amonestaciones'),
     path('goleadores/<int:championship_id>/<int:category_id>/', views.goleadores, name='goleadores'),
+
+    # Modulo anuncios
+    path('anuncios/', views.anuncios,  name='anuncios'),
+    path('create_anuncio/', views.create_anuncio,  name='create_anuncio'),
 ]

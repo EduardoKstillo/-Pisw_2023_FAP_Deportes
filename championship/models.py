@@ -1,7 +1,10 @@
 from django.db import models
 from .validators import validate_str, validate_dni, validate_phone, validate_month, validate_year
 from django.core.validators import MaxValueValidator
-
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils import timezone
+import pytz
 
 person_department = [
     (1, 'Amazonas'),
@@ -82,7 +85,6 @@ class Person(models.Model):
         return self.name
 # -----------------------------
 
-
 class Team(models.Model):
     name = models.CharField(max_length=50)
     month = models.CharField(max_length=100, validators=[validate_month])
@@ -146,6 +148,16 @@ class ChampionshipTeam(models.Model):
     def __str__(self):
         return f"{self.championship.name} - {self.category.name} - {self.team.month}"
 
+class Anuncio(models.Model):
+    name = models.CharField(max_length=30)
+    content = models.TextField(blank=True, null=True)
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
+    championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
 
 class Game(models.Model):
     round_number = models.PositiveIntegerField(default=0)
@@ -200,3 +212,23 @@ class Result(models.Model):
     # diferencia de goles a favor y en contra
     dg = models.IntegerField(default=0)
     pts = models.IntegerField(default=0)
+
+
+#--funcion para actualizar la hor ay fecha 
+# Definir una función para manejar la señal
+@receiver(pre_save, sender=Anuncio)
+def set_default_date_time(sender, instance, **kwargs):
+    # Obtener la zona horaria de Perú
+    peru_tz = pytz.timezone('America/Lima')
+    
+    # Verificar si date y time están en blanco
+    if instance.date is None:
+        # Asignar la fecha actual en la zona horaria de Perú
+        instance.date = timezone.now().astimezone(peru_tz).date()
+    
+    if instance.time is None:
+        # Asignar la hora actual en la zona horaria de Perú
+        instance.time = timezone.now().astimezone(peru_tz).strftime('%H:%M:%S')
+
+# Conectar la función a la señal
+pre_save.connect(set_default_date_time, sender=Anuncio)

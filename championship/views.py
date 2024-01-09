@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import (Category, Championship, Team, Game,
-                     Person, ChampionshipTeam, Discipline, Season, PlayerGame, Result)
+                     Person, ChampionshipTeam, Discipline, Season, PlayerGame, Result, Anuncio)
 from .forms import (CategoryForm, ChampionshipForm, TeamForm,
-                    PersonBasicForm, PersonForm, DiciplineForm, SeasonForm, PlayerGameForm, GameForm)
+                    PersonBasicForm, PersonForm, DiciplineForm, SeasonForm, PlayerGameForm, GameForm, AnuncioForm)
 from django.forms import inlineformset_factory
 
 from django.contrib.auth.decorators import login_required
@@ -1123,6 +1123,33 @@ def goleadores(request, championship_id, category_id):
                'championships': championship, 'categorys': category}
 
     return render(request, 'championship/fixture/goleadores.html', context)
+
+
+
+
+# ------------------------------------------ Modulo Anuncios
+#--Crear anuncio
+def create_anuncio(request):
+    if request.method == "POST":
+        form = AnuncioForm(request.POST)
+        if form.is_valid():        
+            form.save()
+            messages.success(
+                request, "¡Anucio creado correctamente!", extra_tags='created')
+            return redirect("anuncios")
+    else:
+        form = AnuncioForm()
+
+    return render(request, "championship/anuncio/create_anuncio.html", {"form": form})
+
+#--Editar anuncio
+#--Listar anucio
+def anuncios(request):
+    anuncios = Anuncio.objects.all()
+    return render(request, "championship/anuncio/anuncios.html", {"anuncios": anuncios})
+#--Eliminar anuncio
+
+
 
 
 """
