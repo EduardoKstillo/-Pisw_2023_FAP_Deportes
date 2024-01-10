@@ -15,7 +15,7 @@ from django.db.models import Q
 from copy import deepcopy
 from django.db import transaction
 from django.db.models import Sum
-
+import locale
 
 
 # --Inicio Person------------------------------------------
@@ -1148,7 +1148,7 @@ def create_anuncio(request):
         if form.is_valid():        
             form.save()
             messages.success(
-                request, "¡Anucio creado correctamente!", extra_tags='created')
+                request, "¡Anuncio creado correctamente!", extra_tags='created')
             return redirect("anuncios")
     else:
         form = AnuncioForm()
@@ -1158,7 +1158,16 @@ def create_anuncio(request):
 #--Editar anuncio
 #--Listar anucio
 def anuncios(request):
-    anuncios = Anuncio.objects.all()
+    anuncios = Anuncio.objects.all().order_by('-date', '-time')
+
+    # Configura la localización en español para la fecha
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+
+    # Formatea las fechas y horas en español
+    for anuncio in anuncios:
+        anuncio.date = anuncio.date.strftime('%d de %B de %Y') if anuncio.date else None  # Formato: Día de Mes de Año
+        anuncio.time = anuncio.time.strftime('%I:%M %p') if anuncio.time else None  # Formato: Hora:minuto AM/PM
+
     return render(request, "championship/anuncio/anuncios.html", {"anuncios": anuncios})
 #--Eliminar anuncio
 

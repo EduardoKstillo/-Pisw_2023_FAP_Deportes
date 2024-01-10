@@ -1,17 +1,15 @@
-{% extends 'layout/main.html' %} {% block content %}
+{% extends 'layout/main.html' %}
+{% block content %}
 <div class="mt-4 mb-4">
   <div class="col-md-6 offset-md-3">
     <form method="POST">
-      <h1
-        class="text-left mt-3"
-        style="
+      <h1 style="
           font-family: 'Montserrat';
           font-size: 50px;
           color: #2a4365;
           border-bottom: 1.5px solid #babfc5;
           padding-bottom: 15px;
-        "
-      >
+        ">
         Crear anuncio
       </h1>
       <a
@@ -43,86 +41,152 @@
         </svg>
         Volver a anuncios
       </a>
-      {%csrf_token%} {% for field in form %}
-      <div class="mb-3 mt-3">
-        <label
-          class="form-label"
-          style="
+      <div style="background-color: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; margin-top: 20px;">
+        <div class="mb-3">
+          <!-- <label style="
+              color: black;
+              font-family: 'Montserrat';
+              font-size: 20px;
+              font-weight: normal;
+              display: block;
+              margin-bottom: 5px; /* Agregamos margen inferior */
+            ">Publicar ahora:</label> -->
+          <div style="display: flex; align-items: center;">
+            <span style="margin-right: 10px;">{{ form.default }}</span>
+            <span style="font-size: 20px; font-family: 'Montserrat'; color: black;">Publicar ahora</span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <!-- <label style="
+              color: black;
+              font-family: 'Montserrat';
+              font-size: 20px;
+              font-weight: normal;
+              display: block;
+              margin-bottom: 5px; /* Agregamos margen inferior */
+            ">Programar:</label> -->
+          <div style="display: flex; align-items: center;">
+            <span style="margin-right: 10px;">{{ form.programar }}</span>
+            <span style="font-size: 20px; font-family: 'Montserrat'; color: black;">Programar</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; margin-left: 25px; margin-right: 25px;" class="mb-3">
+          <div style="flex: 1; margin-right: 10px;">
+            <label style="
+                color: black;
+                font-family: 'Montserrat';
+                font-size: 20px;
+                font-weight: normal;
+              " for="id_date">Fecha:</label>
+            {{ form.date }}
+          </div>
+          <div style="flex: 1; margin-left: 10px;">
+            <label style="
+                color: black;
+                font-family: 'Montserrat';
+                font-size: 20px;
+                font-weight: normal;
+              " for="id_time">Hora:</label>
+            {{ form.time }}
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label style="
             color: black;
             font-family: 'Montserrat';
             font-size: 20px;
             font-weight: normal;
-          "
-          for="{{ field.auto_id }}"
-        >
-          {{ field.label }} {% if field.field.required %}
-          <span class="text-danger">*</span>
-          {% endif %}
-        </label>
-        {{ field }} {% if field.errors %}
-        <div class="text-danger small">{{ field.errors }}</div>
-        {% endif %}
+          " for="id_championship">Campeonato:</label>
+        {{ form.championship }}
       </div>
-      {% endfor %}
+      <div class="mb-3">
+        <label style="
+            color: black;
+            font-family: 'Montserrat';
+            font-size: 20px;
+            font-weight: normal;
+          " for="id_name">Título:</label>
+        {{ form.name }}
+      </div>
+      <div class="mb-3">
+        <label style="
+            color: black;
+            font-family: 'Montserrat';
+            font-size: 20px;
+            font-weight: normal;
+          " for="id_content">Descripción:</label>
+        {{ form.content }}
+      </div>
+      {% csrf_token %}
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-          <button
-          class="btn mt-4 mb-2 w-100 fs-5"
-          style="
+        <button class="btn mt-4 mb-2 w-100 fs-5" style="
             background-color: #4e688e;
             font-family: 'Montserrat';
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
             transition: background-color 0.3s;
             color: white;
-          "
-          onmouseover="this.style.backgroundColor=' #314159'"
-          onmouseout="this.style.backgroundColor='#4e688e'"
-        >
+          " onmouseover="this.style.backgroundColor=' #314159'"
+          onmouseout="this.style.backgroundColor='#4e688e'">
           Crear anuncio
         </button>
       </div>
     </form>
   </div>
 </div>
-<!-- Script para inicializar el datepicker -->
+</div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const programarCheckbox = document.getElementById('id_programar');
-      const dateInput = document.getElementById('id_date');
-      const timeInput = document.getElementById('id_time');
-      const defaultCheckbox = document.getElementById('id_default');
-  
-      function toggleDateTimeFields() {
-        if (programarCheckbox.checked) {
-          dateInput.removeAttribute('disabled');
-          timeInput.removeAttribute('disabled');
-          defaultCheckbox.checked = false;
-        } else {
-          dateInput.setAttribute('disabled', 'true');
-          timeInput.setAttribute('disabled', 'true');
-          defaultCheckbox.checked = true;
-        }
+  document.addEventListener('DOMContentLoaded', function () {
+    const programarCheckbox = document.getElementById('id_programar');
+    const dateInput = document.getElementById('id_date');
+    const timeInput = document.getElementById('id_time');
+    const defaultCheckbox = document.getElementById('id_default');
+    const dateLabel = document.querySelector('[for="id_date"]');
+    const timeLabel = document.querySelector('[for="id_time"]');
+    
+    function toggleDateTimeFields() {
+      if (programarCheckbox.checked) {
+        dateInput.removeAttribute('disabled');
+        timeInput.removeAttribute('disabled');
+        dateLabel.classList.remove('disabled-field');
+        timeLabel.classList.remove('disabled-field');
+        defaultCheckbox.checked = false;
+      } else {
+        dateInput.setAttribute('disabled', 'true');
+        timeInput.setAttribute('disabled', 'true');
+        dateLabel.classList.add('disabled-field');
+        timeLabel.classList.add('disabled-field');
+        defaultCheckbox.checked = true;
       }
-  
-      function toggleDefaultCheckbox() {
-        if (defaultCheckbox.checked) {
-          programarCheckbox.checked = false;
-          dateInput.setAttribute('disabled', 'true');
-          timeInput.setAttribute('disabled', 'true');
-        } else {
-          programarCheckbox.checked = true;
-          dateInput.removeAttribute('disabled');
-          timeInput.removeAttribute('disabled');
-        }
+    }
+    
+    function toggleDefaultCheckbox() {
+      if (defaultCheckbox.checked) {
+        programarCheckbox.checked = false;
+        dateInput.setAttribute('disabled', 'true');
+        timeInput.setAttribute('disabled', 'true');
+        dateLabel.classList.add('disabled-field');
+        timeLabel.classList.add('disabled-field');
+      } else {
+        programarCheckbox.checked = true;
+        dateInput.removeAttribute('disabled');
+        timeInput.removeAttribute('disabled');
+        dateLabel.classList.remove('disabled-field');
+        timeLabel.classList.remove('disabled-field');
       }
-  
-      // Llama a las funciones inicialmente para establecer el estado inicial
-      toggleDateTimeFields();
-  
-      // Agrega event listeners a los checkboxes para gestionar cambios
-      programarCheckbox.addEventListener('change', toggleDateTimeFields);
-      defaultCheckbox.addEventListener('change', toggleDefaultCheckbox);
-    });
-  </script>
-  
-
+    }
+    
+    toggleDateTimeFields();
+    programarCheckbox.addEventListener('change', toggleDateTimeFields);
+    defaultCheckbox.addEventListener('change', toggleDefaultCheckbox);
+  });
+</script>
+<style>
+  .disabled-field {
+    color: #aaa; /* Color gris para el texto */
+    pointer-events: none; /* Evita la interacción con el campo */
+    opacity: 0.6; /* Opacidad del campo */
+  }
+</style>
 {% endblock content %}
