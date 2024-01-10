@@ -122,6 +122,7 @@
                     <th>Equipo 1</th>
                     <th>Resultado</th>
                     <th>Equipo 2</th>
+                    <th>Estado</th>
                     <th>Editar partido</th>
                   </tr>
                 </thead>
@@ -133,24 +134,26 @@
                     <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
                     <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
                     </td>
+                    <td class="text-center">
+                      <div class="form-check form-switch d-flex justify-content-center">
+                        <input class="check-status_game form-check-input" type="checkbox" data-game-id="{{fixture.id}}" 
+                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA'%}
+                        checked disabled
+                        {% endif %}
+                        >
+                      </div>
+                    </td>
                     <td>
-                      {% if fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA' %}
                       <button
-                        class="btn btn-primary my-auto"
-                        href=""
+                        class="button-edit-game btn btn-primary my-auto"
                         role="button"
                         style="background: #4e688e"
+                        data-game-id="{{fixture.id}}"
+                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA'%}
                         disabled
-                        >+</button>
-                      {% else %}
-                      <a
-                        class="btn btn-primary my-auto"
-                        href="{% url 'game' fixture.id  %}"
-                        role="button"
-                        style="background: #4e688e"
-                        >+</a
+                        {% endif %}
+                        >+</button
                       >
-                      {% endif %}
                     </td>
                   </tr>
                   {% endfor %}
@@ -182,5 +185,58 @@
       </script>
     </div>
   </div>
+  <!-- Script par la funcionalidad del checkbox y boton de editar game -->
+  <script>
+    document.querySelectorAll('.check-status_game').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+
+        const gameID = this.getAttribute('data-game-id');
+        const editarPartidoButton = document.querySelector(`.button-edit-game[data-game-id="${gameID}"]`);
+        // si se puso el checkbox a true, cambia el estado en la BD
+        if (this.checked) {
+          const result = confirm('¿Está seguro de que desea cambiar el estado? Esta acción es irreversible.');
+          if (result) {
+            changeStatus(gameID, true);
+            // disabled para el checkbox y boton editar game
+            this.disabled = true;
+            editarPartidoButton.disabled = true;
+          } else {
+            this.checked = false;
+          }
+        } else {
+          // Cambiar el estado a false
+          changeStatus(gameID, false);
+          // Activar el botón de editar partido
+          editarPartidoButton.disabled = false;
+        }
+      });
+    });
+
+    // cuando se le da click al boton editar game te redirige a ese game expecifico
+    document.querySelectorAll('.button-edit-game').forEach(button => {
+      button.addEventListener('click', function() {
+        const gameID = this.getAttribute('data-game-id');
+        // Reemplaza con tu patrón de URL
+        window.location.href = `/championship/game/${gameID}/`;
+      });
+    });
+
+    async function changeStatus(id, status) {
+      console.log(id)
+      const response = await fetch(`/championship/game_status/${id}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({status: status})
+      });
+
+      if (!response.ok) {
+        alert('Failed to change status');
+      }
+    }
+    
+  </script>
   {% endblock %}
 </div>

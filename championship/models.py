@@ -81,9 +81,11 @@ class Person(models.Model):
     # Agregamos el campo team_delagate
     team_delegate = models.BooleanField(
         choices=BOOLEAN_CHOICES, default=False)
+
     def __str__(self):
         return self.name
 # -----------------------------
+
 
 class Team(models.Model):
     name = models.CharField(max_length=50)
@@ -148,6 +150,7 @@ class ChampionshipTeam(models.Model):
     def __str__(self):
         return f"{self.championship.name} - {self.category.name} - {self.team.month}"
 
+
 class Anuncio(models.Model):
     name = models.CharField(max_length=30)
     content = models.TextField(blank=True, null=True)
@@ -174,6 +177,7 @@ class Game(models.Model):
         default=0, validators=[MaxValueValidator(limit_value=30)])
     # state = models.BooleanField(default=True)
     players = models.ManyToManyField(Person, through="PlayerGame")
+    state = models.BooleanField(default=False)
 
     def __str__(self):
         return "Fecha: " + str(self.round_number) + ". " + self.team1.month + " " + str(self.team1_goals) + "-" + str(self.team2_goals) + " " + self.team2.month + " | "
@@ -185,10 +189,10 @@ class PlayerGame(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(Person, on_delete=models.CASCADE)
     card_red = models.PositiveIntegerField(
-        validators=[MaxValueValidator(limit_value=1)], default = 0)
+        validators=[MaxValueValidator(limit_value=1)], default=0)
     card_yellow = models.PositiveIntegerField(
-        validators=[MaxValueValidator(limit_value=2)], default = 0)
-    goals = models.PositiveIntegerField(default = 0)
+        validators=[MaxValueValidator(limit_value=2)], default=0)
+    goals = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
         # Verifica si card_yellow igual a 2
@@ -214,21 +218,22 @@ class Result(models.Model):
     pts = models.IntegerField(default=0)
 
 
-#--funcion para actualizar la hor ay fecha 
+# --funcion para actualizar la hor ay fecha
 # Definir una función para manejar la señal
 @receiver(pre_save, sender=Anuncio)
 def set_default_date_time(sender, instance, **kwargs):
     # Obtener la zona horaria de Perú
     peru_tz = pytz.timezone('America/Lima')
-    
+
     # Verificar si date y time están en blanco
     if instance.date is None:
         # Asignar la fecha actual en la zona horaria de Perú
         instance.date = timezone.now().astimezone(peru_tz).date()
-    
+
     if instance.time is None:
         # Asignar la hora actual en la zona horaria de Perú
         instance.time = timezone.now().astimezone(peru_tz).strftime('%H:%M:%S')
+
 
 # Conectar la función a la señal
 pre_save.connect(set_default_date_time, sender=Anuncio)

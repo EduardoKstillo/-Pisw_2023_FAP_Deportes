@@ -16,6 +16,7 @@ urlpatterns = [
 
     path("create_fixture/<int:championship_id>/<int:category_id>/", views.create_fixture, name="create_fixture"),
     path("game/<int:game_id>/", views.game, name="game"),
+    path('game_status/<int:game_id>/', views.game_status, name='game_status'),
 
 
     path("delete_team/<int:id>/<int:id_champ>/", views.delete_team, name="delete_team"),

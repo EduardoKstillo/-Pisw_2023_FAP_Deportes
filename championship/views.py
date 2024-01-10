@@ -17,6 +17,7 @@ from django.db import transaction
 from django.db.models import Sum
 
 
+
 # --Inicio Person------------------------------------------
 @login_required
 def create_person(request):
@@ -942,15 +943,32 @@ def create_fixture(request, championship_id, category_id):
     return render(request, "championship/game/fixture.html", context)
 
 
+def game_status(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+
+    if request.method == 'POST':
+        # recupera el body que mande con fech
+        #data = json.loads(request.body) 
+        # recuepera el atributo status que esta dentro del body
+        #status = data.get('status')
+        game.state = not game.state
+        print(game.state)
+        game.save()
+
+        return JsonResponse({'estado': game.state})
+    
+
 @login_required
 def game(request, game_id):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
+
+    # si alguno de los equipos es DESCANSA, entonces no puedes ingresar al form (te redirecciona)
+    if game.state or (game.team1.name or game.team2.name) == 'DESCANSA':
+        return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
+    
     # instacion el Gamefor con game
     game_form = GameForm(instance=game)
-    # si alguno de los equipos es DESCANSA, entonces no puedes ingresar al form (te redirecciona)
-    if (game.team1.name or game.team2.name) == 'DESCANSA':
-        return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
 
     # Obtener jugadores de cada equipo
     players_team1 = game.team1.persons.all()
