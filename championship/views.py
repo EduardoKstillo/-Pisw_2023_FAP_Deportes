@@ -218,7 +218,9 @@ def teams(request):
     teams = Team.objects.all()
     return render(request, "championship/team/teams.html", {"teams": teams})
 
-
+def access(request):
+    teams = Team.objects.all()
+    return render(request, "championship/team/teams.html", {"teams": teams})
 # --Funcion de remover los personas  de un equipo ----------------------------------------
 @login_required
 def remove_player_from_team(request, team_id, player_id):
@@ -1137,9 +1139,6 @@ def goleadores(request, championship_id, category_id):
 
     return render(request, 'championship/fixture/goleadores.html', context)
 
-
-
-
 # ------------------------------------------ Modulo Anuncios
 #--Crear anuncio
 def create_anuncio(request):
@@ -1156,13 +1155,16 @@ def create_anuncio(request):
     return render(request, "championship/anuncio/create_anuncio.html", {"form": form})
 
 #--Editar anuncio
+
 #--Listar anucio
 def anuncios(request):
     anuncios = Anuncio.objects.all()
     return render(request, "championship/anuncio/anuncios.html", {"anuncios": anuncios})
 #--Eliminar anuncio
 
+def denied(request):
 
+    return render(request, "championship/anuncio/denied.html")
 
 
 """

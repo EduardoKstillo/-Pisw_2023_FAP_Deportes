@@ -129,3 +129,9 @@ def delete_user(request, id):
     messages.success(
         request, f'El usuario ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect('users')
+
+def denied(request):
+    users = User.objects.all()
+    context = {'users': users}
+
+    return render(request, 'users/user/denied.html', context)
