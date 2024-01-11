@@ -178,6 +178,7 @@ class Game(models.Model):
     # state = models.BooleanField(default=True)
     players = models.ManyToManyField(Person, through="PlayerGame")
     state = models.BooleanField(default=False)
+    sum_team_points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return "Fecha: " + str(self.round_number) + ". " + self.team1.month + " " + str(self.team1_goals) + "-" + str(self.team2_goals) + " " + self.team2.month + " | "
