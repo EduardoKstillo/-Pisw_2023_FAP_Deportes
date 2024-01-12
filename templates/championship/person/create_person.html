@@ -1,0 +1,111 @@
+{% extends 'layout/main.html' %} {% block content %}
+
+<div class="container mt-5">
+  <h1
+    class="text-left mt-3 fs-1"
+    style="
+      font-family: 'Montserrat';
+      color: #2a4365;
+      border-bottom: 1.5px solid #babfc5;
+      padding-bottom: 15px;
+      font-weight: 600;
+    "
+  >
+    Crear Persona
+  </h1>
+
+  <a
+    class="btn mt-4 mb-2 fs-5"
+    role="button"
+    href="{% url 'persons' %}"
+    style="
+      background-color: #4e688e;
+      font-family: 'Montserrat';
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s;
+      color: white;
+    "
+    onmouseover="this.style.backgroundColor=' #314159'"
+    onmouseout="this.style.backgroundColor='#4e688e'"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="25"
+      fill="white"
+      class="bi bi-arrow-left"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+      />
+    </svg>
+    Volver a persona
+  </a>
+  {% for msg in messages %}
+  <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
+  {% endfor %}
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
+        {%csrf_token%} {% for field in form %} {% if forloop.first %}
+        <div class="row">
+          {% endif %}
+          <div class="col-md-3 mt-2">
+            <div class="form-group">
+              <label
+                class="form-label"
+                for="{{ field.auto_id }}"
+                style="font-weight: bold"
+                >{{ field.label }}
+              </label>
+              {{ field }} {% if field.errors %}
+              <div class="mi-alerta">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  height="16"
+                  style="color: red"
+                >
+                  <path
+                    fill="red"
+                    d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575ZM8 5a.75.75 0 0 0-.75.75v2.5a.75.75 0 0 0 1.5 0v-2.5A.75.75 0 0 0 8 5Zm1 6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"
+                  ></path>
+                </svg>
+                {% for error in field.errors %} {{ error }} {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% if forloop.counter|divisibleby:4 %}
+        </div>
+        <div class="row">{% endif %} {% if forloop.last %}</div>
+
+        {% endif %} {% endfor %}
+
+        <div class="row">
+          <!-- Botón de envío -->
+          <div class="col-md-12 text-center">
+            <button
+              class="btn mt-4 mb-2 w-10 fs-5"
+              style="
+                background-color: #4e688e;
+                font-family: 'Montserrat';
+                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+                transition: background-color 0.3s;
+                color: white;
+              "
+              onmouseover="this.style.backgroundColor='#4e688e'"
+              onmouseout="this.style.backgroundColor='#4e688e'"
+            >
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

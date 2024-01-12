@@ -1,0 +1,269 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="mt-4 mb-4">
+  <div class="col-md-8 offset-md-2">
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+      {{championships.name}} - {{championships.year}} -
+      {{championships.seasons}} - Categoría: {{categorys.name}}
+    </h1>
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      Tabla de posiciones
+    </h1>
+    <a
+      class="btn mt-4 mb-3"
+      role="button"
+      href="{% url 'view_championship' championships.id %}"
+        style="
+      background-color: #4e688e;
+      font-size: 20px;
+      font-family: 'Montserrat';
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s;
+      color: white;
+    "
+    onmouseover="this.style.backgroundColor='#314159'"
+    onmouseout="this.style.backgroundColor='#4e688e'"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="white"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a categorias
+    </a>
+    <!-- <style type="text/css">
+      .table-container {
+        height: 10em;
+      }
+      table {
+        display: flex;
+        flex-flow: column;
+        height: 55vh;
+        width: 100%;
+      }
+      table thead {
+        flex: 0 0 auto;
+        width: calc(100% - 0.9em);
+      }
+      table tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: scroll;
+      }
+      table tbody tr {
+        width: 100%;
+      }
+      table thead,
+      table tbody tr {
+        display: table;
+        table-layout: fixed;
+      }
+      .table th,
+      .table td {
+        word-wrap: break-word;
+        max-width: 150px;
+      }
+    </style> -->
+
+    <div
+      class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5"
+      style="width: 100%"
+    >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'create_fixture' championships.id categorys.id %}"
+        >Fixture</a
+      >
+      <a
+        class="list-group-item active bg-white flex-fill"
+        href="{% url 'tabla_posiciones' championships.id categorys.id %}"
+        >Tabla de posiciones</a
+      >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'amonestaciones' championships.id categorys.id %}"
+        >Amonestaciones</a
+      >
+      <a
+        class="list-group-item bg-white flex-fill"
+        href="{% url 'goleadores' championships.id categorys.id %}"
+        >Goleadores</a
+      >
+    </div>
+
+    <div
+      class="ek-shadow mt-3 mb-3"
+      style="
+        background-color: white;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: black;
+      "
+    >
+      <table class="table rounded rounded-0 overflow-hidden text-center">
+        <thead style="height: 65px; vertical-align: middle">
+          <tr style="font-size: 17px; font-family: 'Montserrat'">
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              N°
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              Equipo
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              PJ
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              PG
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              PE
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              PP
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              GF
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              GC
+            </th>
+            <th
+              style="
+                background-color: #f4f4f4;
+                border-right: 1px solid rgba(0, 0, 0, 0.15);
+                font-weight: normal;
+              "
+            >
+              DG
+            </th>
+            <th style="background-color: #f4f4f4; font-weight: normal">P</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr
+            style="
+              font-size: 16px;
+              font-family: 'Montserrat';
+              color: black;
+              font-weight: 1;
+            "
+          >
+            <td>1</td>
+            <td>
+              {{ result.team.month }}.{{ result.team.year }}.{{result.team.group }}
+            </td>
+            <td>{{ result.pj }}</td>
+            <td>{{ result.pg }}</td>
+            <td>{{ result.pe }}</td>
+            <td>{{ result.pp }}</td>
+            <td>{{ result.gf }}</td>
+            <td>{{ result.gc }}</td>
+            <td>{{ result.dg }}</td>
+            <td>{{ result.pts }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!--Tabla de posiciones basic_front-->
+<!-- <h1>Tabla de posiciones</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Equipo</th>
+      <th>Partidos Jugados</th>
+      <th>Partidos Ganados</th>
+      <th>Partidos Empatados</th>
+      <th>Partidos Perdidos</th>
+      <th>Goles a Favor</th>
+      <th>Goles en Contra</th>
+      <th>Diferencia de Goles</th>
+      <th>Puntos Totales</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <td>{{ result.team.month }}</td>
+      <td>{{ result.pj }}</td>
+      <td>{{ result.pg }}</td>
+      <td>{{ result.pe }}</td>
+      <td>{{ result.pp }}</td>
+      <td>{{ result.gf }}</td>
+      <td>{{ result.gc }}</td>
+      <td>{{ result.dg }}</td>
+      <td>{{ result.pts }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %} -->

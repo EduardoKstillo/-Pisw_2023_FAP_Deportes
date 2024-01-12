@@ -1,0 +1,242 @@
+{% extends 'layout/main.html' %} {% block content %}
+<div class="mt-4 mb-4">
+  <div class="col-md-8 offset-md-2">
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+      {{championships.name}} - {{championships.year}} -
+      {{championships.seasons}} - Categoría: {{categorys.name}}
+    </h1>
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      Fixture
+    </h1>
+    <a
+      class="btn mt-4 mb-3"
+      role="button"
+      href="{% url 'view_championship' championships.id %}"
+      style="
+      background-color: #4e688e;
+      font-size: 20px;
+      font-family: 'Montserrat';
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.3s;
+      color: white;
+    "
+    onmouseover="this.style.backgroundColor='#314159'"
+    onmouseout="this.style.backgroundColor='#4e688e'"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="white"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a categorias
+    </a>
+
+    <style>
+      .table > thead > tr > th {
+        background-color: #4e688e;
+        color: white;
+      }
+    </style>
+     {% for msg in messages %}
+    <div  class="alert {% if 'created' in msg.tags %} alert-success {% elif 'deleted' in msg.tags %} alert-danger  {% endif %} text-center fade show" id="msg" role="alert" style="font-size: 18px">
+      {{msg}}
+    </div>
+    {% endfor %}
+
+    <div class="list-group list-group-horizontal d-flex flex-wrap account-settings-links text-center fs-5" style="width: 100%">
+      <a class="list-group-item active bg-white flex-fill" href="{% url 'create_fixture' championships.id categorys.id %}">Fixture</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'tabla_posiciones' championships.id categorys.id %}">Tabla de posiciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'amonestaciones' championships.id categorys.id %}">Amonestaciones</a>
+      <a class="list-group-item bg-white flex-fill" href="{% url 'goleadores' championships.id categorys.id %}">Goleadores</a>
+    </div>
+
+
+    <div class="container bg-white">
+      <div class="bg-white mt-3">
+        <!-- Jornada 1 -->
+        {% for round_number, fixtures in grouped_fixtures.items %}
+        <div class="text-center" id="tabla-jornada-{{round_number}} " style="display: none; height: 55vh">
+          <div class="btn-group">
+            <button class="btn" onclick="mostrarTabla(-1)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-caret-left-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill="#4e688e"
+                  d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+                />
+              </svg>
+            </button>
+            <span class="my-auto" style="font-size: 25px">Jornada {{round_number}}</span>
+            <button class="btn" onclick="mostrarTabla(1)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-caret-right-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill="#4e688e"
+                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+                />
+              </svg>
+            </button>
+          </div>
+            <!--
+            <div class="border border-primary-subtle text-start fs-5">
+              Jornada 1
+            </div>
+          -->
+            {% comment %} {% for fix in fixture %} {% if fix.round_number == 1%}
+            <p>{{fix}}</p>
+            {% endif %} {% endfor%} {% endcomment %}
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Lugar/Fecha</th>
+                    <th>Equipo 1</th>
+                    <th>Resultado</th>
+                    <th>Equipo 2</th>
+                    <th>Estado</th>
+                    <th>Editar partido</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  {% for fixture in fixtures %}
+                  <tr>
+                    <td>Lugar 23/11/2023 8:00</td>
+                    <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
+                    <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
+                    <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
+                    </td>
+                    <td class="text-center">
+                      <div class="form-check form-switch d-flex justify-content-center">
+                        <input class="check-status_game form-check-input" type="checkbox" data-game-id="{{fixture.id}}" 
+                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA'%}
+                        checked disabled
+                        {% endif %}
+                        >
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        class="button-edit-game btn btn-primary my-auto"
+                        role="button"
+                        style="background: #4e688e"
+                        data-game-id="{{fixture.id}}"
+                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA'%}
+                        disabled
+                        {% endif %}
+                        >+</button
+                      >
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <script>
+        let jornadaActual = 1;
+        mostrarTabla(0);
+
+        function mostrarTabla(numjor) {
+          const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
+
+          tablas[jornadaActual - 1].style.display = "none";
+
+          jornadaActual += numjor;
+          if (jornadaActual < 1) {
+            jornadaActual = tablas.length;
+          } else if (jornadaActual > tablas.length) {
+            jornadaActual = 1;
+          }
+          tablas[jornadaActual - 1].style.display = "block";
+        }
+      </script>
+    </div>
+  </div>
+  <!-- Script par la funcionalidad del checkbox y boton de editar game -->
+  <script>
+    document.querySelectorAll('.check-status_game').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+
+        const gameID = this.getAttribute('data-game-id');
+        const editarPartidoButton = document.querySelector(`.button-edit-game[data-game-id="${gameID}"]`);
+        // si se puso el checkbox a true, cambia el estado en la BD
+        if (this.checked) {
+          const result = confirm('¿Está seguro de que desea cambiar el estado? Esta acción es irreversible.');
+          if (result) {
+            changeStatus(gameID, true);
+            // disabled para el checkbox y boton editar game
+            this.disabled = true;
+            editarPartidoButton.disabled = true;
+          } else {
+            this.checked = false;
+          }
+        } else {
+          // Cambiar el estado a false
+          changeStatus(gameID, false);
+          // Activar el botón de editar partido
+          editarPartidoButton.disabled = false;
+        }
+      });
+    });
+
+    // cuando se le da click al boton editar game te redirige a ese game expecifico
+    document.querySelectorAll('.button-edit-game').forEach(button => {
+      button.addEventListener('click', function() {
+        const gameID = this.getAttribute('data-game-id');
+        // Reemplaza con tu patrón de URL
+        window.location.href = `/championship/game/${gameID}/`;
+      });
+    });
+
+    async function changeStatus(id, status) {
+      console.log(id)
+      const response = await fetch(`/championship/game_status/${id}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({status: status})
+      });
+
+      if (!response.ok) {
+        alert('Failed to change status');
+      }
+    }
+    
+  </script>
+  {% endblock %}
+</div>
