@@ -1,48 +1,104 @@
 {% extends 'layout/main.html' %} {%block content %}
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="row" id="row1">
-          <div class="col-md-12">
-            <div
-              class="p-4 p-md-5 mb-4 rounded-3 text-white"
-              id="col1"
-              style="background: #1f324c"
-            >
-              <div class="col-md-8 px-0">
-                <h1 class="display-4 fst-italic">
-                  Campeonato para los socios de categoria 90
-                </h1>
-                <p class="lead my-3">
-                  Si usted es miembro de la asociación y desea participar de los
-                  torneos que se realizan frecuentemente haga el registro de su
-                  equipo ahora mismo.
-                </p>
-                <p class="lead mb-0">
-                  <a href="#" class="text-white fw-bold">Continuar leyendo...</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <!-- Columna 2 con dos filas -->
+<style>
+  .carrusel-container {
+    position: relative;
+  }
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card text-white mb-3" style="background: #1f324c">
-              <div class="card-header">Noticias</div>
-              <div class="card-body">
-                <h5 class="card-title">
-                  El nuevo local de la asociacion es........
-                </h5>
-                <p class="card-text"></p>
-              </div>
+  .carousel-control-prev,
+  .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .carousel-control-prev {
+    left: 0;
+  }
+
+  .carousel-control-next {
+    right: 0;
+  }
+</style>
+<div class="container" style="margin-top: 180px">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-8">
+      <div
+        class="carrusel-container"
+        style="height: 400px; background-color: #1f324c"
+      >
+        <div id="carouselExampleFade" class="carousel slide carousel-fade">
+          <div class="carousel-inner text-center text-white">
+            <div class="carousel-item active">
+              <h1>Carrusel 1</h1>
+            </div>
+            <div class="carousel-item">
+              <h1>Carrusel 2</h1>
+            </div>
+            <div class="carousel-item">
+              <h1>Carrusel 3</h1>
             </div>
           </div>
         </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleFade"
+          data-bs-slide="prev"
+        >
+          <span
+            class="carousel-control-prev-icon text-white"
+            aria-hidden="true"
+          ></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleFade"
+          data-bs-slide="next"
+        >
+          <span
+            class="carousel-control-next-icon text-white accordion"
+            aria-hidden="true"
+          ></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
+    <div class="col-4">
+      <ul class="list-group" style="background-color: #1f324c">
+        <li
+          class="list-group-item d-flex align-items-center text-white border-black"
+          style="height: 80px; background-color: #1f324c"
+        >
+          Anuncio uno
+        </li>
+        <li
+          class="list-group-item d-flex align-items-center text-white border-black"
+          style="height: 80px; background-color: #1f324c"
+        >
+          A second item
+        </li>
+        <li
+          class="list-group-item d-flex align-items-center text-white border-black"
+          style="height: 80px; background-color: #1f324c"
+        >
+          A third item
+        </li>
+        <li
+          class="list-group-item d-flex align-items-center text-white border-black"
+          style="height: 80px; background-color: #1f324c"
+        >
+          A fourth item
+        </li>
+        <li
+          class="list-group-item d-flex align-items-center text-white border-black"
+          style="height: 80px; background-color: #1f324c"
+        >
+          And a fifth one
+        </li>
+      </ul>
+    </div>
   </div>
+</div>
 {% endblock content %}
