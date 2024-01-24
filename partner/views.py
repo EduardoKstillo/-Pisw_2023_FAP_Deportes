@@ -1,16 +1,54 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm
 from django.contrib import messages
-
+from championship.models import Anuncio, Championship, Category, Team, Game, ChampionshipTeam, Result, Person
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.utils import timezone
+from django.utils.formats import date_format, time_format
+from django.db.models import Sum
 
 from .decorators import allowed_users
 def home(request):
+    anuncios = Anuncio.objects.all().order_by('-date', '-time')[:5]
+    for anuncio in anuncios:
+        # Formatear la fecha
+        anuncio.date_formatted = date_format(anuncio.date, "j % F % Y") if anuncio.date else None
 
-    return render(request, 'index.html')
+        # Formatear la hora
+        anuncio.time_formatted = time_format(anuncio.time, "g:i A") if anuncio.time else None
+    champ= ChampionshipTeam.objects.all().order_by('-id')
+    for ch in champ:
+        championship_id=ch.championship.id
+        category_id=ch.category.id
+        print(ch.category.id)
+        print(ch.championship.id)
+        print(ch)
+    championship = get_object_or_404(Championship, pk=championship_id)
+    category = get_object_or_404(Category, pk=category_id)
+    # filtra los resultados del campeoanto en especifico
+    results = Result.objects.filter(
+        championship=championship_id, category=category_id).order_by('-pts')
+    # Filtrar los juegos según category_id y championship_id
+    leaked_games = Game.objects.filter(
+        category_id=category_id, championship_id=championship_id)
+
+    # Filtrar PlayerGame (jugadores por partido o Game)
+    # players_game = PlayerGame.objects.filter(game__in=leaked_games)
+    players_game = Person.objects.filter(
+        playergame__game__in=leaked_games).distinct()
+
+    result = (
+        players_game
+        .annotate(total_goals=Sum('playergame__goals'))
+        .values('name', 'team__month', 'team__year', 'team__group', 'total_goals')
+        .order_by('-total_goals')
+    )
+    context = {'results': results,'result': result,
+               'championships': championship, 'categorys': category, "anuncios": anuncios}
+    return render(request, 'index.html', context)
 
 
 def signin(request):  # login

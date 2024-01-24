@@ -29,13 +29,79 @@
         <div id="carouselExampleFade" class="carousel slide carousel-fade">
           <div class="carousel-inner text-center text-white">
             <div class="carousel-item active">
-              <h1>Carrusel 1</h1>
+              <h1>Tabla de posiciones</h1>
+              <div class="mx-5">
+              <table
+                class="table table-responsive table-bordered table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>N°</th>
+                    <th>Equipo</th>
+                    <th>PJ</th>
+                    <th>PG</th>
+                    <th>PE</th>
+                    <th>PP</th>
+                    <th>GF</th>
+                    <th>GC</th>
+                    <th>DG</th>
+                    <th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for result in results %}
+                  
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      {{ result.team.month }}.{{ result.team.year}}.{{result.team.group }}
+                    </td>
+                    <td>{{ result.pj }}</td>
+                    <td>{{ result.pg }}</td>
+                    <td>{{ result.pe }}</td>
+                    <td>{{ result.pp }}</td>
+                    <td>{{ result.gf }}</td>
+                    <td>{{ result.gc }}</td>
+                    <td>{{ result.dg }}</td>
+                    <td>{{ result.pts }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
             </div>
             <div class="carousel-item">
-              <h1>Carrusel 2</h1>
+              <h1>Goleadores</h1>
+              <div class="mx-5">
+              <table
+                class="table table-responsive table-bordered table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Jugador</th>
+                    <th>Equipo</th>
+                    <th>Goles</th>
+
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for summary in result %}          
+                    <tr
+                      style="
+                        font-size: 16px;
+                        font-family: 'Montserrat';
+                        color: black;
+                        font-weight: 1;
+                      "
+                    >
+                      <td>{{ summary.name }}</td>
+                      <td>{{ summary.team__month }}.{{ summary.team__year }}.{{ summary.team__group }}</td>
+                      <td>{{ summary.total_goals|default:0 }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
             </div>
             <div class="carousel-item">
-              <h1>Carrusel 3</h1>
+              <h1>Fixture</h1>
             </div>
           </div>
         </div>
@@ -67,36 +133,14 @@
     </div>
     <div class="col-4">
       <ul class="list-group" style="background-color: #1f324c">
+        {% for anuncio in anuncios %}
         <li
           class="list-group-item d-flex align-items-center text-white border-black"
           style="height: 80px; background-color: #1f324c"
         >
-          Anuncio uno
+          {{ anuncio.content }}
         </li>
-        <li
-          class="list-group-item d-flex align-items-center text-white border-black"
-          style="height: 80px; background-color: #1f324c"
-        >
-          A second item
-        </li>
-        <li
-          class="list-group-item d-flex align-items-center text-white border-black"
-          style="height: 80px; background-color: #1f324c"
-        >
-          A third item
-        </li>
-        <li
-          class="list-group-item d-flex align-items-center text-white border-black"
-          style="height: 80px; background-color: #1f324c"
-        >
-          A fourth item
-        </li>
-        <li
-          class="list-group-item d-flex align-items-center text-white border-black"
-          style="height: 80px; background-color: #1f324c"
-        >
-          And a fifth one
-        </li>
+        {% endfor %}
       </ul>
     </div>
   </div>
