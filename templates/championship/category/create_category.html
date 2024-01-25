@@ -13,32 +13,28 @@
           padding-bottom: 15px;
         "
       >
-        Crear categoría
-        <h5>
-          {% for msg in messages %}
-          <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
-          {% endfor %}
-        </h5>
-      </h1>
+        Crear categoría        
+      </h1>    
+           
       <a
-        class="btn mt-4 mb-2"
+        class="btn mt-4 mb-2 fs-5"
         role="button"
         href="{% url 'categorys' %}"
         style="
-          background-color: #abafd0;
-          font-size: 20px;
+          background-color: #4e688e;
           font-family: 'Montserrat';
           box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
           transition: background-color 0.3s;
+          color: white;
         "
-        onmouseover="this.style.backgroundColor='#7D8093'"
-        onmouseout="this.style.backgroundColor='#ABAFD0'"
+        onmouseover="this.style.backgroundColor=' #314159'"
+        onmouseout="this.style.backgroundColor='#4e688e'"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
           height="25"
-          fill="black"
+          fill="white"
           class="bi bi-arrow-left"
           viewBox="0 0 16 16"
         >
@@ -49,49 +45,43 @@
         </svg>
         Volver a categorías
       </a>
+
+      {% for msg in messages %}
+      <div class="alert alert-danger fade show" id="msg" role="alert" style="margin-top: 15px;">
+        {{msg}}
+      </div>
+      {% endfor %}  
+
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
-        <label class="form-label" style="
-        font-family: 'Montserrat';
-        font-size: 20px;
-        color: #2a4365;
-        margin-top: 5px;
-      " for="{{ field.auto_id }}"
+        <label
+          class="form-label"
+          style="
+            font-family: 'Montserrat';
+            font-size: 20px;
+            color: #2a4365;
+            margin-top: 0px;
+          "
+          for="{{ field.auto_id }}"
           >{{ field.label_tag }}</label
         >
         {{ field }}
       </div>
       {% endfor %}
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-        <a
-          class="btn mt-4 mb-2 w-100"
-          role="button"
-          href="{% url 'categorys' %}"
-          style="
-            background-color: #d95050;
-            font-size: 20px;
-            font-family: 'Montserrat';
-            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-            transition: background-color 0.3s;
-          "
-          onmouseover="this.style.backgroundColor='#BA4040'"
-          onmouseout="this.style.backgroundColor='#D95050'"
-        >
-          Cancelar
-        </a>
         <button
-          class="btn mt-4 mb-2 w-100"
+          class="btn mt-4 mb-2 w-100 fs-5"
           style="
-            background-color: #68d391;
-            font-size: 20px;
+            background-color: #4e688e;
             font-family: 'Montserrat';
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
             transition: background-color 0.3s;
+            color: white;
           "
-          onmouseover="this.style.backgroundColor='#4B9A6A'"
-          onmouseout="this.style.backgroundColor='#68D391'"
+          onmouseover="this.style.backgroundColor=' #314159'"
+          onmouseout="this.style.backgroundColor='#4e688e'"
         >
-          Guardar cambios
+          Crear categoría
         </button>
       </div>
     </form>

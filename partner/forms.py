@@ -27,6 +27,9 @@ class UserForm(forms.Form):
     password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput(attrs={
         'class': 'form-control'
     }))
+    def clean_groups(self):
+        groups = self.cleaned_data['groups']
+        return groups
 
 
 """

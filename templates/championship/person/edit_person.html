@@ -35,7 +35,7 @@
     </div>
   </div>
 </div>
-
+<!-- AFin del codigo parte final del template -->
 <div class="container mt-5">
   <h1
     class="text-left mt-3"
@@ -56,14 +56,15 @@
     role="button"
     href="{% url 'persons' %}"
     style="
-      background-color: #68d391;
+      background-color: #4e688e;
       font-size: 20px;
       font-family: 'Montserrat';
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
       transition: background-color 0.3s;
+      color: white;
     "
-    onmouseover="this.style.backgroundColor='#4B9A6A'"
-    onmouseout="this.style.backgroundColor='#68D391'"
+    onmouseover="this.style.backgroundColor='#314159'"
+    onmouseout="this.style.backgroundColor='#4e688e'"
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="25"
@@ -74,6 +75,7 @@
     >
       <path
         fill-rule="evenodd"
+        fill="white"
         d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
       />
     </svg>
@@ -92,7 +94,19 @@
             <div class="form-group">
               <label for="{{ field.auto_id }}">{{ field.label }}</label>
               {{ field }} {% if field.errors %}
-              <div class="form-error">
+              <div class="mi-alerta">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  height="16"
+                  style="color: red"
+                >
+                  <path
+                    fill="red"
+                    d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575ZM8 5a.75.75 0 0 0-.75.75v2.5a.75.75 0 0 0 1.5 0v-2.5A.75.75 0 0 0 8 5Zm1 6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"
+                  ></path>
+                </svg>
                 {% for error in field.errors %} {{ error }} {% endfor %}
               </div>
               {% endif %}
@@ -110,14 +124,15 @@
               type="submit"
               class="btn mt-4 mb-2 w-10"
               style="
-                background-color: #68d391;
+                background-color: #4e688e;
                 font-size: 20px;
                 font-family: 'Montserrat';
                 box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
                 transition: background-color 0.3s;
+                color: white;
               "
-              onmouseover="this.style.backgroundColor='#4B9A6A'"
-              onmouseout="this.style.backgroundColor='#68D391'"
+              onmouseover="this.style.backgroundColor='#314159'"
+              onmouseout="this.style.backgroundColor='#4e688e'"
             >
               Guardar cambios
             </button>
@@ -186,7 +201,8 @@
       team_group: "{{team.group}}",
     };
 
-    console.log(data);
+    console.log("Script cargado correctamente");
+
     check_promotion_rank(data);
   });
 </script>

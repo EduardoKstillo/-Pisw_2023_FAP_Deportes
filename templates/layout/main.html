@@ -1,7 +1,29 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
+    <style>
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Ajusta el índice z si es necesario */
+        /* Agrega más estilos según tus necesidades, como colores, márgenes, etc. */
+        /* Ejemplo:
+        background-color: #1f324c;
+        padding: 10px 0;
+        */
+      }
+
+      /* Ajusta el espacio después del encabezado para que el contenido no se superponga */
+      body {
+        padding-top: 80px;
+      }
+
+      /* Resto de tu CSS existente */
+    </style>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -20,11 +42,20 @@
       type="text/css"
       href="{% static 'css/index.css' %}"
     />
+    <!-- Agrega estos enlaces en el head de tu HTML -->
+    <!-- Agrega estos enlaces en el head de tu HTML -->
+    <!-- Enlaces a jQuery y jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
     <title>{% block title %}{% endblock title %}</title>
   </head>
 
   <body>
-    <header style="width: 100%">{% include "layout/header.html" %}</header>
+    <header>{% include "layout/header.html" %}</header>
 
     {% block login %} {% endblock login%}
 

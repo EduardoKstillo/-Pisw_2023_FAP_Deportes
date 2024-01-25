@@ -1,6 +1,6 @@
 <nav
   class="navbar navbar-expand-lg py-3"
-  style="background-color: #1f324c; max-width: 100%%"
+  style="background-color: #1f324c; max-width: 100%"
 >
   <div class="container mx-auto">
     <a
@@ -63,10 +63,7 @@
           >
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="{% url 'seasons' %}"
-            style="color: white"
+          <a class="nav-link" href="{% url 'seasons' %}" style="color: white"
             >Temporadas</a
           >
         </li>
@@ -76,6 +73,14 @@
             href="{% url 'championships' %}"
             style="color: white"
             >Campeonato</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="{% url 'anuncios' %}"
+            style="color: white"
+            >Anuncios</a
           >
         </li>
         {% if not user.is_authenticated %}

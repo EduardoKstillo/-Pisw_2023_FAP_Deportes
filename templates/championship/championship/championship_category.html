@@ -4,17 +4,50 @@
     <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
       Campeonato
     </h1>
-    <h1 class="text-left mt-3" style="font-family: 'Montserrat'; font-size: 50px; color: #2a4365; border-bottom: 1.5px solid #babfc5; padding-bottom: 15px;">
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
       {{ championship.name }}
     </h1>
-    <a class="btn mt-4 mb-2" role="button" href="{% url 'championships' %}" style="background-color: #abafd0; font-size: 20px; font-family: 'Montserrat'; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#7D8093'" onmouseout="this.style.backgroundColor='#ABAFD0'">
-      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-arrow-left" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+    <a
+      class="btn mt-4 mb-2"
+      role="button"
+      href="{% url 'championships' %}"
+      style="
+        background-color: #4e688e;
+        font-size: 20px;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+        color: white;
+      "
+      onmouseover="this.style.backgroundColor='#314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="white"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        ></path>
       </svg>
       Volver a campeonatos
     </a>
 
-    <style type="text/css">
+    <!-- <style type="text/css">
       .table-container {
         height: 10em;
       }
@@ -46,7 +79,7 @@
         word-wrap: break-word;
         max-width: 150px;
       }
-    </style>
+    </style> -->
 
     <div
       class="ek-shadow mt-3 mb-3"
@@ -95,16 +128,14 @@
             >
               Equipos
             </th>
-            <th 
-              style="background-color: #f4f4f4; font-weight: normal"
-            >
+            <th style="background-color: #f4f4f4; font-weight: normal">
               Fixture
             </th>
           </tr>
         </thead>
         <tbody>
-            {% for categorys in categorys %}  
-          
+          {% for categorys in categorys %}
+
           <tr
             style="
               font-size: 16px;
@@ -121,19 +152,25 @@
                 href="{% url 'add_team_championship' championship.id categorys.id%}"
                 type="button"
               >
-                <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="30" 
-                height="30" 
-                fill="#3040d0" 
-                class="bi bi-people-fill" 
-                viewBox="0 0 16 16">
-                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="#3040d0"
+                  class="bi bi-people-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"
+                  />
+                </svg>
               </a>
             </td>
             <td>
-              <a href="{}" type="button">
+              <a
+                href="{% url 'create_fixture' championship.id categorys.id %}"
+                type="button"
+              >
                 <svg
                   width="30"
                   height="30"
@@ -165,7 +202,7 @@
                 </svg>
               </a>
             </td>
-          </tr>          
+          </tr>
           {% endfor %}
         </tbody>
       </table>

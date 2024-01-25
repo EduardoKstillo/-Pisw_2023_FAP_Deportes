@@ -21,20 +21,21 @@
       role="button"
       href="{% url 'view_championship' championship.id %}"
       style="
-        background-color: #abafd0;
+        background-color: #4e688e;
         font-size: 20px;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
+        color: white;
       "
-      onmouseover="this.style.backgroundColor='#7D8093'"
-      onmouseout="this.style.backgroundColor='#ABAFD0'"
+      onmouseover="this.style.backgroundColor='#314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
         height="25"
-        fill="black"
+        fill="white"
         class="bi bi-arrow-left"
         viewBox="0 0 16 16"
       >
@@ -57,11 +58,14 @@
               color: #2a4365;
               margin-top: 5px;
             "
-            >Equipo - promoción:</label>
-            
-            {% for msg in no_cumple_condiciones_messages %}
-                <p class="fade show" id="msg" role="alert" style="color: red;">*{{ msg }}</p>
-            {% endfor %}
+            >Equipo - promoción:</label
+          >
+
+          {% for msg in no_cumple_condiciones_messages %}
+          <p class="fade show" id="msg" role="alert" style="color: red">
+            *{{ msg }}
+          </p>
+          {% endfor %}
 
           <select
             name="championship_id"
@@ -69,9 +73,11 @@
             class="form-select form-select-lg"
             style="font-size: 18px; font-family: 'Montserrat'"
           >
-          <option value="" selected>Seleccione un equipo</option>
+            <option value="" selected>Seleccione un equipo</option>
             {% for team in teams_available %}
-            <option value="{{ team.id }}">{{ team.month }} {{ team.year }}</option>
+            <option value="{{ team.id }}">
+              {{ team.month }} {{ team.year }}
+            </option>
             {% endfor %}
           </select>
         </div>
@@ -80,14 +86,15 @@
             class="btn"
             type="submit"
             style="
-              background-color: #68d391;
+              background-color: #4e688e;
               font-size: 20px;
               font-family: 'Montserrat';
               box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
               transition: background-color 0.3s;
+              color: white;
             "
-            onmouseover="this.style.backgroundColor='#4B9A6A'"
-            onmouseout="this.style.backgroundColor='#68D391'"
+            onmouseover="this.style.backgroundColor=' #314159'"
+            onmouseout="this.style.backgroundColor='#4e688e'"
           >
             + Agregar equipo
           </button>
@@ -96,43 +103,45 @@
     </form>
 
     {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert" style="margin-top: 10px;">
-      {{msg}}
+    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+      {{ msg }}
     </div>
     {% endfor %}
 
-    <style type="text/css">
-        .table-container {
-            height: 10em;
-        }
-        table {
-            display: flex;
-            flex-flow: column;
-            height: 50vh;
-            width: 100%;
-        }
-        table thead {
-            flex: 0 0 auto;
-            width: calc(100% - 0.9em);
-        }
-        table tbody {
-            flex: 1 1 auto;
-            display: block;
-            overflow-y: scroll;
-        }
-        table tbody tr {
-            width: 100%;
-        }
-        table thead, table tbody tr {
-            display: table;
-            table-layout: fixed;
-        }
-        .table th, .table td {
-            word-wrap: break-word;
-            max-width: 150px;
-        }
-    </style>
-    
+    <!-- <style type="text/css">
+      .table-container {
+        height: 10em;
+      }
+      table {
+        display: flex;
+        flex-flow: column;
+        height: 50vh;
+        width: 100%;
+      }
+      table thead {
+        flex: 0 0 auto;
+        width: calc(100% - 0.9em);
+      }
+      table tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow-y: scroll;
+      }
+      table tbody tr {
+        width: 100%;
+      }
+      table thead,
+      table tbody tr {
+        display: table;
+        table-layout: fixed;
+      }
+      .table th,
+      .table td {
+        word-wrap: break-word;
+        max-width: 150px;
+      }
+    </style> -->
+
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -177,7 +186,7 @@
               font-weight: 1;
             "
           >
-            <td>{{ teams.month }}.{{ teams.year }}.{{ teams.group }}</td>            
+            <td>{{ teams.month }}.{{ teams.year }}.{{ teams.group }}</td>
             <!-- <td>
               <a href="" type="button">
                 <svg
@@ -196,24 +205,31 @@
               </a>
             </td> -->
             <td>
-              <form method="post" action="{% url 'remove_team_from_championship' championship.id category.id teams.id %}">
-                  {% csrf_token %}
-                  <button type="submit" onclick="return confirm('¿Estás seguro que deseas eliminar al equipo {{ teams.month }}.{{ teams.year }}.{{ teams.group }} del campeonato {{ championship.name }} - {{category.name}}')" style="background-color: white;border: white;">
-                      <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          fill="#D95050"
-                          class="bi bi-trash-fill"
-                          viewBox="0 0 16 16"
-                      >
-                          <path
-                              d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-                          />
-                      </svg>
-                  </button>
+              <form
+                method="post"
+                action="{% url 'remove_team_from_championship' championship.id category.id teams.id %}"
+              >
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  onclick="return confirm('¿Estás seguro que deseas eliminar al equipo {{ teams.month }}.{{ teams.year }}.{{ teams.group }} del campeonato {{ championship.name }} - {{category.name}}')"
+                  style="background-color: white; border: white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    fill="#D95050"
+                    class="bi bi-trash-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                    />
+                  </svg>
+                </button>
               </form>
-          </td>
+            </td>
           </tr>
 
           {% endfor %}

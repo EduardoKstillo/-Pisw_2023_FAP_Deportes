@@ -11,6 +11,19 @@ body {
   display: grid;
 }
 
+.mi-alerta {
+  margin-top: 2px;
+  padding: 5px;
+  background-color: rgb(252, 235, 234);
+  color: #f40808;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.mi-alerta i {
+  margin-right: 10px;
+}
+
 .list-group-item.active {
   color: #2b6ac2;
   border-color: #a0c4f6;
@@ -22,14 +35,12 @@ main::before {
   position: absolute;
   top: 0;
   left: 0;
-  min-width: 30%;
-  min-width: 30%;
   width: 100%;
   height: 100%;
   background: url("../img/fap.svg") no-repeat center center fixed;
+  background-size: 85% 85%;
   opacity: 0.3;
   z-index: -1;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .side-navbar {

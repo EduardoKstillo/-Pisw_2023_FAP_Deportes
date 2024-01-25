@@ -20,21 +20,23 @@
       class="btn mt-4 mb-2"
       role="button"
       href="{% url 'teams' %}"
+      id="cambiarPagina"
       style="
-        background-color: #abafd0;
+        background-color: #4e688e;
         font-size: 20px;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
+        color: white;
       "
-      onmouseover="this.style.backgroundColor='#7D8093'"
-      onmouseout="this.style.backgroundColor='#ABAFD0'"
+      onmouseover="this.style.backgroundColor='#314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
         height="25"
-        fill="black"
+        fill="white"
         class="bi bi-arrow-left"
         viewBox="0 0 16 16"
       >
@@ -45,6 +47,24 @@
       </svg>
       Volver a equipos
     </a>
+    <!--codigo del mensaje flotante que aparece el cual se tiene que editar -->
+
+    <div
+      id="popupMessage"
+      style="
+        display: none;
+        padding: 15px;
+        margin: 20px;
+        border: 1px solid #d9534f; /* Color del borde */
+        border-radius: 4px; /* Esquinas redondeadas */
+        color: red; /* Color del texto */
+        background-color: #f2dede; /* Color de fondo */
+        font-size: 18px;
+        text-align: center;
+      "
+    >
+      <p>El equipo no tiene ningun delegado</p>
+    </div>
     <form method="post">
       {% csrf_token %}
       <div class="row">
@@ -86,14 +106,15 @@
             class="btn"
             type="submit"
             style="
-              background-color: #68d391;
+              background-color: #4e688e;
               font-size: 20px;
               font-family: 'Montserrat';
               box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
               transition: background-color 0.3s;
+              color: white;
             "
-            onmouseover="this.style.backgroundColor='#4B9A6A'"
-            onmouseout="this.style.backgroundColor='#68D391'"
+            onmouseover="this.style.backgroundColor='#314159'"
+            onmouseout="this.style.backgroundColor='#4e688e'"
           >
             + Agregar jugador
           </button>
@@ -102,45 +123,10 @@
     </form>
 
     {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert" style="margin-top: 10px;">
-      {{msg}}
+    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+      {{ msg }}
     </div>
     {% endfor %}
-
-    <style type="text/css">
-      .table-container {
-        height: 10em;
-      }
-      table {
-        display: flex;
-        flex-flow: column;
-        height: 50vh;
-        width: 100%;
-      }
-      table thead {
-        flex: 0 0 auto;
-        width: calc(100% - 0.9em);
-      }
-      table tbody {
-        flex: 1 1 auto;
-        display: block;
-        overflow-y: scroll;
-      }
-      table tbody tr {
-        width: 100%;
-      }
-      table thead,
-      table tbody tr {
-        display: table;
-        table-layout: fixed;
-      }
-      .table th,
-      .table td {
-        word-wrap: break-word;
-        max-width: 150px;
-      }
-    </style>
-
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -188,7 +174,7 @@
             >
               Delegado
             </th>
-            <th
+            <!-- <th
               style="
                 background-color: #f4f4f4;
                 border-right: 1px solid rgba(0, 0, 0, 0.15);
@@ -205,7 +191,7 @@
               "
             >
               Editar
-            </th>
+            </th> -->
             <th style="background-color: #f4f4f4; font-weight: normal">
               Eliminar
             </th>
@@ -230,17 +216,10 @@
                 class="player-checkbox"
                 name="selected_players"
                 value="{{ player.id }}"
-                {%
-                if
-                player.promotion_delegate
-                %}
-                checked
-                {%
-                endif
-                %}
+                {%if player.team_delegate%}checked{%endif%}
               />
             </td>
-            <td>
+            <!-- <td>
               <a href="" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +251,7 @@
                   />
                 </svg>
               </a>
-            </td>
+            </td> -->
             <td>
               <form
                 method="post"
@@ -310,6 +289,44 @@
 </div>
 
 <script>
+  window.addEventListener("DOMContentLoaded", function () {
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let popupMessage = document.getElementById("popupMessage");
+    let enlaces = document.querySelectorAll("a");
+    let mensajeMostrado = false;
+
+    function verificarCheckboxes() {
+      let algunoMarcado = false;
+      checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          algunoMarcado = true;
+        }
+      });
+      return algunoMarcado;
+    }
+
+    function mostrarMensaje(e) {
+      if (!verificarCheckboxes() && !mensajeMostrado) {
+        e.preventDefault(); // Evitar el cambio de página si no hay checkbox marcados
+        popupMessage.style.display = "block"; // Mostrar el mensaje
+        mensajeMostrado = true; // Establecer que el mensaje se ha mostrado
+        setTimeout(function () {
+          popupMessage.style.display = "none"; // Ocultar el mensaje después de 5 segundos
+        }, 2500);
+      }
+    }
+
+    enlaces.forEach((enlace) => {
+      enlace.addEventListener("click", mostrarMensaje);
+    });
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        popupMessage.style.display = "none";
+      });
+    });
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
     var checkboxes = document.querySelectorAll(".player-checkbox");
     var checked = null;
@@ -387,6 +404,13 @@
         }
       });
     });
+    // Comprobación inicial
+    var checkboxMarcado = Array.from(checkboxes).find(
+      (checkbox) => checkbox.checked
+    );
+    if (checkboxMarcado) {
+      checked = checkboxMarcado;
+    }
   });
 
   // Función para obtener la cookie CSRF
@@ -407,4 +431,5 @@
     return cookieValue;
   }
 </script>
+
 {% endblock content %}

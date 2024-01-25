@@ -1,98 +1,127 @@
 {% extends 'layout/main.html' %} {% block sidebar %} {% endblock sidebar %}
 {%block content %}
+
+<!-- Agrega el siguiente código al final del cuerpo de tu template -->
+<div class="modal" tabindex="-1" role="dialog" id="confirmacionModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">¿Está seguro?</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="mensajeModal"></p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          ,
+          id="cancelarEdicionBtn"
+        >
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmarEdicionBtn">
+          Confirmar Edición
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- AFin del codigo parte final del template -->
+
 <div class="mt-4 mb-4">
   <div class="col-md-4 offset-md-4">
-    <form method="POST">
-      <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
-        Editar temporada
-      </h1>
-      <h5>
-        {% for msg in messages %}
-        <div class="alert alert-danger fade show" id="msg" role="alert">{{msg}}</div>
-        {% endfor %}
-      </h5>
-      <h1
-        class="text-left mt-3"
-        style="
-          font-family: 'Montserrat';
-          font-size: 50px;
-          color: #2a4365;
-          border-bottom: 1.5px solid #babfc5;
-          padding-bottom: 15px;
-        "
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+      Editar temporada
+    </h1>
+    <h5>
+      {% for msg in messages %}
+      <div class="alert alert-danger fade show" id="msg" role="alert">
+        {{msg}}
+      </div>
+      {% endfor %}
+    </h5>
+    <h1
+      class="text-left mt-3"
+      style="
+        font-family: 'Montserrat';
+        font-size: 50px;
+        color: #2a4365;
+        border-bottom: 1.5px solid #babfc5;
+        padding-bottom: 15px;
+      "
+    >
+      {{seasons.name}}
+    </h1>
+    <a
+      class="btn mt-4 mb-2 fs-5"
+      role="button"
+      href="{% url 'seasons' %}"
+      style="
+        background-color: #4e688e;
+        font-family: 'Montserrat';
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        transition: background-color 0.3s;
+        color: white;
+      "
+      onmouseover="this.style.backgroundColor=' #314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="25"
+        height="25"
+        fill="white"
+        class="bi bi-arrow-left"
+        viewBox="0 0 16 16"
       >
-        {{seasons.name}}
-      </h1>
-      <a
-        class="btn mt-4 mb-2"
-        role="button"
-        href="{% url 'seasons' %}"
-        style="
-          background-color: #abafd0;
-          font-size: 20px;
-          font-family: 'Montserrat';
-          box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-          transition: background-color 0.3s;
-        "
-        onmouseover="this.style.backgroundColor='#7D8093'"
-        onmouseout="this.style.backgroundColor='#ABAFD0'"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="25"
-          height="25"
-          fill="black"
-          class="bi bi-arrow-left"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-          />
-        </svg>
-        Volver a temporadas
-      </a>
+        <path
+          fill-rule="evenodd"
+          d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+        />
+      </svg>
+      Volver a temporadas
+    </a>
+    <form id="editSeasonForm" method="POST">
       {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
-        <label class="form-label" style="
-        font-family: 'Montserrat';
-        font-size: 20px;
-        color: #2a4365;
-        margin-top: 5px;
-      " for="{{ field.auto_id }}"
+        <label
+          class="form-label"
+          style="
+            font-family: 'Montserrat';
+            font-size: 20px;
+            color: #2a4365;
+            margin-top: 5px;
+          "
+          for="{{ field.auto_id }}"
           >{{ field.label_tag }}</label
         >
         {{ field }}
       </div>
       {% endfor %}
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-        <a
-          class="btn mt-4 mb-2 w-100"
-          role="button"
-          href="{% url 'seasons' %}"
-          style="
-            background-color: #d95050;
-            font-size: 20px;
-            font-family: 'Montserrat';
-            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-            transition: background-color 0.3s;
-          "
-          onmouseover="this.style.backgroundColor='#BA4040'"
-          onmouseout="this.style.backgroundColor='#D95050'"
-        >
-          Cancelar
-        </a>
         <button
-          class="btn mt-4 mb-2 w-100"
+          id="guardarCambiosBtn"
+          type="button"
+          class="btn mt-4 mb-2 w-100 fs-5"
           style="
-            background-color: #68d391;
-            font-size: 20px;
+            background-color: #4e688e;
             font-family: 'Montserrat';
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
             transition: background-color 0.3s;
+            color: white;
           "
-          onmouseover="this.style.backgroundColor='#4B9A6A'"
-          onmouseout="this.style.backgroundColor='#68D391'"
+          onmouseover="this.style.backgroundColor=' #314159'"
+          onmouseout="this.style.backgroundColor='#4e688e'"
         >
           Guardar cambios
         </button>
@@ -100,4 +129,63 @@
     </form>
   </div>
 </div>
-{% endblock %}
+
+{% block script %}
+<script>
+
+  $(document).ready(function () {
+    // Obtener el valor inicial del campo al cargar la página
+    var valorInicial = $("input[name='name']").val();
+    console.log(valorInicial);
+    // Evento cuando se da clic al botón de guardar cambios en el formulario de temporada
+    $("#guardarCambiosBtn").on("click", function () {
+      var valorCampo = $("input[name='name']").val();
+      console.log(valorCampo);
+      // Obtener el valor más reciente de nombreCampeonato
+      var nombreCampeonato = obtenerNombreCampeonato();
+      // Mostrar el modal solo si hay un campeonato asociado
+      if (nombreCampeonato && contieneSoloLetras(valorCampo) && valorInicial !== valorCampo) {
+        $("#mensajeModal").text(nombreCampeonato);
+        $("#confirmacionModal").modal("show");
+      } else {
+        // Si no hay un campeonato asociado, puedes realizar alguna acción o simplemente no hacer nada
+        console.log("sin campeonato asociado");
+        $("#editSeasonForm").submit();
+      }
+    });
+
+    // Evento cuando se da clic al botón de confirmación en el modal
+    $("#confirmarEdicionBtn").on("click", function () {
+      // Hace Post con los datos del formulario
+      $("#editSeasonForm").submit();
+    });
+
+
+    // Controlar el botón de cancelar en el modal
+    $("#cancelarEdicionBtn").on("click", function () {
+      // Cierra el modal sin realizar ninguna acción
+      $("#confirmacionModal").modal("hide");
+    });
+  });
+    function obtenerNombreCampeonato(valorInicial) {
+      var nombreCampeonatoArray = [{% for championship in associated_championship %} "{{ championship.name }}", {% endfor %}];
+      var nombreCampeonatoSeasonsArray = [{% for championship1 in associated_championship %} "{{championship.seasons}}", {% endfor %}];
+      // Si hay un campeonato asociado, devolver el mensaje específico
+      const nombresConcatenados = nombreCampeonatoArray.map(championship => `"${championship}"`).join(', ');
+      if (nombreCampeonatoArray.length > 0) {
+        return `Esta temporada está asociada al campeonato: ${nombresConcatenados}. ¿Está seguro de actualizar los datos?`;
+      } else {
+        // Si no hay un campeonato asociado, devolver null
+        return null;
+      }
+    }
+
+    function contieneSoloLetras(dato) {
+      // Expresión regular que coincide solo con letras (mayúsculas y minúsculas)
+      var expresionRegular = /^[A-Za-z]+$/;
+      // Devuelve true si el dato contiene solo letras, de lo contrario, devuelve false
+      return expresionRegular.test(dato);
+    }
+</script>
+
+{% endblock script %} {% endblock %}

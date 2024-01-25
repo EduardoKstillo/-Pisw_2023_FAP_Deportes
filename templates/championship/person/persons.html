@@ -15,23 +15,24 @@
       Personas
     </h1>
     <a
-      class="btn mt-4 mb-2 fs-4"
+      class="btn mt-4 mb-2 fs-5"
       role="button"
       href="{% url 'create_person' %}"
       style="
-        background-color: #68d391;
+        background-color: #4e688e;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
+        color: white;
       "
-      onmouseover="this.style.backgroundColor='#4B9A6A'"
-      onmouseout="this.style.backgroundColor='#68D391'"
+      onmouseover="this.style.backgroundColor=' #314159'"
+      onmouseout="this.style.backgroundColor='#4e688e'"
     >
       + Crear persona
     </a>
     {% for msg in messages %}
-    <div class="alert alert-success fade show" id="msg" role="alert">
-      {{msg}}
+    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+      {{ msg }}
     </div>
     {% endfor %}
     <form method="get">
@@ -45,7 +46,9 @@
         <div class="col-auto">{{ field }}</div>
         {% endfor %}
         <div class="col-auto">
-          <button class="btn btn-primary">Filtrar</button>
+          <button class="btn fs-5 text-white" style="background-color: #4e688e">
+            Filtrar
+          </button>
         </div>
       </div>
     </form>
@@ -59,7 +62,7 @@
     >
       <div class="table-responsive">
         <table class="table text-center">
-          <thead style="height: 65px; vertical-align: middle text-center">
+          <thead style="height: 65px; vertical-align: middle">
             <tr style="font-family: 'Montserrat'">
               <th style="background-color: #f4f4f4; font-weight: normal">
                 Nombre
@@ -73,7 +76,6 @@
               <th
                 style="
                   background-color: #f4f4f4;
-                  border-right: 1px solid rgba(0, 0, 0, 0.15);
                   font-weight: normal;
                 "
               >

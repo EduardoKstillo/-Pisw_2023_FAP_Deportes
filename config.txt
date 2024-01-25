@@ -23,3 +23,6 @@ group = Group.objects.create(name='admin')
 group2 = Group.objects.create(name='secretario') 
 user.groups.add(group) 
 user.save()
+
+exec(open('create_users.py').read())
+exec(open('create_persons.py').read())

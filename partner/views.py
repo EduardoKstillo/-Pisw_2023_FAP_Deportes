@@ -8,9 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 
 from .decorators import allowed_users
-
-
 def home(request):
+
     return render(request, 'index.html')
 
 
@@ -33,10 +32,8 @@ def signin(request):  # login
 
             # no existe el usuario
             if user is None:
-                return render(request, 'login.html', {
-                    'message': 'user or password incorrect',
-                    'navoff': True
-                })
+                messages.success(request, "Usuario o contraseña incorrectos",extra_tags='deleted')
+                return render(request, 'login.html')
             else:
                 login(request, user)
                 return redirect(next_url)
@@ -85,7 +82,7 @@ def create_user(request):
                     user.groups.add(group)
 
                     messages.success(
-                        request, 'Usuario creado correctamente!')
+                    request, "Usuario creado exitosamente.", extra_tags='created')
                     return redirect('users')
 
                 else:
@@ -107,7 +104,13 @@ def edit_user(request, id):
     user = get_object_or_404(User, pk=id)
 
     if request.method == 'GET':
-        form = UserForm(instance=user)
+        form = UserForm()
+        form.fields['username'].initial = user.username
+        form.fields['first_name'].initial = user.first_name
+        form.fields['last_name'].initial = user.last_name
+        form.fields['email'].initial = user.email
+        form.fields['group'].initial = user.groups.first()  #Suponiendo que un usuario sólo pueda estar en un grupo
+        #Resto del código
         context = {'form': form}
         return render(request, 'users/user/edit_user.html', context)
 
@@ -116,11 +119,12 @@ def edit_user(request, id):
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
-        group = Group.objects.get(id=request.POST['groups'])
+        group = Group.objects.get(id=request.POST['group'])
         user.groups.clear()
         user.groups.add(group)
 
         user.save()
+        messages.success(request, 'Usuario editado exitosamente.', extra_tags='created')
         return redirect('users')
 
 
@@ -129,4 +133,6 @@ def edit_user(request, id):
 def delete_user(request, id):
     user = get_object_or_404(User, pk=id)
     user.delete()
+    messages.success(
+        request, f'El usuario ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect('users')
