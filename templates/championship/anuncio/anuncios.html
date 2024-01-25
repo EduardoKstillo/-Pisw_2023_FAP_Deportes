@@ -38,6 +38,12 @@
     </div>
     {% endfor %}    
 
+    <form method="GET">
+      <label for="nombre_anuncio">Buscar por campeonato:</label>
+      <input type="text" id="nombre_anuncio" name="nombre_anuncio" placeholder="Ingrese el nombre del anuncio">
+      <button type="submit">Buscar</button>
+    </form>
+
     <div
       class="ek-shadow mt-3 mb-3"
       style="
@@ -114,7 +120,7 @@
             <td>{{ anuncio.content }} </td>
             <td>{{ anuncio.date }}, {{ anuncio.time }} </td>
             <td>
-              <a href=" " type="button">
+              <a href="{% url 'edit_anuncio' anuncio.id %}" type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="30"
@@ -130,7 +136,7 @@
               </a>
             </td>
             <td>
-              <form method="post" action=" ">
+              <form method="post" action="{% url 'delete_anuncio' anuncio.id %}">
                 {% csrf_token %}
                 <button
                   type="submit"
@@ -166,5 +172,28 @@
       window.location.href = event.currentTarget.href;
     }
   }
+
+  // Captura el evento de envío del formulario
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe normalmente
+
+    // Obtiene el valor del campo de entrada
+    let nombreAnuncio = document.getElementById('nombre_anuncio').value;
+
+    // Obtiene todos los anuncios listados en la tabla
+    let anuncios = document.querySelectorAll('tbody tr');
+
+    // Recorre todos los anuncios y muestra solo los que coinciden con el nombre ingresado
+    anuncios.forEach(function(anuncio) {
+        let nombre = anuncio.querySelector('td:first-child').innerText; // Obtiene el nombre del anuncio
+
+        // Muestra u oculta el anuncio dependiendo si coincide con el nombre ingresado
+        if (nombre.toLowerCase().includes(nombreAnuncio.toLowerCase())) {
+            anuncio.style.display = 'table-row'; // Muestra el anuncio
+        } else {
+            anuncio.style.display = 'none'; // Oculta el anuncio que no coincide
+        }
+    });
+  });
 </script>
 {% endblock content %}

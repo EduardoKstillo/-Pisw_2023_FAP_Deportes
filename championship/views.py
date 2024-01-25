@@ -405,6 +405,9 @@ def create_championship(request):
 @login_required
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
+    TeamChapionshipCategory = ChampionshipTeam.objects.filter(
+            championship=championship)
+    categoryall = Category.objects.all()
 
     if request.method == "POST":
         form = ChampionshipForm(request.POST, instance=championship)
@@ -415,35 +418,29 @@ def edit_championship(request, championship_id):
             form.save()
             # Obtiene las categorías después de guardar el formulario
             categories_after_save = set(form.cleaned_data['categorys'])
-            # Calcula las categorías eliminadas
-            deleted_categories = categories_before_save - categories_after_save
-            # Imprime los nombres de las categorías eliminadas
-            for deleted_category in deleted_categories:
-                print(f"Categoría eliminada: {deleted_category.name}")
-            # verfica con las categorías eliminas o desmarcadas y procede con elminar los jugadores del tal categoria campeonato
-            with transaction.atomic():
-                for old_category in deleted_categories:
-                    ChampionshipTeam.objects.filter(
-                        championship=championship, category=old_category).delete()
+            if not categories_after_save:
+                form.add_error('categorys', 'Debe seleccionar al menos una categoría.')
+            else:
+                # Calcula las categorías eliminadas
+                deleted_categories = categories_before_save - categories_after_save
+                # Imprime los nombres de las categorías eliminadas
+                for deleted_category in deleted_categories:
+                    print(f"Categoría eliminada: {deleted_category.name}")
+                # verfica con las categorías eliminas o desmarcadas y procede con elminar los jugadores del tal categoria campeonato
+                with transaction.atomic():
+                    for old_category in deleted_categories:
+                        ChampionshipTeam.objects.filter(
+                            championship=championship, category=old_category).delete()
 
-            # Puedes redirigir a donde corresponda después de editar
-            return redirect("championships")
+                # Puedes redirigir a donde corresponda después de editar
+                return redirect("championships")
     else:
         form = ChampionshipForm(instance=championship)
-        TeamChapionshipCategory = ChampionshipTeam.objects.filter(
-            championship=championship)
-        categoryall = Category.objects.all()
 
     fields = form.visible_fields()
     grouped_fields = [fields[i: i + 3] for i in range(0, len(fields), 3)]
     context = {"form": form, "championships": championship, "grouped_fields": grouped_fields,
                "TeamChapionshipCategory": TeamChapionshipCategory, "categoryall": categoryall}
-
-    return render(
-        request,
-        "championship/championship/edit_championship.html",
-        context,
-    )
 
     return render(
         request,
@@ -1183,7 +1180,39 @@ def anuncios(request):
         anuncio.time_formatted = time_format(anuncio.time, "g:i A") if anuncio.time else None
 
     return render(request, "championship/anuncio/anuncios.html", {"anuncios": anuncios})
+
+# --Editar anuncio
+def edit_anuncio(request, anuncio_id):
+    # Obtener la instancia del Anuncio desde la base de datos
+    anuncio = get_object_or_404(Anuncio, pk=anuncio_id)
+
+    if request.method == 'POST':
+        # Rellenar el formulario con los datos actuales del Anuncio
+        form = AnuncioForm(request.POST, instance=anuncio)
+        if form.is_valid():
+            # Guardar los datos del formulario si son válidos
+            form.save()
+            # Redireccionar a algún lugar, por ejemplo, a la página de detalle del anuncio
+            return redirect('anuncios')
+    else:
+        # Si el método no es POST, mostrar el formulario con los datos actuales del Anuncio
+        form = AnuncioForm(instance=anuncio)
+
+    return render(request, "championship/anuncio/edit_anuncio.html", {'form': form})
+
 # --Eliminar anuncio
+def delete_anuncio(request, anuncio_id):
+    anuncio = get_object_or_404(Anuncio, pk=anuncio_id)
+    anuncio_name = anuncio.name
+    anuncio.delete()
+
+    messages.success(
+        request, f'La temporada "{anuncio_name}" ha sido eliminada exitosamente.')
+    return redirect("anuncios")
+
+
+
+
 
 def denied(request):
 
