@@ -149,7 +149,13 @@ def edit_user(request, id):
     user = get_object_or_404(User, pk=id)
 
     if request.method == 'GET':
-        form = UserForm(instance=user)
+        form = UserForm()
+        form.fields['username'].initial = user.username
+        form.fields['first_name'].initial = user.first_name
+        form.fields['last_name'].initial = user.last_name
+        form.fields['email'].initial = user.email
+        form.fields['group'].initial = user.groups.first()  #Suponiendo que un usuario sólo pueda estar en un grupo
+        #Resto del código
         context = {'form': form}
         return render(request, 'users/user/edit_user.html', context)
 
@@ -158,12 +164,15 @@ def edit_user(request, id):
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
-        group = Group.objects.get(id=request.POST['groups'])
+        group = Group.objects.get(id=request.POST['group'])
         user.groups.clear()
         user.groups.add(group)
 
         user.save()
+        messages.success(request, 'Usuario editado exitosamente.', extra_tags='created')
         return redirect('users')
+
+
 
 
 @login_required
