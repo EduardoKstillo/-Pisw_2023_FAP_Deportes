@@ -1,0 +1,428 @@
+{% extends 'layout/main.html' %} {%block content %}
+<style>
+  .carrusel-container {
+    position: relative;
+  }
+
+  /* Estilo para quitar el borde inferior del thead */
+  table.table thead th {
+    border-bottom: none;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto; /* Ajusta el ancho automáticamente según el contenido */
+  }
+
+  .carousel-control-prev {
+    left: 0; /* Coloca el botón prev a la izquierda */
+  }
+
+  .carousel-control-next {
+    right: 0; /* Coloca el botón next a la derecha */
+  }
+
+  .table-container {
+    max-height: 300px; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+  }
+
+  /* Estilo para la tabla */
+  .table-container table {
+    width: 100%;
+  }
+</style>
+<div class="container" style="margin-top: 180px">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-8">
+      <div
+        class="carrusel-container"
+        style="height: 450px; background-color: #1f324c"
+      >
+        <div id="carouselExampleFade" class="carousel slide carousel-fade">
+          <div class="carousel-inner text-center text-white">
+            <div class="carousel-item active">
+              <h1 class="mt-5">Tabla de posiciones</h1>
+              <div class="mx-5 table-container">
+                <table
+                  class="table table-responsive table-bordered table-striped"
+                >
+                  <thead class="table-dark">
+                    <tr>
+                      <th>N°</th>
+                      <th>Equipo</th>
+                      <th>PJ</th>
+                      <th>PG</th>
+                      <th>PE</th>
+                      <th>PP</th>
+                      <th>GF</th>
+                      <th>GC</th>
+                      <th>DG</th>
+                      <th>Pts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Equipo A</td>
+                      <td>10</td>
+                      <td>7</td>
+                      <td>2</td>
+                      <td>1</td>
+                      <td>20</td>
+                      <td>5</td>
+                      <td>15</td>
+                      <td>23</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Equipo B</td>
+                      <td>10</td>
+                      <td>6</td>
+                      <td>3</td>
+                      <td>1</td>
+                      <td>18</td>
+                      <td>8</td>
+                      <td>10</td>
+                      <td>21</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Equipo C</td>
+                      <td>10</td>
+                      <td>5</td>
+                      <td>4</td>
+                      <td>1</td>
+                      <td>15</td>
+                      <td>7</td>
+                      <td>8</td>
+                      <td>19</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Equipo D</td>
+                      <td>10</td>
+                      <td>4</td>
+                      <td>3</td>
+                      <td>3</td>
+                      <td>12</td>
+                      <td>10</td>
+                      <td>2</td>
+                      <td>15</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Equipo E</td>
+                      <td>10</td>
+                      <td>7</td>
+                      <td>2</td>
+                      <td>1</td>
+                      <td>20</td>
+                      <td>5</td>
+                      <td>15</td>
+                      <td>23</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Equipo F</td>
+                      <td>10</td>
+                      <td>6</td>
+                      <td>3</td>
+                      <td>1</td>
+                      <td>18</td>
+                      <td>8</td>
+                      <td>10</td>
+                      <td>21</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Equipo G</td>
+                      <td>10</td>
+                      <td>5</td>
+                      <td>4</td>
+                      <td>1</td>
+                      <td>15</td>
+                      <td>7</td>
+                      <td>8</td>
+                      <td>19</td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>Equipo H</td>
+                      <td>10</td>
+                      <td>4</td>
+                      <td>3</td>
+                      <td>3</td>
+                      <td>12</td>
+                      <td>10</td>
+                      <td>2</td>
+                      <td>15</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="carousel-item mt-5">
+              <h1>Goleadores</h1>
+              <div class="mx-5">
+                <table
+                  class="table table-responsive table-bordered table-striped"
+                >
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Jugador</th>
+                      <th>Equipo</th>
+                      <th>Goles</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Messi</td>
+                      <td>Barcelona</td>
+                      <td>30</td>
+                    </tr>
+                    <tr>
+                      <td>Ronaldo</td>
+                      <td>Juventus</td>
+                      <td>28</td>
+                    </tr>
+                    <tr>
+                      <td>Neymar</td>
+                      <td>Paris Saint-Germain</td>
+                      <td>20</td>
+                    </tr>
+                    <!-- Agrega más filas según sea necesario -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="carousel-item mt-5">
+              <h1>Fixture</h1>
+              <div class="mx-5">
+                <table class="table table-bordered">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Lugar/Fecha</th>
+                      <th>Equipo 1</th>
+                      <th>Resultado</th>
+                      <th>Equipo 2</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Estadio 1 - 01/02/2024</td>
+                      <td>Equipo A</td>
+                      <td>2-1</td>
+                      <td>Equipo B</td>
+                    </tr>
+                    <tr>
+                      <td>Estadio 2 - 02/02/2024</td>
+                      <td>Equipo C</td>
+                      <td>0-0</td>
+                      <td>Equipo D</td>
+                    </tr>
+                    <tr>
+                      <td>Estadio 3 - 03/02/2024</td>
+                      <td>Equipo A</td>
+                      <td>3-2</td>
+                      <td>Equipo D</td>
+                    </tr>
+                    <!-- Agrega más filas según sea necesario -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleFade"
+          data-bs-slide="prev"
+        >
+          <span
+            class="carousel-control-prev-icon text-white"
+            aria-hidden="true"
+          ></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleFade"
+          data-bs-slide="next"
+        >
+          <span
+            class="carousel-control-next-icon text-white accordion"
+            aria-hidden="true"
+          ></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <ul class="list-group" style="background-color: #1f324c">
+        <li
+          class="list-group-item text-white"
+          style="background-color: #1f324c"
+        >
+          <table
+            class="table table-responsive"
+            style="background-color: #1f324c"
+          >
+            <thead>
+              <tr>
+                <th style="width: 35%; background-color: #1f324c; color: white">
+                  Anuncio1
+                </th>
+                <th
+                  style="
+                    width: 5%;
+                    background-color: #1f324c;
+                    color: white;
+                    font-size: 20px;
+                  "
+                >
+                  |
+                </th>
+
+                <th style="width: 60%; background-color: #1f324c; color: white">
+                  descripcion de anuncio 1
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </li>
+        <li
+          class="list-group-item text-white"
+          style="background-color: #1f324c"
+        >
+          <table
+            class="table table-responsive"
+            style="background-color: #1f324c"
+          >
+            <thead>
+              <tr>
+                <th style="width: 35%; background-color: #1f324c; color: white">
+                  Anuncio 2
+                </th>
+                <th
+                  style="
+                    width: 5%;
+                    background-color: #1f324c;
+                    color: white;
+                    font-size: 20px;
+                  "
+                >
+                  |
+                </th>
+
+                <th style="width: 60%; background-color: #1f324c; color: white">
+                  descripcion de anuncio 2
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </li>
+        <li
+          class="list-group-item text-white"
+          style="background-color: #1f324c"
+        >
+          <table
+            class="table table-responsive"
+            style="background-color: #1f324c"
+          >
+            <thead>
+              <tr>
+                <th style="width: 35%; background-color: #1f324c; color: white">
+                  Anuncio 3
+                </th>
+                <th
+                  style="
+                    width: 5%;
+                    background-color: #1f324c;
+                    color: white;
+                    font-size: 20px;
+                  "
+                >
+                  |
+                </th>
+
+                <th style="width: 60%; background-color: #1f324c; color: white">
+                  descripcion de anuncio 3
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </li>
+         <li
+          class="list-group-item text-white"
+          style="background-color: #1f324c"
+        >
+          <table
+            class="table table-responsive"
+            style="background-color: #1f324c"
+          >
+            <thead>
+              <tr>
+                <th style="width: 35%; background-color: #1f324c; color: white">
+                  Anuncio 4
+                </th>
+                <th
+                  style="
+                    width: 5%;
+                    background-color: #1f324c;
+                    color: white;
+                    font-size: 20px;
+                  "
+                >
+                  |
+                </th>
+
+                <th style="width: 60%; background-color: #1f324c; color: white">
+                  descripcion de anuncio 4
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </li>
+         <li
+          class="list-group-item text-white"
+          style="background-color: #1f324c"
+        >
+          <table
+            class="table table-responsive"
+            style="background-color: #1f324c"
+          >
+            <thead>
+              <tr>
+                <th style="width: 35%; background-color: #1f324c; color: white">
+                  Anuncio 5
+                </th>
+                <th
+                  style="
+                    width: 5%;
+                    background-color: #1f324c;
+                    color: white;
+                    font-size: 20px;
+                  "
+                >
+                  |
+                </th>
+
+                <th style="width: 60%; background-color: #1f324c; color: white">
+                  descripcion de anuncio 5
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock content %}

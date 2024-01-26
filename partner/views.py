@@ -1,17 +1,62 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm
 from django.contrib import messages
-
+from championship.models import Anuncio, Championship, Category, Team, Game, ChampionshipTeam, Result, Person
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.utils import timezone
+from django.utils.formats import date_format, time_format
+from django.db.models import Sum
 
 from .decorators import allowed_users
 def home(request):
+    anuncios = Anuncio.objects.all().order_by('-date', '-time')[:5]
+    for anuncio in anuncios:
+        # Formatear la fecha
+        anuncio.date_formatted = date_format(anuncio.date, "j % F % Y") if anuncio.date else None
 
-    return render(request, 'index.html')
+        # Formatear la hora
+        anuncio.time_formatted = time_format(anuncio.time, "g:i A") if anuncio.time else None
+    champ= ChampionshipTeam.objects.all().order_by('-id')
+    print(champ)
+    if(champ):
+        for ch in champ:
+            championship_id=ch.championship.id
+            category_id=ch.category.id
+            print(ch.category.id)
+            print(ch.championship.id)
+            print(ch)
+        championship = get_object_or_404(Championship, pk=championship_id)
+        category = get_object_or_404(Category, pk=category_id)
+        # filtra los resultados del campeoanto en especifico
+        results = Result.objects.filter(
+            championship=championship_id, category=category_id).order_by('-pts')
+        # Filtrar los juegos según category_id y championship_id
+        leaked_games = Game.objects.filter(
+            category_id=category_id, championship_id=championship_id)
 
+        # Filtrar PlayerGame (jugadores por partido o Game)
+        # players_game = PlayerGame.objects.filter(game__in=leaked_games)
+        players_game = Person.objects.filter(
+            playergame__game__in=leaked_games).distinct()
+
+        result = (
+            players_game
+            .annotate(total_goals=Sum('playergame__goals'))
+            .values('name', 'team__month', 'team__year', 'team__group', 'total_goals')
+            .order_by('-total_goals')
+        )
+        context = {'results': results,'result': result,
+                'championships': championship, 'categorys': category, "anuncios": anuncios}
+        return render(request, 'index.html', context)
+
+    else:
+        print("esta vacio")
+        return render(request, 'index1.html')
+
+    
 
 def signin(request):  # login
     # retorna el valor del parametro next, si no 'None
@@ -104,13 +149,7 @@ def edit_user(request, id):
     user = get_object_or_404(User, pk=id)
 
     if request.method == 'GET':
-        form = UserForm()
-        form.fields['username'].initial = user.username
-        form.fields['first_name'].initial = user.first_name
-        form.fields['last_name'].initial = user.last_name
-        form.fields['email'].initial = user.email
-        form.fields['group'].initial = user.groups.first()  #Suponiendo que un usuario sólo pueda estar en un grupo
-        #Resto del código
+        form = UserForm(instance=user)
         context = {'form': form}
         return render(request, 'users/user/edit_user.html', context)
 
@@ -119,12 +158,11 @@ def edit_user(request, id):
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
-        group = Group.objects.get(id=request.POST['group'])
+        group = Group.objects.get(id=request.POST['groups'])
         user.groups.clear()
         user.groups.add(group)
 
         user.save()
-        messages.success(request, 'Usuario editado exitosamente.', extra_tags='created')
         return redirect('users')
 
 
@@ -136,3 +174,9 @@ def delete_user(request, id):
     messages.success(
         request, f'El usuario ha sido eliminado exitosamente.', extra_tags='deleted')
     return redirect('users')
+
+def denied(request):
+    users = User.objects.all()
+    context = {'users': users}
+
+    return render(request, 'users/user/denied.html', context)
