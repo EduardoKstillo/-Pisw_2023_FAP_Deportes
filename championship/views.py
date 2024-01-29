@@ -1353,6 +1353,10 @@ def delete_anuncio(request, anuncio_id):
         request, f'El anuncio "{anuncio_name}" ha sido eliminado exitosamente.', extra_tags='deleted')        
     return redirect("anuncios")
 
+def denied(request):
+
+    return render(request, "championship/anuncio/denied.html")
+
 
 """
 def add__player_team(request, player_id):
