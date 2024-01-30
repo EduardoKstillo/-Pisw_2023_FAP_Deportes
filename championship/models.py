@@ -205,6 +205,7 @@ class PlayerGame(models.Model):
 
 
 class Result(models.Model):
+    round_number = models.PositiveIntegerField(default=0)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     championship = models.ForeignKey(Championship, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

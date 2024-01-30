@@ -387,7 +387,7 @@ class PlayerGameForm(forms.ModelForm):
         widgets = {
             'card_yellow': forms.NumberInput(
                 attrs={
-                    'class': "form-control form-control-sm",
+                    'class': "form-control form-control-sm",                    
                 }),
             'card_red': forms.NumberInput(
                 attrs={
@@ -400,7 +400,14 @@ class PlayerGameForm(forms.ModelForm):
         }
    
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(PlayerGameForm, self).__init__(*args, **kwargs)
+
+        if user and not user.is_authenticated:
+            self.fields['card_yellow'].widget.attrs['disabled'] = True
+            self.fields['card_red'].widget.attrs['disabled'] = True
+            self.fields['goals'].widget.attrs['disabled'] = True
+
     
 
 class GameForm(forms.ModelForm):
@@ -418,6 +425,15 @@ class GameForm(forms.ModelForm):
                     'class': "form-control border border-info-subtle",
                 }),
         }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        print(user)
+        super(GameForm, self).__init__(*args, **kwargs)
+
+        if user and not user.is_authenticated:
+            self.fields['team1_goals'].widget.attrs['disabled'] = True
+            self.fields['team2_goals'].widget.attrs['disabled'] = True
 
 
 

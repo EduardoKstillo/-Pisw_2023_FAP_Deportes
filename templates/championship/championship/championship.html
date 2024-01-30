@@ -32,7 +32,11 @@
     </a>
 
     {% for msg in messages %}
-    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+    <div
+      class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show"
+      id="msg"
+      role="alert"
+    >
       {{ msg }}
     </div>
     {% endfor %}
@@ -127,6 +131,7 @@
             >
               Categorias
             </th>
+            {% if user.groups.first.name == 'admin' %}
             <th
               style="
                 background-color: #f4f4f4;
@@ -139,6 +144,7 @@
             <th style="background-color: #f4f4f4; font-weight: normal">
               Eliminar
             </th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -177,6 +183,7 @@
                 </svg>
               </a>
             </td>
+            {% if user.groups.first.name == 'admin' %}
             <td>
               <a
                 href="{% url 'edit_championship' championship.id %}"
@@ -216,6 +223,7 @@
                 </svg>
               </a>
             </td>
+            {% endif %}
           </tr>
           <script>
             function confirmDelete(event) {

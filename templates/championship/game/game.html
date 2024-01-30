@@ -175,6 +175,7 @@
                 </tbody>
               </table>
             </div>
+            {% if user.groups.first.name == 'admin' or user.groups.first.name == 'arbitro' %}
             <button
               class="btn mt-4 mb-3"
               role="button"
@@ -194,6 +195,7 @@
             </button>
             {% comment %} <button type="submit">Guardar Resultados</button>
             {% endcomment %}
+            {% endif %}
           </form>
         </div>
       </div>

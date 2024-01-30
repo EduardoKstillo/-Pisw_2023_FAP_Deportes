@@ -18,10 +18,12 @@ from django.db.models import Sum
 import locale
 from django.utils import timezone
 from django.utils.formats import date_format, time_format
+from partner.decorators import allowed_users
 
 
 # --Inicio Person------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_person(request):
     if request.method == "GET":
         form = PersonBasicForm
@@ -43,6 +45,7 @@ def create_person(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_person(request, person_id):
 
     person = get_object_or_404(Person, pk=person_id)
@@ -99,6 +102,7 @@ def edit_person(request, person_id):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_person(request, person_id):
     person = get_object_or_404(Person, pk=person_id)
 
@@ -124,6 +128,7 @@ def delete_person(request, person_id):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def view_person(request, person_id):
     person = Person.objects.get(id=person_id)
     context = {"person": person}
@@ -131,6 +136,7 @@ def view_person(request, person_id):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def persons(request):
     persons = Person.objects.all()
     myfilter = PersonFilter(request.GET, queryset=persons)
@@ -144,6 +150,7 @@ def persons(request):
 
 # --Inicio Equipo --------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_team(request):
     if request.method == "POST":
         form = TeamForm(request.POST)
@@ -167,6 +174,7 @@ def create_team(request):
 
 # --Editar equipo----------------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
     # Verificar si el equipo está asociado a algún campeonato con fixture ya creado
@@ -231,6 +239,7 @@ def edit_team(request, team_id):
 
 # --Eliminar equipo----------------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_team(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
 
@@ -262,6 +271,7 @@ def delete_team(request, team_id):
 
 # --Lista equipos------------------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def teams(request):
     teams = Team.objects.all()
     return render(request, "championship/team/teams.html", {"teams": teams})
@@ -269,6 +279,7 @@ def teams(request):
 
 # --Funcion de remover los personas  de un equipo ----------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def remove_player_from_team(request, team_id, player_id):
     team = get_object_or_404(Team, pk=team_id)
 
@@ -302,6 +313,7 @@ def remove_player_from_team(request, team_id, player_id):
 
 # --Funcion para zar una persona si es delegado de equipo
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def actualizar_jugador(request, player_id):
     if request.method == "POST":
         try:
@@ -318,6 +330,7 @@ def actualizar_jugador(request, player_id):
 
 # --Funcion para zar una persona en caso ya no sea delegado de equipo
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def actualizar_jugador1(request, player_id):
     print("amigo")
     if request.method == "POST":
@@ -337,6 +350,7 @@ def actualizar_jugador1(request, player_id):
 # --Esta funcion agrega las personas a un equipo
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def view_team(request, team_id):
     team = get_object_or_404(Team, id=team_id)
 
@@ -439,6 +453,7 @@ def view_team(request, team_id):
 # --Incio Campeonato----------------------------------------------------------------
 # --Crear campeonato------------------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_championship(request):
     if request.method == "POST":
         form = ChampionshipForm(request.POST)
@@ -466,6 +481,7 @@ def create_championship(request):
 # --Editar campeonato-------------------------------------------------------------------
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_championship(request, championship_id):
     championship = get_object_or_404(Championship, pk=championship_id)
 
@@ -515,16 +531,11 @@ def edit_championship(request, championship_id):
         context,
     )
 
-    return render(
-        request,
-        "championship/championship/edit_championship.html",
-        context,
-    )
-
 
 # --Eliminar campeonato--------------------------------------------------------------------
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_championship(request, id):
     championship = get_object_or_404(Championship, pk=id)
     championship_name = championship.name
@@ -539,6 +550,7 @@ def delete_championship(request, id):
 
 # --Funcion remueve los equipos de un campeonato en especifico---------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def remove_team_from_championship(request, championship_id, category_id, team_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -565,8 +577,8 @@ def remove_team_from_championship(request, championship_id, category_id, team_id
 # --Listar campeonatos----------------------------------------------------------------------
 
 
-@login_required
 def championships(request):
+
     championships = Championship.objects.all()
     context = {"championships": championships}
     return render(request, "championship/championship/championship.html", context)
@@ -575,8 +587,8 @@ def championships(request):
 # --Funcion que muestra los equipo que pertenecen a un equipo--------------------------------------
 # --Funcion que agrega equipos a un campeonato
 
-@login_required
 def add_team_championship(request, championship_id, categorys_id):
+
     championship = Championship.objects.get(pk=championship_id)
     category = Category.objects.get(pk=categorys_id)
 
@@ -642,7 +654,6 @@ def add_team_championship(request, championship_id, categorys_id):
 
 # --Ver campeonato y sus categorias pertenecientes----------------------------------------------------------------------
 
-@login_required
 def view_championship(request, championship_id):
     championship = Championship.objects.get(pk=championship_id)
     categorys = championship.categorys.all()
@@ -660,6 +671,7 @@ def view_championship(request, championship_id):
 # --Incio Categoria--------------------------------
 # --Crear categoria---------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_category(request):
     if request.method == "GET":
         context = {"form": CategoryForm}
@@ -687,6 +699,7 @@ def create_category(request):
 
 # --Lista categorias----------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def categorys(request):
     categorys = Category.objects.all().order_by("name")
     context = {"categorys": categorys}
@@ -695,6 +708,7 @@ def categorys(request):
 
 # --Elimnat categoria---------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
 
@@ -715,6 +729,7 @@ def delete_category(request, category_id):
 
 # --Editar categoria----------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
 
@@ -786,6 +801,7 @@ def edit_category(request, category_id):
 # --Inicio Disciplinas--------------------------------
 # ----Listar disciplinas
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def disciplines(request):
     disciplines = Discipline.objects.all().order_by("name")
     context = {"disciplines": disciplines}
@@ -794,6 +810,7 @@ def disciplines(request):
 
 # --Crear disciplinas---------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_discipline(request):
     if request.method == "GET":
         context = {"form": DiciplineForm}
@@ -827,6 +844,7 @@ def create_discipline(request):
 
 # --Elimnar disciplinas---------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, pk=discipline_id)
     discipline_name = discipline.name
@@ -848,6 +866,7 @@ def delete_discipline(request, discipline_id):
 
 # --Editar disciplinas----------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_discipline(request, discipline_id):
     discipline = get_object_or_404(Discipline, id=discipline_id)
 
@@ -904,6 +923,7 @@ def edit_discipline(request, discipline_id):
 # ----Listar temporadas--------------------------------
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def seasons(request):
     seasons = Season.objects.all().order_by("name")
     context = {"seasons": seasons}
@@ -913,6 +933,7 @@ def seasons(request):
 # --Crear temporadas---------------------------------------------------------------
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_season(request):
     if request.method == "GET":
         context = {"form": SeasonForm}
@@ -943,6 +964,7 @@ def create_season(request):
 # --Elimnar temporadas---------------------------------------------------------------
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_season(request, season_id):
     season = get_object_or_404(Season, pk=season_id)
     season_name = season.name
@@ -964,6 +986,7 @@ def delete_season(request, season_id):
 
 # --Editar temporadas----------------------------------------------------------------
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_season(request, season_id):
     season = get_object_or_404(Season, id=season_id)
 
@@ -1022,7 +1045,6 @@ def edit_season(request, season_id):
 
 
 # --Modulo Fixture----------------------------------------------------------------
-@login_required
 def create_fixture(request, championship_id, category_id):
     # obtengo el campeonato y la categoria en especifico
     championship = get_object_or_404(Championship, pk=championship_id)
@@ -1084,6 +1106,7 @@ def create_fixture(request, championship_id, category_id):
     return render(request, "championship/game/fixture.html", context)
 
 
+@allowed_users(allowed_roles=['admin','arbitro'])
 def game_status(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
 
@@ -1099,7 +1122,6 @@ def game_status(request, game_id):
         return JsonResponse({'estado': game.state})
 
 
-@login_required
 def game(request, game_id):
     # obtengo el game en especifico
     game = get_object_or_404(Game, id=game_id)
@@ -1109,7 +1131,7 @@ def game(request, game_id):
         return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
 
     # instacion el Gamefor con game
-    game_form = GameForm(instance=game)
+    game_form = GameForm(user=request.user, instance=game)
 
     # Obtener jugadores de cada equipo
     players_team1 = game.team1.persons.all()
@@ -1124,7 +1146,7 @@ def game(request, game_id):
             player_game_instance = PlayerGame(player=jugador, game=game)
             player_game_instance.save()
 
-        forms_team1.append(PlayerGameForm(
+        forms_team1.append(PlayerGameForm(user=request.user,
             prefix=f'equipo1-{jugador.id}', instance=player_game_instance))
 
     forms_team2 = []
@@ -1136,7 +1158,7 @@ def game(request, game_id):
             player_game_instance = PlayerGame(player=jugador, game=game)
             player_game_instance.save()
 
-        forms_team2.append(PlayerGameForm(
+        forms_team2.append(PlayerGameForm(user=request.user,
             prefix=f'equipo2-{jugador.id}', instance=player_game_instance))
 
     if request.method == 'POST':
@@ -1170,6 +1192,7 @@ def game(request, game_id):
                 form.save()
 
             game_form.save()
+
             table_result_championship(game)
             return redirect('create_fixture', championship_id=game.championship.id, category_id=game.category.id)
         else:
@@ -1183,43 +1206,73 @@ def game(request, game_id):
 
 def table_result_championship(game):
     # Actualizar los resultados del equipo1
-    result_team1, created = Result.objects.get_or_create(
+
+    result_team1, created = Result.objects.get_or_create(round_number = game.round_number,
         team=game.team1, championship=game.championship, category=game.category)
-    result_team1.pj += 1
-    result_team1.pg += 1 if game.team1_goals > game.team2_goals else 0
-    result_team1.pe += 1 if game.team1_goals == game.team2_goals else 0
-    result_team1.pp += 1 if game.team1_goals < game.team2_goals else 0
-    result_team1.gf += int(game.team1_goals)
-    result_team1.gc += int(game.team2_goals)
+    
+    result_team1.pj = 1
+    result_team1.pg = 1 if game.team1_goals > game.team2_goals else 0
+    result_team1.pe = 1 if game.team1_goals == game.team2_goals else 0
+    result_team1.pp = 1 if game.team1_goals < game.team2_goals else 0
+    result_team1.gf = int(game.team1_goals)
+    result_team1.gc = int(game.team2_goals)
     result_team1.dg = result_team1.gf - result_team1.gc
     result_team1.pts = 3 * result_team1.pg + result_team1.pe
     result_team1.save()
 
     # Actualizar los resultados del equipo2
-    result_team2, created = Result.objects.get_or_create(
+    result_team2, created = Result.objects.get_or_create(round_number = game.round_number,
         team=game.team2, championship=game.championship, category=game.category)
-    result_team2.pj += 1
-    result_team2.pg += 1 if game.team2_goals > game.team1_goals else 0
-    result_team2.pe += 1 if game.team2_goals == game.team1_goals else 0
-    result_team2.pp += 1 if game.team2_goals < game.team1_goals else 0
-    result_team2.gf += int(game.team2_goals)
-    result_team2.gc += int(game.team1_goals)
+    result_team2.pj = 1
+    result_team2.pg = 1 if game.team2_goals > game.team1_goals else 0
+    result_team2.pe = 1 if game.team2_goals == game.team1_goals else 0
+    result_team2.pp = 1 if game.team2_goals < game.team1_goals else 0
+    result_team2.gf = int(game.team2_goals)
+    result_team2.gc = int(game.team1_goals)
     result_team2.dg = result_team2.gf - result_team2.gc
     result_team2.pts = 3 * result_team2.pg + result_team2.pe
     result_team2.save()
+
+    # game state change to finished
+    game.state = True
+    game.save()
+
 
     #game.sum_team_points = result_team1.pts + result_team2.pts
     #game.save()
 
 
 # --Listar tabla de posiciones----------------------------------------------------------------------
-@login_required
 def tabla_posiciones(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
-    # filtra los resultados del campeoanto en especifico
-    results = Result.objects.filter(
-        championship=championship_id, category=category_id).order_by('-pts')
+
+    leaked_games = Result.objects.filter(
+        category_id=category_id, championship_id=championship_id)
+    
+    # Sumar las columnas pj, pg, etc, agrupadas por equipo
+    results = leaked_games.values('team_id').annotate(
+        pj=Sum('pj'),
+        pg=Sum('pg'),
+        pe=Sum('pe'),
+        pp=Sum('pp'),
+        gf=Sum('gf'),
+        gc=Sum('gc'),
+        dg=Sum('dg'),
+        pts=Sum('pts'),
+    ).values(
+        'team__month',
+        'team__year', 
+        'team__group',
+        'pj',
+        'pg',
+        'pe',
+        'pp',
+        'gf',
+        'gc',
+        'dg',
+        'pts').order_by('-pts')
+    
 
     context = {'results': results,
                'championships': championship, 'categorys': category}
@@ -1227,7 +1280,6 @@ def tabla_posiciones(request, championship_id, category_id):
     return render(request, 'championship/fixture/tabla_posiciones.html', context)
 
 
-@login_required
 def amonestaciones(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -1260,7 +1312,6 @@ def amonestaciones(request, championship_id, category_id):
     return render(request, 'championship/fixture/amonestaciones.html', context)
 
 
-@login_required
 def goleadores(request, championship_id, category_id):
     championship = get_object_or_404(Championship, pk=championship_id)
     category = get_object_or_404(Category, pk=category_id)
@@ -1289,6 +1340,7 @@ def goleadores(request, championship_id, category_id):
 # ------------------------------------------ Modulo Anuncios
 # --Crear anuncio
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def create_anuncio(request):
     if request.method == "POST":
         form = AnuncioForm(request.POST)
@@ -1305,6 +1357,7 @@ def create_anuncio(request):
 #--Editar anuncio
 #--Listar anucio
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def anuncios(request):
     anuncios = Anuncio.objects.all().order_by('-date', '-time')
 
@@ -1323,6 +1376,7 @@ def anuncios(request):
 
 # --Editar anuncio
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def edit_anuncio(request, anuncio_id):
     # Obtener la instancia del Anuncio desde la base de datos
     anuncio = get_object_or_404(Anuncio, pk=anuncio_id)
@@ -1345,6 +1399,7 @@ def edit_anuncio(request, anuncio_id):
 
 # --Eliminar anuncio
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def delete_anuncio(request, anuncio_id):
     anuncio = get_object_or_404(Anuncio, pk=anuncio_id)
     anuncio_name = anuncio.name
@@ -1352,120 +1407,3 @@ def delete_anuncio(request, anuncio_id):
     messages.success(
         request, f'El anuncio "{anuncio_name}" ha sido eliminado exitosamente.', extra_tags='deleted')        
     return redirect("anuncios")
-
-def denied(request):
-
-    return render(request, "championship/anuncio/denied.html")
-
-
-"""
-def add__player_team(request, player_id):
-    team = Team.objects.get(pk=player_id)
-    players_available = Person.objects.exclude(team=team)  # Obtener personas que no están en el equipo
-
-    if request.method == 'POST':
-        player_id = request.POST.get('player_id')
-        player = Person.objects.get(pk=player_id)
-        team.persons.add(player)  # Agregar la persona al equipo
-        
-    return render(request, 'championship/team/add_player_team.html', {'team': team, 'players':players_available})
-"""
-"""
-def fixture(request, id_champ):
-    championship = get_object_or_404(Championship, pk=id_champ)
-    fixtures = Game.objects.filter(championship=championship).order_by("round_number")
-    grouped_fixtures = {}
-    for fixture in fixtures:
-        round_number = fixture.round_number
-        if round_number not in grouped_fixtures:
-            grouped_fixtures[round_number] = []
-        grouped_fixtures[round_number].append(fixture)
-
-    return render(
-        request,
-        "championship/fixture.html",
-        {"grouped_fixtures": grouped_fixtures, "id_champ": id_champ},
-    )
-"""
-"""
-def create_fixture(request, id_champ):
-    championship = get_object_or_404(Championship, pk=id_champ)
-    print(championship)
-
-    # Verificar si ya existe un fixture para el campeonato
-    existing_fixture = Game.objects.filter(championship=championship)
-    if existing_fixture.exists():
-        print(existing_fixture)
-        messages.success(request, "El fixture ya esta creado!")
-        return redirect("fixture", id_champ)
-
-    teams = championship.teams.all()
-    fixture = generate_fixture(teams, championship)
-    return redirect("fixture", id_champ)
-
-
-def games(request, id_champ):
-    championship = get_object_or_404(Championship, pk=id_champ)
-    fixtures = Game.objects.filter(championship=championship).order_by("round_number")
-    grouped_fixtures = {}
-    for fixture in fixtures:
-        round_number = fixture.round_number
-        if round_number not in grouped_fixtures:
-            grouped_fixtures[round_number] = []
-        grouped_fixtures[round_number].append(fixture)
-    # print(fixture)
-    # print_fixture(fixture)
-    return render(
-        request,
-        "championship/games.html",
-        {"grouped_fixtures": grouped_fixtures, "id_champ": id_champ},
-    )
-"""
-"""
-def edit_team(request, id, id_champ):
-    team = get_object_or_404(Team, pk=id)
-
-    if request.method == 'GET':
-        form = TeamForm(instance=team)
-        context = {'form': form, 'team': team}
-        return render(request, 'championship/team/edit_team.html', context)
-
-    if request.method == 'POST':
-        form = TeamForm(request.POST, instance=team)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Equipo editado correctamente!')
-            return redirect('teams', id_champ)
-        else:
-            messages.success(request, 'Ingrese los datos correctamente')
-            return render(request, 'championship/team/create_team.html', {'form': form})
-"""
-
-"""
-def view1_championship(request, championship_id):
-    championship = get_object_or_404(Championship, pk=championship_id)
-    
-    if request.method == 'POST':
-        team_id = request.POST.get('team_id')
-        if team_id:
-            team = get_object_or_404(Team, pk=team_id)
-            championship.teams.add(team)
-            return redirect('championships')
-            
-
-    teams_availables = Team.objects.exclude(championship=championship)
-
-    return render(request, 'championship/championship/view1_championship.html', {
-        'championship': championship,
-        'teams_availables': teams_availables,
-    })
-
-"""
-
-"""
-revisar las urls
-optimizar urls
-falta editar, eliminar y validar
-bloquear creacion de equipos cuando se genere el fixture
-falta opcion de eliminar fixture
-"""

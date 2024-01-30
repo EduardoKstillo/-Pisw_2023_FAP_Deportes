@@ -46,9 +46,11 @@
       </svg>
       Volver a categorias
     </a>
+    {% if user.groups.first.name == 'admin' %}
     <form method="post">
       {% csrf_token %}
       <div class="row">
+        
         <div class="col-md-6">
           <label
             for="team_id"
@@ -101,13 +103,14 @@
         </div>
       </div>
     </form>
-
+    {% endif %}
+    
     {% for msg in messages %}
     <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
       {{ msg }}
     </div>
     {% endfor %}
-
+    
     <!-- <style type="text/css">
       .table-container {
         height: 10em;
@@ -171,9 +174,11 @@
             >          
               Detalles
             </th> -->
+            {% if user.groups.first.name == 'admin' %}
             <th style="background-color: #f4f4f4; font-weight: normal">
               Remover
             </th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -204,6 +209,7 @@
                 </svg>
               </a>
             </td> -->
+            {% if user.groups.first.name == 'admin' %}
             <td>
               <form
                 method="post"
@@ -230,6 +236,7 @@
                 </button>
               </form>
             </td>
+            {% endif %}
           </tr>
 
           {% endfor %}

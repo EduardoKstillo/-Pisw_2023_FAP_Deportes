@@ -11,6 +11,7 @@ from django.utils.formats import date_format, time_format
 from django.db.models import Sum
 
 from .decorators import allowed_users
+
 def home(request):
     anuncios = Anuncio.objects.all().order_by('-date', '-time')[:5]
     for anuncio in anuncios:

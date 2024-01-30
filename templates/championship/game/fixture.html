@@ -122,7 +122,9 @@
                     <th>Equipo 1</th>
                     <th>Resultado</th>
                     <th>Equipo 2</th>
+                    {% if user.groups.first.name == 'admin' or user.groups.first.name == 'arbitro' %}
                     <th>Estado</th>
+                    {% endif %}
                     <th>Editar partido</th>
                   </tr>
                 </thead>
@@ -134,15 +136,20 @@
                     <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
                     <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
                     </td>
+                    {% if user.groups.first.name == 'admin' or user.groups.first.name == 'arbitro' %}
                     <td class="text-center">
                       <div class="form-check form-switch d-flex justify-content-center">
                         <input class="check-status_game form-check-input" type="checkbox" data-game-id="{{fixture.id}}" 
-                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA'%}
-                        checked disabled
+                        {% if fixture.state or fixture.team2.name == 'DESCANSA' or fixture.team1.name == 'DESCANSA' %}
+                        checked
+                        {% if not user.groups.first.name == 'admin' %}
+                        disabled
+                        {% endif %}
                         {% endif %}
                         >
                       </div>
                     </td>
+                    {% endif %}
                     <td>
                       <button
                         class="button-edit-game btn btn-primary my-auto"
@@ -194,7 +201,7 @@
         const editarPartidoButton = document.querySelector(`.button-edit-game[data-game-id="${gameID}"]`);
         // si se puso el checkbox a true, cambia el estado en la BD
         if (this.checked) {
-          const result = confirm('¿Está seguro de que desea cambiar el estado? Esta acción es irreversible.');
+          const result = confirm('¿Está seguro de que quiere cambiar el estado del juego?');
           if (result) {
             changeStatus(gameID, true);
             // disabled para el checkbox y boton editar game
@@ -204,10 +211,16 @@
             this.checked = false;
           }
         } else {
-          // Cambiar el estado a false
-          changeStatus(gameID, false);
-          // Activar el botón de editar partido
-          editarPartidoButton.disabled = false;
+          const result = confirm('¿Está seguro de que quiere cambiar el estado del juego?');
+          if (result) {
+            // Cambiar el estado a false
+            changeStatus(gameID, false);
+            this.disabled = false;
+            // Activar el botón de editar partido
+            editarPartidoButton.disabled = false;
+          } else {
+            this.checked = true;
+          }
         }
       });
     });
