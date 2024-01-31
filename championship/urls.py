@@ -81,6 +81,7 @@ urlpatterns = [
 
     # Modulo anuncios
     path('anuncios/', views.anuncios,  name='anuncios'),
+    path('denied/', views.denied,  name='denied'),
 
     path('create_anuncio/', views.create_anuncio,  name='create_anuncio'),
     path('delete_anuncio/<int:anuncio_id>', views.delete_anuncio,  name='delete_anuncio'),

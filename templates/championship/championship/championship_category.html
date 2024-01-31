@@ -146,7 +146,7 @@
           >
             <td>{{ championship.name }}</td>
             <td>{{categorys.name}}</td>
-            <td>{% if championship.state %} SI {% else %} NO {% endif %}</td>
+            <td>{% if championship.state %} En curso {% else %} Finalizado{% endif %}</td>
             <td>
               <a
                 href="{% url 'add_team_championship' championship.id categorys.id%}"
