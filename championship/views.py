@@ -1355,8 +1355,7 @@ def delete_anuncio(request, anuncio_id):
 
 def denied(request):
 
-    return render(request, "championship/anuncio/denied.html")
-
+    return render(request, "championship/anuncio/denegado.html")
 
 """
 def add__player_team(request, player_id):
