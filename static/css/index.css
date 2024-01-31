@@ -42,24 +42,7 @@ main::before {
   opacity: 0.3;
   z-index: -1;
 }
-.carrusel-container {
-  position: relative;
-}
 
-.carousel-control-prev,
-.carousel-control-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.carousel-control-prev {
-  left: 0;
-}
-
-.carousel-control-next {
-  right: 0;
-}
 .side-navbar {
   width: 180px;
   height: 100%;
