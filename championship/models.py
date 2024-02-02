@@ -36,8 +36,8 @@ person_department = [
 
 
 BOOLEAN_CHOICES = [
-    (False, 'No'),
-    (True, 'Si'),
+    (False, 'Finalizado'),
+    (True, 'En curso'),
 ]
 
 

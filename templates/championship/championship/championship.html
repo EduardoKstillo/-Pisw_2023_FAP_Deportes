@@ -120,7 +120,7 @@
                 font-weight: normal;
               "
             >
-              Habilitado
+              Estado
             </th>
             <th
               style="
@@ -160,7 +160,7 @@
             <td>{{ championship.name }}</td>
             <td>{{championship.year}}</td>
             <td>{{championship.seasons}}</td>
-            <td>{% if championship.state %} En curso {% else %} Finalizado{% endif %}</td>
+            <td>{% if championship.state %} En curso {% else %} Finalizado {% endif %}</td>
             <td>
               <a
                 href="{% url 'view_championship' championship.id %}"
