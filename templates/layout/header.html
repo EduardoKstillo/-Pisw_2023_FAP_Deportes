@@ -37,54 +37,53 @@
         {% if user.groups.first.name == 'admin' %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'persons' %}" style="color: white"
-          >Persona</a
+            >Persona</a
           >
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'users' %}" style="color: white"
-          >Usuarios</a
+            >Usuarios</a
           >
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'categorys' %}" style="color: white"
-          >Categorias</a
+            >Categorias</a
           >
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'teams' %}" style="color: white"
-          >Equipos</a
+            >Equipos</a
           >
         </li>
         <li class="nav-item">
           <a
-          class="nav-link"
-          href="{% url 'disciplines' %}"
-          style="color: white"
-          >Disciplinas</a
+            class="nav-link"
+            href="{% url 'disciplines' %}"
+            style="color: white"
+            >Disciplinas</a
           >
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'seasons' %}" style="color: white"
-          >Temporadas</a
+            >Temporadas</a
           >
         </li>
         {% endif %}
         <li class="nav-item">
           <a
-          class="nav-link"
-          href="{% url 'championships' %}"
-          style="color: white"
+            class="nav-link"
+            href="{% url 'championships' %}"
+            style="color: white"
             >Campeonato</a
           >
         </li>
         {% if user.groups.first.name == 'admin' %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'anuncios' %}" style="color: white"
-          >Anuncios</a
+            >Anuncios</a
           >
         </li>
-        {% endif %}
-        {% if not user.is_authenticated %}
+        {% endif %} {% if not user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}" style="color: white"
             >Iniciar sesión</a

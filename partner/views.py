@@ -31,6 +31,45 @@ def home(request):
             print(ch)
         championship = get_object_or_404(Championship, pk=championship_id)
         category = get_object_or_404(Category, pk=category_id)
+        championship_teams = ChampionshipTeam.objects.filter(championship_id=championship_id, category_id=category_id)
+        # obtengo una lista de los ID de los equipos
+        team_ids = championship_teams.values_list("team_id")
+        # filtro los equipos con tales IDs
+        teams = Team.objects.filter(id__in=team_ids)
+
+        # Verificar si ya existe un fixture para el campeonato
+        existing_fixture = Game.objects.filter(
+            championship=championship, category=category)
+        if existing_fixture.exists():
+            championship = get_object_or_404(Championship, pk=championship_id)
+            category = get_object_or_404(Category, pk=category_id)
+            grouped_fixtures = {}
+            for fixture in existing_fixture:
+                round_number = fixture.round_number
+                if round_number not in grouped_fixtures:
+                    grouped_fixtures[round_number] = []
+                grouped_fixtures[round_number].append(fixture)
+            # filtra los resultados del campeoanto en especifico
+            results = Result.objects.filter(
+                championship=championship_id, category=category_id).order_by('-pts')
+            # Filtrar los juegos según category_id y championship_id
+            leaked_games = Game.objects.filter(
+                category_id=category_id, championship_id=championship_id)
+
+            # Filtrar PlayerGame (jugadores por partido o Game)
+            # players_game = PlayerGame.objects.filter(game__in=leaked_games)
+            players_game = Person.objects.filter(
+            playergame__game__in=leaked_games).distinct()
+            result = (            players_game
+            .annotate(total_goals=Sum('playergame__goals'))
+            .values('name', 'team__month', 'team__year', 'team__group', 'total_goals')
+            .order_by('-total_goals'))
+            context = {'results': results,'result': result,
+                'championships': championship, 'categorys': category, "anuncios": anuncios,'grouped_fixtures': grouped_fixtures,
+                    'championships': championship, 'categorys': category}
+            # messages.success(request, "El fixture ya esta creado!")
+            # retorna el fixture existente del campeanato
+            return render(request, "index.html", context)
         # filtra los resultados del campeoanto en especifico
         results = Result.objects.filter(
             championship=championship_id, category=category_id).order_by('-pts')
@@ -42,7 +81,7 @@ def home(request):
         # players_game = PlayerGame.objects.filter(game__in=leaked_games)
         players_game = Person.objects.filter(
             playergame__game__in=leaked_games).distinct()
-
+        
         result = (
             players_game
             .annotate(total_goals=Sum('playergame__goals'))

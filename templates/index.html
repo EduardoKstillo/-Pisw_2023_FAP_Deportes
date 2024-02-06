@@ -43,18 +43,6 @@
   transition: transform 0.5s ease;
 }
 
-.text-center:hover {
-  transform: translateY(-10px);
-}
-
-.w-75 {
-  transition: transform 0.5s ease;
-}
-
-.w-75:hover {
-  transform: translateX(-10px);
-}
-
 .btn {
   transition: transform 0.2s ease;
 }
@@ -84,7 +72,6 @@
           <p class="fs-3 mb-4">
             La Asociación de licenciados de la FAP Grupo Aéreo N° 4 (ALIFAP Grupo Aéreo N°4) es una asociación creada recientemente que realiza competiciones deportivas entre sus afiliados. En la actualidad solo realizan campeonatos de fútbol, pero en un futuro pretenden realizar otros deportes. 
           </p>
-          <a href="#" class="btn btn-light">Saber más</a>
         </div>
       </div>
     </div>
@@ -93,12 +80,12 @@
       <div>
       <div
         class="carrusel-container"
-              style="height: 300px; background-color: #1f324c">
+              style="height: 320px; background-color: #1f324c">
         <div id="carouselExampleFade" class="carousel slide carousel-fade">
           <div class="carousel-inner text-center text-white">
             <div class="carousel-item active">
-              <h1 class="">Tabla de posiciones</h1>
-              <div class="mx-5">
+              <h1 class="mt-1">Tabla de posiciones</h1>
+              <div class="mx-5 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
                 <thead class="table-dark">
@@ -136,8 +123,8 @@
               </table>
               </div>
             </div>
-            <div class="carousel-item">
-              <h1>Goleadores</h1>
+            <div class="carousel-item ">
+              <h1 class="mt-1">Goleadores</h1>
               <div class="mx-5 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
@@ -169,7 +156,67 @@
               </div>
             </div>
             <div class="carousel-item">
-              <h1>Fixture</h1>
+              <h1 class="mt-1">Fixture</h1>
+                 {% for round_number, fixtures in grouped_fixtures.items %}
+                <div class="text-center mx-5" id="tabla-jornada-{{round_number}} " style="display: none">
+                  <div class="btn-group">
+                    <button class="btn" onclick="mostrarTabla(-1)">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        class="bi bi-caret-left-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          fill="#4e688e"
+                          d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+                        />
+                      </svg>
+                    </button>
+                    <span class="my-auto" style="font-size: 15px">Jornada {{round_number}}</span>
+                    <button class="btn" onclick="mostrarTabla(1)">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        fill="currentColor"
+                        class="bi bi-caret-right-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          fill="#4e688e"
+                          d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+            <div class="table-responsive table-container m-0" style="fontsize:8px">
+              <table class="table">
+                <thead class="table-dark">
+                  <tr>
+                    <th style="width: 55%">Lugar/Fecha</th>
+                    <th style="width: 15%">Equipo 1</th>
+                    <th style="width: 15%">Resultado</th>
+                    <th style="width: 15%">Equipo 2</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  {% for fixture in fixtures %}
+                  <tr>
+                    <td >Lugar 23/11/2023 8:00</td>
+                    <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
+                    <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
+                    <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
             </div>
           </div>
         </div>
@@ -202,19 +249,20 @@
 
     <div class="mt-2">
       <ul class="list-group" style="background-color: #1f324c">
+      <li class="list-group-item text-center text-white " style=" background-color: #1f324c">
+        <h1>Anuncios</h1>
+      </li>
         {% for anuncio in anuncios %}
-        <li class="list-group-item  text-white " style=" background-color: #1f324c">
-           <table class="table table-responsive" style=" background-color: #1f324c">
-        <thead>
-          <tr>
-            <th style="width: 35%;background-color: #1f324c; color:white">{{anuncio.name}}</th>
-            <th style="width: 5%;background-color: #1f324c; color:white; font-size:20px">|</th>
-
-            <th style="width: 60%;background-color: #1f324c; color:white">{{ anuncio.content }}</th>
-          </tr>
-        </thead>
-        
-        </table>
+        <li class="list-group-item  text-white " style=" background-color: #1f324c; height:55px">
+          <table class="table table-responsive" style=" background-color: #1f324c">
+            <thead>
+              <tr>
+                <th style="width: 20%;background-color: #1f324c; color:white">{{anuncio.name}}</th>
+                <th style="width: 1%;border: 0.5px solid ;padding: 0.5px"></th>
+                <th style="width: 79%;background-color: #1f324c; color:white">{{ anuncio.content }}</th>
+              </tr>
+            </thead>      
+          </table>
         </li>
         {% endfor %}
       </ul>
@@ -222,4 +270,23 @@
    
   </div>
 </div>
+
+      <script>
+        let jornadaActual = 1;
+        mostrarTabla(0);
+
+        function mostrarTabla(numjor) {
+          const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
+
+          tablas[jornadaActual - 1].style.display = "none";
+
+          jornadaActual += numjor;
+          if (jornadaActual < 1) {
+            jornadaActual = tablas.length;
+          } else if (jornadaActual > tablas.length) {
+            jornadaActual = 1;
+          }
+          tablas[jornadaActual - 1].style.display = "block";
+        }
+      </script>
 {% endblock content %}
