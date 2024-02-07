@@ -20,7 +20,11 @@
       body {
         padding-top: 80px;
       }
-
+      @media (max-width: 720px) {
+        .hidden-on-small-screen {
+          display: none;
+        }
+      }
       /* Resto de tu CSS existente */
     </style>
 
@@ -40,7 +44,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'css/index.css' %}"
+      href="{% static 'css/indexnew.css' %}"
     />
     <!-- Agrega estos enlaces en el head de tu HTML -->
     <!-- Agrega estos enlaces en el head de tu HTML -->
@@ -56,14 +60,65 @@
   </head>
 
   <body>
-    <header>{% include "layout/headernew.html" %}</header>
+    <header>{% include "layout/header.html" %}</header>
 
     {% block login %} {% endblock login%}
-
     <div class="container-fluid">
-      <div class="row">
-        {% block sidebar %} {% endblock sidebar %}
-        <main>{% block content %} {% endblock content %}</main>
+      <div class="row h-75">
+        <div
+          class="w-100 h-100"
+          style="
+            position: absolute;
+            background-color: #f6f0e6;
+            clip-path: polygon(0 0, 28% 0, 55% 100%, 0 100%);
+            z-index: 0;
+          "
+        ></div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6">
+              <div>
+                <img
+                  src="{% static 'img/fondo.png' %}"
+                  alt="Descripción de la imagen"
+                  class="img-fluid w-50 d-block mx-auto hidden-on-small-screen"
+                  style="
+                    position: relative;
+                    z-index: 1;
+                    left: 15%;
+                    max-width: 100%;
+                    height: auto;
+                  "
+                />
+              </div>
+            </div>
+            <div
+              class="col-6 text-center text-white ms-auto mx-auto my-auto d-block mx-auto"
+              style="max-width: 100%; height: auto"
+            >
+              <h2 class="display-6">
+                Asociación de licenciados de la FAP Grupo Aéreo N° 4
+              </h2>
+              <p class="text-md text-sm fs-3">
+                La Asociación de licenciados de la FAP Grupo Aéreo N° 4 (ALIFAP
+                Grupo Aéreo N°4) es una asociación creada recientemente que
+                realiza competiciones deportivas entre sus afiliados. En la
+                actualidad solo realizan campeonatos de fútbol, pero en un
+                futuro pretenden realizar otros deportes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="row h-75 pt-5 mt-5 border-2 border-black"
+        style="background-color: #f6f0e6"
+      >
+        <div class="col-12 mt-5 pb-5">
+          <section id="section2">
+            <main>{% block content %} {% endblock content %}</main>
+          </section>
+        </div>
       </div>
     </div>
 

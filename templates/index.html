@@ -1,4 +1,4 @@
-{% extends 'layout/main.html' %} {%block content %}
+{% extends 'layout/newmain.html' %} {%block content %}
 <style>
   .carrusel-container {
     position: relative;
@@ -15,20 +15,22 @@
     top: 50%;
     transform: translateY(-50%);
     width: auto; /* Ajusta el ancho automáticamente según el contenido */
+    
   }
 
   .carousel-control-prev {
     left: 0; /* Coloca el botón prev a la izquierda */
+    color:#000000
   }
 
   .carousel-control-next {
-    right: 0; /* Coloca el botón next a la derecha */
-  }
+    right: 0; 
 
+  }
   .table-container {
-    max-height: 200px; /* Ajusta la altura máxima según tus necesidades */
+    height: 30vh;
     overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
-    font-size:13px
+    font-size: 13px;
   }
 
   /* Estilo para la tabla */
@@ -36,56 +38,41 @@
     width: 100%;
   }
   .col-md-6 {
-  overflow: hidden;
-}
-
-.text-center {
-  transition: transform 0.5s ease;
-}
-
-.btn {
-  transition: transform 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
+    overflow: hidden;
   }
-  100% {
-    opacity: 1;
+
+  .text-center {
+    transition: transform 0.5s ease;
   }
-}
+
+  .btn {
+    transition: transform 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
   
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 </style>
-<div class="container mt-5" >
-  <div class="row">
-    <div class="col-md-6 col-sm-12 position-relative">
-      <div class="text-center text-white d-flex align-items-center justify-content-center" style="height: 700px; background-color: #1f324c;">
-        <div class="w-75 text-start">
-          <h2 class="display-6 mb-4">Asociación de licenciados de la FAP Grupo Aéreo N° 4</h2>
-          <p class="fs-3 mb-4">
-            La Asociación de licenciados de la FAP Grupo Aéreo N° 4 (ALIFAP Grupo Aéreo N°4) es una asociación creada recientemente que realiza competiciones deportivas entre sus afiliados. En la actualidad solo realizan campeonatos de fútbol, pero en un futuro pretenden realizar otros deportes. 
-          </p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-6 col-sm-12 mt-sm-2">
-      <div>
+<div class="container " >
+  <div class="row ">
+    <div class="col-md-6 col-sm-12 mt-sm-2 ">
       <div
-        class="carrusel-container"
-              style="height: 320px; background-color: #1f324c">
+        class="carrusel-container h-100 pb-5"  style=" background-color:#f6f0e6";>
         <div id="carouselExampleFade" class="carousel slide carousel-fade">
-          <div class="carousel-inner text-center text-white">
+          <div class="carousel-inner text-center text-dark">
             <div class="carousel-item active">
-              <h1 class="mt-1">Tabla de posiciones</h1>
-              <div class="mx-5 table-container">
+              <h1 class="mt-4">Tabla de posiciones</h1>
+              <div class="mx-5 mt-5 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
                 <thead class="table-dark">
@@ -124,8 +111,8 @@
               </div>
             </div>
             <div class="carousel-item ">
-              <h1 class="mt-1">Goleadores</h1>
-              <div class="mx-5 table-container">
+              <h1 class="mt-4">Goleadores</h1>
+              <div class="mx-5 mt-5 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
                 <thead class="table-dark">
@@ -156,7 +143,8 @@
               </div>
             </div>
             <div class="carousel-item">
-              <h1 class="mt-1">Fixture</h1>
+              <h1 class="mt-4">Fixture</h1>
+                <div class="mt-5">
                  {% for round_number, fixtures in grouped_fixtures.items %}
                 <div class="text-center mx-5" id="tabla-jornada-{{round_number}} " style="display: none">
                   <div class="btn-group">
@@ -175,7 +163,7 @@
                         />
                       </svg>
                     </button>
-                    <span class="my-auto" style="font-size: 15px">Jornada {{round_number}}</span>
+                    <span  style="font-size: 20px">Jornada {{round_number}}</span>
                     <button class="btn" onclick="mostrarTabla(1)">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -192,31 +180,32 @@
                       </svg>
                     </button>
                   </div>
-            <div class="table-responsive table-container m-0" style="fontsize:8px">
-              <table class="table">
-                <thead class="table-dark">
-                  <tr>
-                    <th style="width: 55%">Lugar/Fecha</th>
-                    <th style="width: 15%">Equipo 1</th>
-                    <th style="width: 15%">Resultado</th>
-                    <th style="width: 15%">Equipo 2</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
-                  {% for fixture in fixtures %}
-                  <tr>
-                    <td >Lugar 23/11/2023 8:00</td>
-                    <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
-                    <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
-                    <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          {% endfor %}
+                  <div class="table-responsive table-container m-0" style="fontsize:15px">
+                    <table class="table">
+                      <thead class="table-dark">
+                        <tr>
+                          <th style="width: 55%">Lugar/Fecha</th>
+                          <th style="width: 15%">Equipo 1</th>
+                          <th style="width: 15%">Resultado</th>
+                          <th style="width: 15%">Equipo 2</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-center">
+                        {% for fixture in fixtures %}
+                        <tr>
+                          <td >Lugar 23/11/2023 8:00</td>
+                          <td class="text-center">{% if fixture.team1.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team1.name }}{{ fixture.team1.month}}.{{ fixture.team1.year}}.{{ fixture.team1.group}}{% endif %}</td>
+                          <td class="text-center">{{fixture.team1_goals}} - {{fixture.team2_goals}}</td>
+                          <td class="text-center">{% if fixture.team2.name == 'DESCANSA' %}Equipo Descansa{% else %}{{ fixture.team2.name }}{{ fixture.team2.month}}.{{ fixture.team2.year}}.{{ fixture.team2.group}}{% endif %}
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                {% endfor %}
+                </div>
             </div>
           </div>
         </div>
@@ -225,10 +214,12 @@
           type="button"
           data-bs-target="#carouselExampleFade"
           data-bs-slide="prev"
+          style="background-color:#f6f0e6"
         >
           <span
-            class="carousel-control-prev-icon text-white"
+            class="carousel-control-prev-icon text-dark"
             aria-hidden="true"
+
           ></span>
           <span class="visually-hidden">Previous</span>
         </button>
@@ -237,29 +228,29 @@
           type="button"
           data-bs-target="#carouselExampleFade"
           data-bs-slide="next"
+                    style="background:#f6f0e6"
         >
           <span
-            class="carousel-control-next-icon text-white accordion"
+            class="carousel-control-next-icon text-dark accordion"
             aria-hidden="true"
           ></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
     </div>
-
-    <div class="mt-2">
-      <ul class="list-group" style="background-color: #1f324c">
-      <li class="list-group-item text-center text-white " style=" background-color: #1f324c">
+    <div class="col-md-5 col-sm-12  ms-md-4 mt-5 pb-5"style="background-color: #f6f0e6;border: 2px solid #090c26" >
+      <ul class="list-group" style="background-color: #f6f0e6">
+      <li class="list-group-item text-center text-dark " style=" background-color: #f6f0e6">
         <h1>Anuncios</h1>
       </li>
         {% for anuncio in anuncios %}
-        <li class="list-group-item  text-white " style=" background-color: #1f324c; height:55px">
-          <table class="table table-responsive" style=" background-color: #1f324c">
+        <li class="list-group-item  text-dark " style=" background-color: #f6f0e6 ; border-bottom: 1px solid #000;">
+          <table class="table table-responsive" style=" background-color: #f6f0e6">
             <thead>
               <tr>
-                <th style="width: 20%;background-color: #1f324c; color:white">{{anuncio.name}}</th>
-                <th style="width: 1%;border: 0.5px solid ;padding: 0.5px"></th>
-                <th style="width: 79%;background-color: #1f324c; color:white">{{ anuncio.content }}</th>
+                <th style="width: 20%;background-color: #f6f0e6; color:dark">{{anuncio.name}}</th>
+                <th style="width: 1%;border: 2px solid #090c26;padding: 0.5px"></th>
+                <th style="width: 79%;background-color: #f6f0e6; color:dark">{{ anuncio.content }}</th>
               </tr>
             </thead>      
           </table>
@@ -267,26 +258,26 @@
         {% endfor %}
       </ul>
     </div>
-   
-  </div>
+
+   </div>
+  
 </div>
+<script>
+  let jornadaActual = 1;
+  mostrarTabla(0);
 
-      <script>
-        let jornadaActual = 1;
-        mostrarTabla(0);
+  function mostrarTabla(numjor) {
+    const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
 
-        function mostrarTabla(numjor) {
-          const tablas = document.querySelectorAll("div[id^='tabla-jornada']");
+    tablas[jornadaActual - 1].style.display = "none";
 
-          tablas[jornadaActual - 1].style.display = "none";
-
-          jornadaActual += numjor;
-          if (jornadaActual < 1) {
-            jornadaActual = tablas.length;
-          } else if (jornadaActual > tablas.length) {
-            jornadaActual = 1;
-          }
-          tablas[jornadaActual - 1].style.display = "block";
-        }
-      </script>
+    jornadaActual += numjor;
+    if (jornadaActual < 1) {
+      jornadaActual = tablas.length;
+    } else if (jornadaActual > tablas.length) {
+      jornadaActual = 1;
+    }
+    tablas[jornadaActual - 1].style.display = "block";
+  }
+</script>
 {% endblock content %}

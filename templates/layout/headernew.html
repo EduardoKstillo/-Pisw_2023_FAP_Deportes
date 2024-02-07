@@ -1,6 +1,6 @@
 <nav
   class="navbar navbar-expand-lg py-3"
-  style="background-color: #f6f0e6; max-width: 100%"
+  style="background-color:#090c26 ; max-width: 100%"
 >
   <div class="container mx-auto">
     <a
@@ -9,7 +9,7 @@
       style="
         font-family: Montserrat;
         font-size: 25px;
-        color: #0e172d;
+        color: #f6f0e6;
         font-weight: 600;
       "
       >CAPSTONE</a
@@ -22,7 +22,7 @@
       aria-controls="navbarSupportedContent"
       aria-expanded="false"
       aria-label="Toggle navigation"
-      style="background-color: white"
+      style="background: #f6f0e6"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -38,7 +38,7 @@
           <a
             class="nav-link"
             href="{% url 'home' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Inicio</a
           >
         </li>
@@ -47,7 +47,7 @@
           <a
             class="nav-link"
             href="{% url 'persons' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Persona</a
           >
         </li>
@@ -55,7 +55,7 @@
           <a
             class="nav-link"
             href="{% url 'users' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Usuarios</a
           >
         </li>
@@ -63,7 +63,7 @@
           <a
             class="nav-link"
             href="{% url 'categorys' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Categorias</a
           >
         </li>
@@ -71,7 +71,7 @@
           <a
             class="nav-link"
             href="{% url 'teams' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Equipos</a
           >
         </li>
@@ -79,7 +79,7 @@
           <a
             class="nav-link"
             href="{% url 'disciplines' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Disciplinas</a
           >
         </li>
@@ -87,7 +87,7 @@
           <a
             class="nav-link"
             href="{% url 'seasons' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Temporadas</a
           >
         </li>
@@ -96,7 +96,7 @@
           <a
             class="nav-link"
             href="{% url 'championships' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Campeonato</a
           >
         </li>
@@ -105,13 +105,13 @@
           <a
             class="nav-link"
             href="{% url 'anuncios' %}"
-            style="color: #0e172d; font-weight: 600"
+            style="color: #f6f0e6; font-weight: 600"
             >Anuncios</a
           >
         </li>
         {% endif %} {% if not user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}" style="color: #0e172d"
+          <a class="nav-link" href="{% url 'login' %}" style="color: #f6f0e6"
             >Iniciar sesión</a
           >
         </li>
@@ -123,7 +123,7 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            style="color: #0e172d"
+            style="color: #f6f0e6"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
