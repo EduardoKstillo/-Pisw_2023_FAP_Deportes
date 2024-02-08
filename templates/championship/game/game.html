@@ -1,7 +1,7 @@
 {% extends 'layout/main.html' %} {% block content %}
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
-    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #2a4365">
+    <h1 style="font-family: 'Montserrat'; font-size: 18px; color: #0E172D">
       {{game.championship.name}} - {{game.championship.year}} -
       {{game.championship.seasons}} - Categoría: {{game.category.name}}
     </h1>
@@ -10,7 +10,7 @@
       style="
         font-family: 'Montserrat';
         font-size: 50px;
-        color: #2a4365;
+        color: #0E172D;
         border-bottom: 1.5px solid #babfc5;
         padding-bottom: 15px;
       "
@@ -22,15 +22,15 @@
       role="button"
       href="{% url 'create_fixture' game.championship.id game.category.id %}"
       style="
-        background-color: #4e688e;
+        background-color: #242C43;
         font-size: 20px;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
         color: white;
       "
-      onmouseover="this.style.backgroundColor='#314159'"
-      onmouseout="this.style.backgroundColor='#4e688e'"
+      onmouseover="this.style.backgroundColor='#090C26'"
+          onmouseout="this.style.backgroundColor='#242C43'"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@
 
     <style>
       .table > thead > tr > th {
-        background-color: #4e688e;
+        background-color: #242c43;
         color: white;
       }
     </style>
@@ -85,7 +85,7 @@
             <div class="container mt-4">
               <div class="row">
                 <div class="col-md-5">
-                  <h3 class="fs-2 pt-4" style:"color: #2a4365">
+                  <h3 class="fs-2 pt-4" style:"color: #0E172D">
                     {{ game.team1 }}.{{ game.team1.year}}.{{ game.team1.group}}
                   </h3>
                   <!-- Este es el input para goles del equipo1 (solo necesitas esto) -->
@@ -93,10 +93,10 @@
                 </div>
                 
                 <div class="col-md-2">
-                  <h3 style="font-size: 55px; margin-top: 35px; color: #2a4365">VS</h3>
+                  <h3 style="font-size: 55px; margin-top: 35px; color: #0E172D">VS</h3>
                 </div>
                 <div class="col-md-5">
-                  <h3 class="fs-2 pt-4" style="color: #2a4365">
+                  <h3 class="fs-2 pt-4" style="color: #0E172D">
                     {{game.team2}}.{{game.team2.year}}.{{ game.team2.group}}
                   </h3>
                   <!-- Este es el input para goles del equipo2 (solo necesitas esto)-->
@@ -112,7 +112,7 @@
               style="
                 font-family: 'Montserrat';
                 font-size: 25px;
-                color: #2a4365;
+                color: #0E172D;
                 border-bottom: 1.5px solid #babfc5;
               "
             >
@@ -147,7 +147,7 @@
               style="
                 font-family: 'Montserrat';
                 font-size: 25px;
-                color: #2a4365;
+                color: #0E172D;
                 border-bottom: 1.5px solid #babfc5;
               "
             >

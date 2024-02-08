@@ -8,7 +8,7 @@
       style="
         font-family: 'Montserrat';
         font-size: 50px;
-        color: #2a4365;
+        color: #0e172d;
         border-bottom: 1.5px solid #babfc5;
         padding-bottom: 15px;
       "
@@ -20,23 +20,27 @@
       role="button"
       href="{% url 'create_team' %}"
       style="
-        background-color: #4e688e;
+        background-color: #242c43;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
         color: white;
       "
-      onmouseover="this.style.backgroundColor=' #314159'"
-      onmouseout="this.style.backgroundColor='#4e688e'"
+      onmouseover="this.style.backgroundColor='#090C26'"
+      onmouseout="this.style.backgroundColor='#242C43'"
     >
       + Crear equipo
     </a>
 
     {% for msg in messages %}
-    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+    <div
+      class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show"
+      id="msg"
+      role="alert"
+    >
       {{ msg }}
     </div>
-    {% endfor %}    
+    {% endfor %}
 
     <div
       class="ek-shadow mt-3 mb-3"
@@ -51,7 +55,9 @@
           <tr style="font-size: 17px; font-family: 'Montserrat'">
             <th
               style="
-                background-color: #f4f4f4;
+                background-color: #242c43;
+                font-weight: normal;
+                color: white;
                 border-right: 1px solid rgba(0, 0, 0, 0.15);
                 font-weight: normal;
               "
@@ -60,7 +66,9 @@
             </th>
             <th
               style="
-                background-color: #f4f4f4;
+                background-color: #242c43;
+                font-weight: normal;
+                color: white;
                 border-right: 1px solid rgba(0, 0, 0, 0.15);
                 font-weight: normal;
               "
@@ -69,14 +77,23 @@
             </th>
             <th
               style="
-                background-color: #f4f4f4;
+                background-color: #242c43;
+                font-weight: normal;
+                color: white;
                 border-right: 1px solid rgba(0, 0, 0, 0.15);
                 font-weight: normal;
               "
             >
               Editar
             </th>
-            <th style="background-color: #f4f4f4; font-weight: normal">
+            <th
+              style="
+                background-color: #242c43;
+                font-weight: normal;
+                color: white;
+                font-weight: normal;
+              "
+            >
               Eliminar
             </th>
           </tr>

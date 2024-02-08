@@ -8,27 +8,27 @@
         style="
           font-family: 'Montserrat';
           font-size: 50px;
-          color: #2a4365;
+          color: #0e172d;
           border-bottom: 1.5px solid #babfc5;
           padding-bottom: 15px;
         "
       >
-        Crear categoría        
-      </h1>    
-           
+        Crear categoría
+      </h1>
+
       <a
         class="btn mt-4 mb-2 fs-5"
         role="button"
         href="{% url 'categorys' %}"
         style="
-          background-color: #4e688e;
+          background-color: #242c43;
           font-family: 'Montserrat';
           box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
           transition: background-color 0.3s;
           color: white;
         "
-        onmouseover="this.style.backgroundColor=' #314159'"
-        onmouseout="this.style.backgroundColor='#4e688e'"
+        onmouseover="this.style.backgroundColor='#090C26'"
+        onmouseout="this.style.backgroundColor='#242C43'"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,19 +47,22 @@
       </a>
 
       {% for msg in messages %}
-      <div class="alert alert-danger fade show" id="msg" role="alert" style="margin-top: 15px;">
+      <div
+        class="alert alert-danger fade show"
+        id="msg"
+        role="alert"
+        style="margin-top: 15px"
+      >
         {{msg}}
       </div>
-      {% endfor %}  
-
-      {%csrf_token%} {% for field in form %}
+      {% endfor %} {%csrf_token%} {% for field in form %}
       <div class="mb-3 mt-3">
         <label
           class="form-label"
           style="
             font-family: 'Montserrat';
             font-size: 20px;
-            color: #2a4365;
+            color: #0e172d;
             margin-top: 0px;
           "
           for="{{ field.auto_id }}"
@@ -72,14 +75,14 @@
         <button
           class="btn mt-4 mb-2 w-100 fs-5"
           style="
-            background-color: #4e688e;
+            background-color: #242c43;
             font-family: 'Montserrat';
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
             transition: background-color 0.3s;
             color: white;
           "
-          onmouseover="this.style.backgroundColor=' #314159'"
-          onmouseout="this.style.backgroundColor='#4e688e'"
+          onmouseover="this.style.backgroundColor='#090C26'"
+          onmouseout="this.style.backgroundColor='#242C43'"
         >
           Crear categoría
         </button>

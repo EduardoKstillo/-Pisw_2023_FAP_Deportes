@@ -4,10 +4,11 @@
 <div class="mt-4 mb-4">
   <div class="col-md-8 offset-md-2">
     <h1
-      class="text-left mt-3 fw-semibold fs-1"
+      class="text-left mt-3"
       style="
-        font-family: 'Montserrat';
-        color: #2a4365;
+        ont-family: 'Montserrat';
+        font-size: 50px;
+        color: #0e172d;
         border-bottom: 1.5px solid #babfc5;
         padding-bottom: 15px;
       "
@@ -19,19 +20,23 @@
       role="button"
       href="{% url 'create_person' %}"
       style="
-        background-color: #4e688e;
+        background-color: #242c43;
         font-family: 'Montserrat';
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
         transition: background-color 0.3s;
         color: white;
       "
-      onmouseover="this.style.backgroundColor=' #314159'"
-      onmouseout="this.style.backgroundColor='#4e688e'"
+      onmouseover="this.style.backgroundColor='#090C26'"
+      onmouseout="this.style.backgroundColor='#242C43'"
     >
       + Crear persona
     </a>
     {% for msg in messages %}
-    <div class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show" id="msg" role="alert">
+    <div
+      class="alert {% if 'created' in msg.tags %}alert-success{% elif 'deleted' in msg.tags %}alert-danger{% endif %} fade show"
+      id="msg"
+      role="alert"
+    >
       {{ msg }}
     </div>
     {% endfor %}
@@ -46,7 +51,7 @@
         <div class="col-auto">{{ field }}</div>
         {% endfor %}
         <div class="col-auto">
-          <button class="btn fs-5 text-white" style="background-color: #4e688e">
+          <button class="btn fs-5 text-white" style="background-color: #242c43">
             Filtrar
           </button>
         </div>
@@ -62,26 +67,57 @@
     >
       <div class="table-responsive">
         <table class="table text-center">
-          <thead style="height: 65px; vertical-align: middle">
+          <thead
+            style="
+              height: 65px;
+              vertical-align: middle;
+              background-color: #242c43;
+            "
+          >
             <tr style="font-family: 'Montserrat'">
-              <th style="background-color: #f4f4f4; font-weight: normal">
+              <th
+                style="
+                  background-color: #242c43;
+                  font-weight: normal;
+                  color: white;
+                "
+              >
                 Nombre
               </th>
-              <th style="background-color: #f4f4f4; font-weight: normal">
+              <th
+                style="
+                  background-color: #242c43;
+                  font-weight: normal;
+                  color: white;
+                "
+              >
                 Apellido
               </th>
-              <th style="background-color: #f4f4f4; font-weight: normal">
+              <th
+                style="
+                  background-color: #242c43;
+                  font-weight: normal;
+                  color: white;
+                "
+              >
                 Detalles
               </th>
               <th
                 style="
-                  background-color: #f4f4f4;
+                  background-color: #242c43;
                   font-weight: normal;
+                  color: white;
                 "
               >
                 Editar
               </th>
-              <th style="background-color: #f4f4f4; font-weight: normal">
+              <th
+                style="
+                  background-color: #242c43;
+                  font-weight: normal;
+                  color: white;
+                "
+              >
                 Eliminar
               </th>
             </tr>
