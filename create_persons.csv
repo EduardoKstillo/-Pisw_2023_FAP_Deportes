@@ -1,4 +1,16 @@
 NOMBRES,APELLIDOS,DNI,REGION,MESPROM,ANOPROM
+Oscar,Vilca Quispe,24511857,4,Junio,1988
+Jesus,Almonte Chalco,29608275,4,Junio,1988
+Rolando,Velasquez Meneses,10493989,4,Junio,1988
+Ramiro,Uracahua Yauri,29624089,4,Junio,1988
+Loreto,Velarde Cruz,29570454,4,Junio,1988
+Richard,Barraza Arispe,29595946,4,Junio,1988
+Hector,Chacon Mayhua,29433339,4,Junio,1989
+Rodrigo,Fernandez Gutierres,29533234,4,Junio,1989
+Fredy,Flores Ticona,29554638,4,Junio,1989
+Adolfo,Apaza Nina,29622050,4,Junio,1989
+Rafael,Piare Zapata,14429913,4,Junio,1989
+Wilber,Ballon Apaza,30835054,4,Junio,1989
 VEATO,ARIAS ALVAREZ,94199905,21,Agosto,1999
 MARIA DEL CARMEN,GALVEZ HERRERA,19350925,5,Abril,1999
 PRUDENCIA MARIA ANA,MENDOZA GARCIA,16431299,10,Junio,1999
@@ -180,15 +192,3 @@ INDY,ROJAS PORTAL,22486678,18,Marzo,1980
 DANIEL,FERNANDEZ CCORIMANYA,25309740,17,Marzo,1980
 RUTH ALICIA,SUCAPUCA GOYZUETA,29604842,9,Marzo,1980
 ANTONIETA MARICENA,LOAYZA ANCASI,30828249,2,Diciembre,1980
-Oscar,Vilca Quispe,24511857,Arequipa,Junio,1988
-Jesus,Almonte Chalco,29608275,Arequipa,Junio,1988
-Rolando,Velasquez Meneses,10493989,Arequipa,Junio,1988
-Ramiro,Uracahua Yauri,29624089,Arequipa,Junio,1988
-Loreto,Velarde Cruz,29570454,Arequipa,Junio,1988
-Richard,Barraza Arispe,29595946,Arequipa,Junio,1988
-Hector,Chacon Mayhua,29433339,Arequipa,Junio,1989
-Rodrigo,Fernandez Gutierres,29533234,Arequipa,Junio,1989
-Fredy,Flores Ticona,29554638,Arequipa,Junio,1989
-Adolfo,Apaza Nina,29622050,Arequipa,Junio,1989
-Rafael,Piare Zapata,14429913,Arequipa,Junio,1989
-Wilber,Ballon Apaza,30835054,Arequipa,Junio,1989
