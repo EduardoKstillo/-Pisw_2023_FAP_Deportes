@@ -13,7 +13,7 @@ from django.db.models import Sum
 from .decorators import allowed_users
 
 def home(request):
-    anuncios = Anuncio.objects.all().order_by('-date', '-time')[:5]
+    anuncios = Anuncio.objects.all().order_by('-date', '-time')[:4]
     for anuncio in anuncios:
         # Formatear la fecha
         anuncio.date_formatted = date_format(anuncio.date, "j % F % Y") if anuncio.date else None

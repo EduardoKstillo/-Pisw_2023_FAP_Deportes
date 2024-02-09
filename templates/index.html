@@ -15,22 +15,20 @@
     top: 50%;
     transform: translateY(-50%);
     width: auto; /* Ajusta el ancho automáticamente según el contenido */
-    
   }
 
   .carousel-control-prev {
     left: 0; /* Coloca el botón prev a la izquierda */
-    color:#000000
   }
 
   .carousel-control-next {
-    right: 0; 
-
+    right: 0; /* Coloca el botón next a la derecha */
   }
+
   .table-container {
-    height: 30vh;
+    max-height: 200px; /* Ajusta la altura máxima según tus necesidades */
     overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
-    font-size: 13px;
+    font-size:13px
   }
 
   /* Estilo para la tabla */
@@ -38,55 +36,88 @@
     width: 100%;
   }
   .col-md-6 {
-    overflow: hidden;
-  }
+  overflow: hidden;
+}
 
-  .text-center {
-    transition: transform 0.5s ease;
-  }
+.text-center {
+  transition: transform 0.5s ease;
+}
 
-  .btn {
-    transition: transform 0.2s ease;
-  }
+.text-center:hover {
+  transform: translateY(-10px);
+}
 
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.w-75 {
+  transition: transform 0.5s ease;
+}
+
+.w-75:hover {
+  transform: translateX(-10px);
+}
+
+.btn {
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+  100% {
+    opacity: 1;
   }
+}
 </style>
-<div class="container " >
+<div class="container "  >
   <div class="row ">
-    <div class="col-md-6 col-sm-12 mt-sm-2 ">
+    <div class="col-md-7 col-sm-12 mt-sm-2 ">
       <div
-        class="carrusel-container h-100 pb-5"  style=" background-color:#f6f0e6";>
+        class="carrusel-container h-75 "  style=" background-color:#f6f0e6";>
         <div id="carouselExampleFade" class="carousel slide carousel-fade">
           <div class="carousel-inner text-center text-dark">
             <div class="carousel-item active">
               <h1 class="mt-4">Tabla de posiciones</h1>
-              <div class="mx-5 mt-5 table-container">
+              <div class="mx-5 mt-3 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
-                <thead class="table-dark">
+                <thead >
                   <tr>
-                    <th>N°</th>
-                    <th>Equipo</th>
-                    <th>PJ</th>
-                    <th>PG</th>
-                    <th>PE</th>
-                    <th>PP</th>
-                    <th>GF</th>
-                    <th>GC</th>
-                    <th>DG</th>
-                    <th>Pts</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">N°</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Equipo</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">PJ</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">PG</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">PE</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">PP</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">GF</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">GC</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;" >DG</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Pts</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,14 +143,20 @@
             </div>
             <div class="carousel-item ">
               <h1 class="mt-4">Goleadores</h1>
-              <div class="mx-5 mt-5 table-container">
+              <div class="mx-5 mt-3 table-container">
               <table
                 class="table table-responsive table-bordered table-striped">
                 <thead class="table-dark">
-                  <tr>
-                    <th>Jugador</th>
-                    <th>Equipo</th>
-                    <th>Goles</th>
+                  <tr >
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Jugador</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Equipo</th>
+                    <th style="background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Goles</th>
 
                   </tr>
                 </thead>
@@ -144,7 +181,7 @@
             </div>
             <div class="carousel-item">
               <h1 class="mt-4">Fixture</h1>
-                <div class="mt-5">
+                <div class="mt-3">
                  {% for round_number, fixtures in grouped_fixtures.items %}
                 <div class="text-center mx-5" id="tabla-jornada-{{round_number}} " style="display: none">
                   <div class="btn-group">
@@ -180,14 +217,22 @@
                       </svg>
                     </button>
                   </div>
-                  <div class="table-responsive table-container m-0" style="fontsize:15px">
+                  <div class="table-responsive table-container m-0" style="fontsize:18px">
                     <table class="table">
                       <thead class="table-dark">
                         <tr>
-                          <th style="width: 55%">Lugar/Fecha</th>
-                          <th style="width: 15%">Equipo 1</th>
-                          <th style="width: 15%">Resultado</th>
-                          <th style="width: 15%">Equipo 2</th>
+                          <th style="width: 55%;background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Lugar/Fecha</th>
+                          <th style="width: 15% ;background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Equipo 1</th>
+                          <th style="width: 15% ;background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Resultado</th>
+                          <th style="width: 15% ;background-color: #242c43;
+                  font-weight: normal;
+                  color: white;">Equipo 2</th>
                         </tr>
                       </thead>
                       <tbody class="text-center">
@@ -206,46 +251,54 @@
                 </div>
                 {% endfor %}
                 </div>
+                
             </div>
-          </div>
-        </div>
-        <button
-          class="carousel-control-prev"
+            <button
+          class="carousel-control-prev mt-2"
           type="button"
           data-bs-target="#carouselExampleFade"
           data-bs-slide="prev"
-          style="background-color:#f6f0e6"
+          style="background-color:#242C43"
         >
           <span
-            class="carousel-control-prev-icon text-dark"
+            class="carousel-control-prev-icon "
             aria-hidden="true"
+            style="color:blue"
+
 
           ></span>
           <span class="visually-hidden">Previous</span>
         </button>
         <button
-          class="carousel-control-next"
+          class="carousel-control-next mt-2"
           type="button"
           data-bs-target="#carouselExampleFade"
           data-bs-slide="next"
-                    style="background:#f6f0e6"
+          style="background-color:#242C43"
         >
           <span
-            class="carousel-control-next-icon text-dark accordion"
+            class="carousel-control-next-icon text-info accordion"
             aria-hidden="true"
           ></span>
           <span class="visually-hidden">Next</span>
         </button>
+          </div>
+        </div>
+        
       </div>
     </div>
-    <div class="col-md-5 col-sm-12  ms-md-4 mt-5 pb-5"style="background-color: #f6f0e6;border: 2px solid #090c26" >
-      <ul class="list-group" style="background-color: #f6f0e6">
-      <li class="list-group-item text-center text-dark " style=" background-color: #f6f0e6">
-        <h1>Anuncios</h1>
+    <div class="col-md-5 col-sm-12   mt-3 pb-2"style="background-color: #f6f0e6;" >
+      <ul class="list-group " style="background-color: #f6f0e6;border: 2px solid #000;padding-0M;list-style: none; padding: 0">
+      <li class="list-group-item text-center text-dark m-0" style=" background-color: #f6f0e6 ; border: none">
+        <h1 class="fw-bold">Anuncios</h1>
       </li>
         {% for anuncio in anuncios %}
-        <li class="list-group-item  text-dark " style=" background-color: #f6f0e6 ; border-bottom: 1px solid #000;">
-          <table class="table table-responsive" style=" background-color: #f6f0e6">
+        <li class="list-group-item  text-dark " style=" background-color: #f6f0e6 ; border: none;">
+        <a style="font-size:14px;">{{anuncio.date}}</a>
+        </li>
+        <li class="list-group-item  text-dark " style=" background-color: #f6f0e6 ; border: none;">
+          <a   style="font-size:25px;  font-weight: 600">{{anuncio.name}}</a>
+          {% comment %} <table class="table table-responsive" style=" background-color: #f6f0e6">
             <thead>
               <tr>
                 <th style="width: 20%;background-color: #f6f0e6; color:dark">{{anuncio.name}}</th>
@@ -253,8 +306,13 @@
                 <th style="width: 79%;background-color: #f6f0e6; color:dark">{{ anuncio.content }}</th>
               </tr>
             </thead>      
-          </table>
+          </table> {% endcomment %}
         </li>
+        <li class="list-group-item  text-dark " style=" background-color: #f6f0e6 ; border-bottom: 1px solid #000;">
+          <a style="font-size:18px;  font-weight: 600">{{ anuncio.content }}</a>
+        </li>
+
+
         {% endfor %}
       </ul>
     </div>

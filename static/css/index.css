@@ -8,7 +8,6 @@ body {
   /*background: url(fap.svg) no-repeat center center fixed;*/
   background-color: #f6f0e6;
   font-family: "Montserrat";
-  display: grid;
 }
 
 .mi-alerta {
@@ -39,7 +38,7 @@ main::before {
   height: 100%;
   background: url("../img/fap.svg") no-repeat center center fixed;
   background-size: 85% 85%;
-  opacity: 0.7;
+  opacity: 0.5;
   z-index: -1;
 }
 
